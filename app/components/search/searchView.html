@@ -1,0 +1,46 @@
+<div class="content-title text-center">
+	<ul class="nav nav-pills nav-table">
+		<li role="presentation" class="active"><a>Znalezione strony</a></li>
+	</ul>
+</div>
+
+<div class="row">
+
+	<div class="col-lg-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Found: " {{ searchText }} " ({{ foundList.length }} results)</div>
+			<div class="panel-body">
+				<div class="table-responsive">
+					<table class="table-bordered table-striped found-list">
+						<tr ng-if="processing">
+							<td class="loading"><img src="public/img/loader.gif"></td>
+						</tr>
+						<tr ng-repeat="page in foundList">
+							<td>
+								<div class="title"><a href="/page/{{ page.id }}">{{ page.title }}</a></div>
+								<div class="description">{{ page.description | htmlToPlaintext | limitTo:256 }}...</div>
+								<div class="author"><i class="fa fa-user"></i> &nbsp; {{ page.author_name }} &nbsp; <i class="fa fa-calendar"></i> &nbsp; {{ page.modified | limitTo:10 }}</div>
+								<div class="category"><i class="fa fa-clone"></i> &nbsp; <a href="/category/{{ page.category_id }}">{{ page.category_name }}</a></div>
+							</td>
+						</tr>
+						<tr ng-if="!foundList.length">
+							<td>
+								<div class="content-center">
+									<img src="public/img/not-found.png" class="img-responsive" alt="Angular CMS - No search results">
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-12">
+		<div class="my-message" ng-if="state == 'finish'">
+			<div ng-if="!foundList.length" class="alert alert-danger" role="alert">Wyszukiwanie zakończone. Nie znaleziono stron.</div>
+			<div ng-if="foundList.length" class="alert alert-success" role="alert">Wyszukiwanie zakończone. Znaleziono {{ foundList.length }} stron.</div>
+		</div>
+	</div>
+
+</div>

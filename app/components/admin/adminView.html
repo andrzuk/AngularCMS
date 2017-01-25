@@ -1,0 +1,123 @@
+<div ng-if="user.isLoggedIn">
+
+    <div class="content-title text-center">
+        <ul class="nav nav-pills nav-table">
+            <li role="presentation" class="active"><a>Admin Panel</a></li>
+        </ul>
+    </div>
+
+    <div ng-controller="AdminController" ng-init="getStatistics()">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+                <div class="panel panel-primary admin-panel">
+                    <div class="panel-heading">Funkcje administracyjne</div>
+                    <div class="panel-body">
+                        <div class="row" smooth-show>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="col-md-1">
+                                        Id: <br><strong>{{ user.id }}</strong>
+                                    </div>
+                                    <div class="col-md-2">
+                                        Login: <br><strong>{{ user.name | uppercase }}</strong>
+                                    </div>
+                                    <div class="col-md-2">
+                                        Rola: <br><strong>{{ user.role }}</strong>
+                                    </div>
+                                    <div class="col-md-4">
+                                        E-mail: <br><strong>{{ user.email }}</strong>
+                                    </div>
+                                    <div class="col-md-3">
+                                        Logowanie: <br><strong>{{ user.logged_in }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" smooth-show>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="thumbnail tile tile-medium tile-blue">
+                                        <a href="/settings" class="fa-links">
+                                            <div class="icon"><i class="fa fa-3x fa-cog"></i></div>
+                                            <div class="label">Ustawienia</div>
+                                            <div class="number">{{ admin.settings }}</div>
+                                        </a>
+                                    </div>
+                                    <div class="thumbnail tile tile-medium tile-red">
+                                        <a href="/users" class="fa-links">
+                                            <div class="icon"><i class="fa fa-3x fa-user"></i></div>
+                                            <div class="label">Konta</div>
+                                            <div class="number">{{ admin.users }}</div>
+                                        </a>
+                                    </div>
+                                    <div class="thumbnail tile tile-medium tile-pumpkin">
+                                        <a href="/acl" class="fa-links">
+                                            <div class="icon"><i class="fa fa-3x fa-home"></i></div>
+                                            <div class="label">ACL</div>
+                                            <div class="number">{{ admin.acl }}</div>
+                                        </a>
+                                    </div>
+                                    <div class="thumbnail tile tile-medium tile-green">
+                                        <a href="/categories" class="fa-links">
+                                            <div class="icon"><i class="fa fa-3x fa-dedent"></i></div>
+                                            <div class="label">Kategorie</div>
+                                            <div class="number">{{ admin.categories }}</div>
+                                        </a>
+                                    </div>
+                                    <div class="thumbnail tile tile-medium tile-yellow">
+                                        <a href="/pages" class="fa-links">
+                                            <div class="icon"><i class="fa fa-3x fa-edit"></i></div>
+                                            <div class="label">Strony</div>
+                                            <div class="number">{{ admin.pages }}</div>
+                                        </a>
+                                    </div>
+                                    <div class="thumbnail tile tile-medium tile-wet-asphalt">
+                                        <a href="/images" class="fa-links">
+                                            <div class="icon"><i class="fa fa-3x fa-film"></i></div>
+                                            <div class="label">Galeria</div>
+                                            <div class="number">{{ admin.images }}</div>
+                                        </a>
+                                    </div>
+                                    <div class="thumbnail tile tile-medium tile-peter-river">
+                                        <a href="/messages" class="fa-links">
+                                            <div class="icon"><i class="fa fa-3x fa-envelope-o"></i></div>
+                                            <div class="label">Wiadomości</div>
+                                            <div class="number">{{ admin.messages }}</div>
+                                        </a>
+                                    </div>
+                                    <div class="thumbnail tile tile-medium tile-alizarin">
+                                        <a href="/visitors" class="fa-links">
+                                            <div class="icon"><i class="fa fa-3x fa-globe"></i></div>
+                                            <div class="label">Wizyty</div>
+                                            <div class="number">{{ admin.visitors }}</div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer text-center">
+                        <a href="/logout" class="btn btn-info">Wyloguj</a>
+                        <a href="/" class="btn btn-danger">Zamknij</a>
+                    </div>
+                </div>
+                <div ng-if="processing">
+                    <div class="text-center"><img src="public/img/loader.gif"></div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="my-message">
+                    <div ng-if="state == 'error'" class="alert alert-danger" role="alert">{{ message }}</div>
+                    <div ng-if="state == 'info'" class="alert alert-success" role="alert">{{ message }}</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

@@ -1,0 +1,10 @@
+<carousel interval="carouselInterval">
+	<slide ng-repeat="slide in carouselSlides" active="slide.active">
+		<img ng-src="{{ slide.image }}" class="img-responsive">
+		<div class="carousel-caption">
+			<!--
+			<h4>Slajd {{ $index + 1 }}. {{ slide.text }}</h4>
+			-->
+		</div>
+	</slide>
+</carousel>

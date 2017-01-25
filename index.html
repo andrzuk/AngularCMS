@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="pl" ng-app="MainApp">
+
+<head ng-controller="MetaController">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ ngMeta.description }}">
+    <meta name="keywords" content="{{ ngMeta.keywords }}">
+    <title ng-bind="ngMeta.title"></title>
+    <base href="/">
+    <link rel="stylesheet" href="assets/css/metro-bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" href="assets/css/cerulean-bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/app.css">
+    <link rel="shortcut icon" href="public/img/favicon.ico">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/angular-route.js"></script>
+    <script src="assets/js/angular-sanitize.js"></script>
+    <script src="assets/js/angular-ui-bootstrap.js"></script>
+    <script src="assets/js/bootstrap-switch.min.js"></script>
+    <script src="assets/js/ngMeta.min.js"></script>
+    <script src="public/js/app.js"></script>
+
+    <!-- application -->
+    <script src="app/app.config.js"></script>
+    <script src="app/app.module.js"></script>
+    <script src="app/app.routes.js"></script>
+
+    <!-- controllers -->
+    <script src="app/shared/controllers/navController.js"></script>
+    <script src="app/shared/controllers/mainController.js"></script>
+    <script src="app/shared/controllers/metaController.js"></script>
+    <script src="app/shared/controllers/authController.js"></script>
+
+    <!-- services -->
+    <script src="app/shared/services/metaService.js"></script>
+    <script src="app/shared/services/navService.js"></script>
+    <script src="app/shared/services/authService.js"></script>
+
+    <!-- directives -->
+    <script src="app/shared/directives/mainDirective.js"></script>
+
+    <!-- filters -->
+    <script src="app/shared/filters/mainFilter.js"></script>
+
+    <!-- components -->
+    <script src="app/components/home/homeController.js"></script>
+    <script src="app/components/category/categoryController.js"></script>
+    <script src="app/components/page/pageController.js"></script>
+    <script src="app/components/admin/adminController.js"></script>
+    <script src="app/components/admin/adminService.js"></script>
+    <script src="app/components/contact/contactController.js"></script>
+    <script src="app/components/contact/contactService.js"></script>
+    <script src="app/components/settings/settingsController.js"></script>
+    <script src="app/components/settings/settingsService.js"></script>
+    <script src="app/components/styles/stylesController.js"></script>
+    <script src="app/components/styles/stylesService.js"></script>
+    <script src="app/components/scripts/scriptsController.js"></script>
+    <script src="app/components/scripts/scriptsService.js"></script>
+    <script src="app/components/users/usersController.js"></script>
+    <script src="app/components/users/usersService.js"></script>
+    <script src="app/components/acl/aclController.js"></script>
+    <script src="app/components/acl/aclService.js"></script>
+    <script src="app/components/categories/categoriesController.js"></script>
+    <script src="app/components/categories/categoriesService.js"></script>
+    <script src="app/components/pages/pagesController.js"></script>
+    <script src="app/components/pages/pagesService.js"></script>
+    <script src="app/components/messages/messagesController.js"></script>
+    <script src="app/components/messages/messagesService.js"></script>
+    <script src="app/components/images/imagesController.js"></script>
+    <script src="app/components/images/imagesService.js"></script>
+    <script src="app/components/visitors/visitorsController.js"></script>
+    <script src="app/components/visitors/visitorsService.js"></script>
+    <script src="app/components/search/searchesController.js"></script>
+    <script src="app/components/search/searchesService.js"></script>
+    <script src="app/components/install/installController.js"></script>
+    <script src="app/components/install/installService.js"></script>
+	
+</head>
+
+<body ng-controller="MainController">
+
+    <div ng-include="layout.header"></div>
+
+    <div ng-include="layout.content"></div>
+
+    <div ng-include="layout.footer"></div>
+    
+</body>
+
+</html>

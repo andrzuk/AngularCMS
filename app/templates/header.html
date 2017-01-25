@@ -1,0 +1,52 @@
+<header>
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header" ng-controller="MenuController">
+                <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div id="main-submenu" class="btn-group" ng-if="submenuList.length">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> &nbsp; <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="menu in submenuList"><a href="/page/{{ menu.id }}">{{ menu.title }}</a></li>
+                    </ul>
+                </div>
+                <div id="main-menu" class="btn-group" ng-if="menuList.length">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> &nbsp; <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="menu in menuList"><a href="{{ menu.item_link }}" target="{{ menu.target == true ? '_blank' : null }}">{{ menu.caption }}</a></li>
+                    </ul>
+                </div>
+                <a id="page-logo-brand" href="/" class="navbar-brand"><span><img src="{{ ngMeta.logoicon }}" alt="{{ ngMeta.brand }}"></span> &nbsp; {{ ngMeta.brand }}</a>
+            </div>
+            <div id="navbarCollapse" class="collapse navbar-collapse" ng-controller="NavController" ng-if="!installMode">
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-if="!user.isLoggedIn"><a href="/login"><i class="fa fa-sign-in"></i> Login</a></li>
+                    <li ng-if="!user.isLoggedIn"><a href="/register"><i class="fa fa-edit"></i> Register</a></li>
+                    <li ng-if="user.isLoggedIn"><a href="/admin"><i class="fa fa-calendar"></i> Admin Panel (<strong>{{ user.name | uppercase }}</strong>)</a></li>
+                    <li ng-if="user.isLoggedIn"><a href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+                    <li><a href="/contact"><i class="fa fa-envelope-o"></i> Contact</a></li>
+                </ul>
+                <form id="main-search" class="navbar-form navbar-right" role="search" ng-if="!user.isLoggedIn">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Szukaj" ng-model="searchText" ng-disabled="processing">
+                    </div>
+                    <span class="text-right">
+                        <button type="submit" class="btn btn-default" ng-click="getFound(searchText)" ng-disabled="processing"><i class="fa fa-search"></i></button>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div ng-if="carouselEnabled == 'true'">
+    <div ng-include="carouselTemplate"></div>
+</div>

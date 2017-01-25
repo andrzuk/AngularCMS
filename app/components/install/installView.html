@@ -1,0 +1,125 @@
+<div class="content-title text-center">
+	<ul class="nav nav-pills nav-table">
+		<li role="presentation" class="active"><a>Instalacja serwisu</a></li>
+	</ul>
+</div>
+
+<div ng-controller="InstallController" ng-init="initInstall()">
+
+	<div class="row">
+
+		<div class="col-lg-12" ng-show="action == 'init'">
+			<form class="form" role="form" method="post">
+				<div class="panel panel-primary my-panel">
+					<div class="panel-heading">Ustawienia</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<label for="brand">Krótka nazwa serwisu (logo):</label>
+							<input type="text" class="form-control" id="brand" ng-model="installInit.brand" ng-disabled="processing" required>
+						</div>
+						<div class="form-group">
+							<label for="description">Długa nazwa serwisu (opis):</label>
+							<input type="text" class="form-control" id="description" ng-model="installInit.description" ng-disabled="processing" required>
+						</div>
+						<div class="form-group">
+							<label for="keywords">Słowa kluczowe serwisu (keywords):</label>
+							<textarea class="form-control" id="keywords" rows="2" ng-model="installInit.keywords" ng-disabled="processing" required></textarea>
+						</div>
+						<div class="form-group">
+							<label for="domain">Domena serwisu (adres):</label>
+							<input type="text" class="form-control" id="domain" ng-model="installInit.domain" ng-disabled="processing" required>
+						</div>
+						<div class="form-group">
+							<label for="admin_email">Adres e-mail administratora:</label>
+							<input type="text" class="form-control" id="admin_email" ng-model="installInit.admin_email" ng-disabled="processing" required>
+						</div>
+						<div class="form-group">
+							<label for="admin_name">Nazwa konta administratora:</label>
+							<input type="text" class="form-control" id="admin_name" ng-model="installInit.admin_name" ng-disabled="processing" required>
+						</div>
+						<div class="form-group">
+							<label for="admin_password">Hasło konta administratora:</label>
+							<input type="password" class="form-control" id="admin_password" ng-model="installInit.admin_password" ng-disabled="processing" required>
+						</div>
+					</div>
+					<div class="panel-footer text-center">
+						<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="saveInstall()">Zapisz</button>
+						<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelInstall()" value="Anuluj">
+					</div>
+				</div>
+			</form>
+			<div ng-if="processing">
+				<div class="text-center"><img src="public/img/loader.gif"></div>
+			</div>
+		</div>
+
+		<div class="col-lg-12" ng-show="action == 'result'">
+			<div class="panel panel-primary my-panel">
+				<div class="panel-heading">Podsumowanie</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-lg-4">Krótka nazwa serwisu:</div>
+							<div class="col-lg-8"><b>{{ result.brand }}</b></div>
+						</div>
+					</div>
+					<hr>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-lg-4">Duga nazwa serwisu:</div>
+							<div class="col-lg-8"><b>{{ result.description }}</b></div>
+						</div>
+					</div>
+					<hr>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-lg-4">Słowa kluczowe serwisu:</div>
+							<div class="col-lg-8"><b>{{ result.keywords }}</b></div>
+						</div>
+					</div>
+					<hr>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-lg-4">Domena serwisu:</div>
+							<div class="col-lg-8"><b>{{ result.domain }}</b></div>
+						</div>
+					</div>
+					<hr>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-lg-4">Adres e-mail administratora:</div>
+							<div class="col-lg-8"><b>{{ result.admin_email }}</b></div>
+						</div>
+					</div>
+					<hr>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-lg-4">Nazwa konta administratora:</div>
+							<div class="col-lg-8"><b>{{ result.admin_name }}</b></div>
+						</div>
+					</div>
+					<hr>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-lg-4">Hasło administratora:</div>
+							<div class="col-lg-8"><b>{{ result.admin_password }}</b></div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer text-center">
+					<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelInstall()" value="Zamknij">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-12">
+		<div class="my-message">
+			<div ng-if="state == 'error'" class="alert alert-danger" role="alert">{{ message }}</div>
+			<div ng-if="state == 'info'" class="alert alert-success" role="alert">{{ message }}</div>
+		</div>
+	</div>
+
+</div>
+
+</div>

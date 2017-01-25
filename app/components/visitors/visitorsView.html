@@ -1,0 +1,112 @@
+<div ng-if="user.isLoggedIn">
+
+	<div class="content-title text-center">
+		<ul class="nav nav-pills nav-table">
+			<li role="presentation" class="active"><a>Odwiedziny</a></li>
+		</ul>
+	</div>
+
+	<div ng-controller="VisitorsController" ng-init="getVisitors()">
+
+		<div class="row">
+
+			<div class="col-lg-12" ng-show="action == 'list'">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Visitors</div>
+					<div class="panel-body">
+						<div class="row my-toolbar">
+							<div class="col-sm-4 text-left search">
+								<input type="search" class="form-control" ng-model="searchValue" placeholder="Szukaj">
+							</div>
+							<div class="col-sm-8 text-right buttons">
+								<a href="/searches" class="btn btn-warning">Wyszukiwania</a>
+								<a href="/admin" class="btn btn-danger">Zamknij</a>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table-bordered table-striped">
+								<tr class="table-header">
+									<th>Id</th>
+									<th>IP</th>
+									<th>Referer</th>
+									<th>Request</th>
+									<th>Visited</th>
+									<th class="text-center">Action</th>
+								</tr>
+								<tr ng-if="processing">
+									<td colspan="6" class="loading"><img src="public/img/loader.gif"></td>
+								</tr>
+								<tr ng-repeat="visitor in visitorsList | filter:searchValue">
+									<td>{{ visitor.id }}</td>
+									<td>{{ visitor.visitor_ip }}</td>
+									<td>{{ visitor.http_referer | limitTo:128 }}<span ng-if="visitor.http_referer.length > 128">...</span></td>
+									<td>{{ visitor.request_uri }}</td>
+									<td>{{ visitor.visited }}</td>
+									<td class="action">
+										<a href="#" class="btn btn-info btn-xs" ng-click="viewVisitor(visitor.id)">Szczegóły</a>
+									</td>
+								</tr>
+								<tr ng-if="!visitorsList.length && !processing">
+									<td colspan="6">
+										<div class="content-center">
+											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
+											<div class="no-results">(Brak wyników)</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'view'">
+				<form class="form" role="form">
+					<div class="panel panel-primary my-panel">
+						<div class="panel-heading">Szczegóły pozycji #{{ visitorView.id }}</div>
+						<div class="panel-body">
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="visitor_ip">IP:</label>
+								</div>
+								<div class="col-md-9">
+									{{ visitorView.visitor_ip }}
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="http_referer">Referer:</label>
+								</div>
+								<div class="col-md-9">
+									<a href="{{ visitorView.http_referer }}" target="_blank">{{ visitorView.http_referer }}</a>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="request_uri">Request:</label>
+								</div>
+								<div class="col-md-9">
+									<a href="{{ visitorView.request_uri }}" target="_blank">{{ visitorView.request_uri }}</a>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="visited">Visited:</label>
+								</div>
+								<div class="col-md-9">
+									{{ visitorView.visited }}
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelVisitor()" value="Anuluj">
+						</div>
+					</div>
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

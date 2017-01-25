@@ -1,0 +1,149 @@
+<div ng-if="user.isLoggedIn">
+
+	<div class="content-title text-center">
+		<ul class="nav nav-pills nav-table">
+			<li role="presentation" class="active"><a>Ustawienia</a></li>
+		</ul>
+	</div>
+
+	<div ng-controller="SettingsController" ng-init="getSettings()">
+
+		<div class="row">
+
+			<div class="col-lg-12" ng-show="action == 'list'">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Settings</div>
+					<div class="panel-body">
+						<div class="row my-toolbar">
+							<div class="col-sm-4 text-left search">
+								<input type="search" class="form-control" ng-model="searchValue" placeholder="Szukaj">
+							</div>
+							<div class="col-sm-8 text-right buttons">
+								<a href="#" class="btn btn-success" ng-click="newSetting()">Dodaj ustawienie</a>
+								<a href="/styles" class="btn btn-info">Zmień wygląd</a>
+								<a href="/scripts" class="btn btn-warning">Edytuj skrypty</a>
+								<a href="/admin" class="btn btn-danger">Zamknij</a>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table-bordered table-striped">
+								<tr class="table-header">
+									<th>Id</th>
+									<th>Key</th>
+									<th width="30%">Value</th>
+									<th width="20%">Meaning</th>
+									<th>Modified</th>
+									<th class="text-center">Action</th>
+								</tr>
+								<tr ng-if="processing">
+									<td colspan="6" class="loading"><img src="public/img/loader.gif"></td>
+								</tr>
+								<tr ng-repeat="setting in settingsList | filter:searchValue">
+									<td>{{ setting.id }}</td>
+									<td>{{ setting.key_name }}</td>
+									<td>{{ setting.key_value | limitTo:128 }}<span ng-if="setting.key_value.length > 128">...</span></td>
+									<td>{{ setting.meaning }}</td>
+									<td>{{ setting.modified }}</td>
+									<td class="action">
+										<a href="#" class="btn btn-info btn-xs" ng-click="editSetting(setting.id)">Edytuj</a>
+										<a href="#" class="btn btn-danger btn-xs" ng-click="deleteSetting(setting.id, false)">Usuń</a>
+									</td>
+								</tr>
+								<tr ng-if="!settingsList.length && !processing">
+									<td colspan="6">
+										<div class="content-center">
+											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
+											<div class="no-results">(Brak wyników)</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'add'">
+				<form class="form" role="form" method="post">
+					<div class="panel panel-primary my-panel">
+						<div class="panel-heading">Nowa pozycja</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label for="key_name">Key:</label>
+								<input type="text" class="form-control" id="key_name" ng-model="settingNew.key_name" ng-disabled="processing" required>
+							</div>
+							<div class="form-group">
+								<label for="key_value">Value:</label>
+								<textarea class="form-control" id="key_value" rows="5" ng-model="settingNew.key_value" ng-disabled="processing" required></textarea>
+							</div>
+							<div class="form-group">
+								<label for="meaning">Meaning:</label>
+								<input type="text" class="form-control" id="meaning" ng-model="settingNew.meaning" ng-disabled="processing" required>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="addSetting()">Zapisz</button>
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelSetting()" value="Anuluj">
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'edit'">
+				<form class="form" role="form" method="post">
+					<div class="panel panel-primary my-panel">
+						<div class="panel-heading">Edycja pozycji #{{ settingEdit.id }}</div>
+						<div class="panel-body">
+							<input type="hidden" ng-model="settingEdit.id">
+							<div class="form-group">
+								<label for="key_name">Key:</label>
+								<input type="text" class="form-control" id="key_name" ng-model="settingEdit.key_name" ng-disabled="processing" required>
+							</div>
+							<div class="form-group">
+								<label for="key_value">Value:</label>
+								<textarea class="form-control" id="key_value" rows="5" ng-model="settingEdit.key_value" ng-disabled="processing" required></textarea>
+							</div>
+							<div class="form-group">
+								<label for="meaning">Meaning:</label>
+								<input type="text" class="form-control" id="meaning" ng-model="settingEdit.meaning" ng-disabled="processing" required>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="saveSetting(id)">Zapisz</button>
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelSetting()" value="Anuluj">
+						</div>
+					</div>
+					<div ng-if="processing">
+						<div class="text-center"><img src="public/img/loader.gif"></div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-12">
+				<div class="my-message">
+					<div ng-if="state == 'error'" class="alert alert-danger" role="alert">{{ message }}</div>
+					<div ng-if="state == 'info'" class="alert alert-success" role="alert">{{ message }}</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'dialog'">
+				<div class="screen-centered">
+					<div class="panel panel-primary my-dialog">
+						<div class="panel-heading">Usuwanie rekordu</div>
+						<div class="panel-body">
+							<p><div class="icon"><i class="fa fa-3x fa-trash-o" aria-hidden="true"></i></div></p>
+							<p>Uwaga! Czy na pewno chcesz usunąć wskazaną pozycję?</p>
+						</div>
+						<div class="panel-footer">
+							<a href="#" class="btn btn-danger" ng-disabled="processing" ng-click="deleteSetting(id, true)">Skasuj</a>
+							<a href="#" class="btn btn-warning" ng-disabled="processing" ng-click="cancelSetting()">Anuluj</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

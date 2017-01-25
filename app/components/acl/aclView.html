@@ -1,0 +1,179 @@
+<div ng-if="user.isLoggedIn">
+
+	<div class="content-title text-center">
+		<ul class="nav nav-pills nav-table">
+			<li role="presentation" class="active"><a>Kontrola dostępu</a></li>
+		</ul>
+	</div>
+
+	<div ng-controller="AclController" ng-init="getAcl()">
+
+		<div class="row">
+
+			<div class="col-lg-12" ng-show="action == 'list'">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Access Control List</div>
+					<div class="panel-body">
+						<div class="row my-toolbar">
+							<div class="col-sm-4 text-left search">
+								<input type="search" class="form-control" ng-model="searchValue" placeholder="Szukaj">
+							</div>
+							<div class="col-sm-8 text-right buttons">
+								<a href="#" class="btn btn-success" ng-click="newAcl()">Dodaj ACL</a>
+								<a href="/admin" class="btn btn-danger">Zamknij</a>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table-bordered table-striped">
+								<tr class="table-header">
+									<th>Id</th>
+									<th>Resource</th>
+									<th>Description</th>
+									<th class="text-center">Admin</th>
+									<th class="text-center">Operator</th>
+									<th class="text-center">User</th>
+									<th class="text-center">Guest</th>
+									<th class="text-center">Action</th>
+								</tr>
+								<tr ng-if="processing">
+									<td colspan="8" class="loading"><img src="public/img/loader.gif"></td>
+								</tr>
+								<tr ng-repeat="acl in aclList | filter:searchValue">
+									<td>{{ acl.id }}</td>
+									<td>{{ acl.resource }}</td>
+									<td>{{ acl.description }}</td>
+									<td class="text-center"><button type="button" class="btn btn-{{ acl.mask_a == true ? 'success' : 'danger' }} btn-xs"><span class="glyphicon glyphicon-{{ acl.mask_a == true ? 'ok' : 'remove' }}"></span></button></td>
+									<td class="text-center"><button type="button" class="btn btn-{{ acl.mask_o == true ? 'success' : 'danger' }} btn-xs"><span class="glyphicon glyphicon-{{ acl.mask_o == true ? 'ok' : 'remove' }}"></span></button></td>
+									<td class="text-center"><button type="button" class="btn btn-{{ acl.mask_u == true ? 'success' : 'danger' }} btn-xs"><span class="glyphicon glyphicon-{{ acl.mask_u == true ? 'ok' : 'remove' }}"></span></button></td>
+									<td class="text-center"><button type="button" class="btn btn-{{ acl.mask_g == true ? 'success' : 'danger' }} btn-xs"><span class="glyphicon glyphicon-{{ acl.mask_g == true ? 'ok' : 'remove' }}"></span></button></td>
+									<td class="action">
+										<a href="#" class="btn btn-info btn-xs" ng-click="editAcl(acl.id)">Edytuj</a>
+										<a href="#" class="btn btn-danger btn-xs" ng-click="deleteAcl(acl.id, false)">Usuń</a>
+									</td>
+								</tr>
+								<tr ng-if="!aclList.length && !processing">
+									<td colspan="8">
+										<div class="content-center">
+											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
+											<div class="no-results">(Brak wyników)</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'add'">
+				<form class="form" role="form" method="post">
+					<div class="panel panel-primary my-panel">
+						<div class="panel-heading">Nowa pozycja</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label for="resource">Resource:</label>
+								<input type="text" class="form-control" id="resource" ng-model="aclNew.resource" ng-disabled="processing" required>
+							</div>
+							<div class="form-group">
+								<label for="description">Description:</label>
+								<input type="text" class="form-control" id="description" ng-model="aclNew.description" ng-disabled="processing" required>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="mask_a">Admin:</label><br>
+									<input type="checkbox" class="form-control" id="mask_a" ng-model="aclNew.mask_a" ng-disabled="processing" bootstrap-switch>
+								</div>
+								<div class="col-md-3">
+									<label for="mask_o">Operator:</label><br>
+									<input type="checkbox" class="form-control" id="mask_o" ng-model="aclNew.mask_o" ng-disabled="processing" bootstrap-switch>
+								</div>
+								<div class="col-md-3">
+									<label for="mask_u">User:</label><br>
+									<input type="checkbox" class="form-control" id="mask_u" ng-model="aclNew.mask_u" ng-disabled="processing" bootstrap-switch>
+								</div>
+								<div class="col-md-3">
+									<label for="mask_g">Guest:</label><br>
+									<input type="checkbox" class="form-control" id="mask_g" ng-model="aclNew.mask_g" ng-disabled="processing" bootstrap-switch>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="addAcl()">Zapisz</button>
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelAcl()" value="Anuluj">
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'edit'">
+				<form class="form" role="form" method="post">
+					<div class="panel panel-primary my-panel">
+						<div class="panel-heading">Edycja pozycji #{{ aclEdit.id }}</div>
+						<div class="panel-body">
+							<input type="hidden" ng-model="aclEdit.id">
+							<div class="form-group">
+								<label for="resource">Resource:</label>
+								<input type="text" class="form-control" id="resource" ng-model="aclEdit.resource" ng-disabled="processing" required>
+							</div>
+							<div class="form-group">
+								<label for="description">Description:</label>
+								<input type="text" class="form-control" id="description" ng-model="aclEdit.description" ng-disabled="processing" required>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="mask_a">Admin:</label><br>
+									<input type="checkbox" class="form-control" id="mask_a" ng-model="aclEdit.mask_a" ng-disabled="processing" bootstrap-switch>
+								</div>
+								<div class="col-md-3">
+									<label for="mask_o">Operator:</label><br>
+									<input type="checkbox" class="form-control" id="mask_o" ng-model="aclEdit.mask_o" ng-disabled="processing" bootstrap-switch>
+								</div>
+								<div class="col-md-3">
+									<label for="mask_u">User:</label><br>
+									<input type="checkbox" class="form-control" id="mask_u" ng-model="aclEdit.mask_u" ng-disabled="processing" bootstrap-switch>
+								</div>
+								<div class="col-md-3">
+									<label for="mask_g">Guest:</label><br>
+									<input type="checkbox" class="form-control" id="mask_g" ng-model="aclEdit.mask_g" ng-disabled="processing" bootstrap-switch>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="saveAcl(id)">Zapisz</button>
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelAcl()" value="Anuluj">
+						</div>
+					</div>
+					<div ng-if="processing">
+						<div class="text-center"><img src="public/img/loader.gif"></div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-12">
+				<div class="my-message">
+					<div ng-if="state == 'error'" class="alert alert-danger" role="alert">{{ message }}</div>
+					<div ng-if="state == 'info'" class="alert alert-success" role="alert">{{ message }}</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'dialog'">
+				<div class="screen-centered">
+					<div class="panel panel-primary my-dialog">
+						<div class="panel-heading">Usuwanie rekordu</div>
+						<div class="panel-body">
+							<p><div class="icon"><i class="fa fa-3x fa-trash-o" aria-hidden="true"></i></div></p>
+							<p>Uwaga! Czy na pewno chcesz usunąć wskazaną pozycję?</p>
+						</div>
+						<div class="panel-footer">
+							<a href="#" class="btn btn-danger" ng-disabled="processing" ng-click="deleteAcl(id, true)">Skasuj</a>
+							<a href="#" class="btn btn-warning" ng-disabled="processing" ng-click="cancelAcl()">Anuluj</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

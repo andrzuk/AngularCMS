@@ -1,0 +1,177 @@
+<div ng-if="user.isLoggedIn">
+
+	<div class="content-title text-center">
+		<ul class="nav nav-pills nav-table">
+			<li role="presentation" class="active"><a>Kategorie</a></li>
+		</ul>
+	</div>
+
+	<div ng-controller="CategoriesController" ng-init="getCategories()">
+
+		<div class="row">
+
+			<div class="col-lg-12" ng-show="action == 'list'">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Categories</div>
+					<div class="panel-body">
+						<div class="row my-toolbar">
+							<div class="col-sm-4 text-left search">
+								<input type="search" class="form-control" ng-model="searchValue" placeholder="Szukaj">
+							</div>
+							<div class="col-sm-8 text-right buttons">
+								<a href="#" class="btn btn-success" ng-click="newCategory()">Dodaj kategorię</a>
+								<a href="/admin" class="btn btn-danger">Zamknij</a>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table-bordered table-striped">
+								<tr class="table-header">
+									<th>Id</th>
+									<th>Order</th>
+									<th>Caption</th>
+									<th>Link</th>
+									<th class="text-center">Local</th>
+									<th>Modified</th>
+									<th class="text-center">Action</th>
+								</tr>
+								<tr ng-if="processing">
+									<td colspan="7" class="loading"><img src="public/img/loader.gif"></td>
+								</tr>
+								<tr ng-repeat="category in categoriesList | filter:searchValue" class="{{ category.visible == 1 ? 'blue' : 'red' }}">
+									<td>{{ category.id }}</td>
+									<td>{{ category.item_order }}</td>
+									<td>{{ category.caption }}</td>
+									<td>{{ category.item_link }}</td>
+									<td class="text-center"><button type="button" class="btn btn-{{ category.target == false ? 'success' : 'danger' }} btn-xs"><span class="glyphicon glyphicon-{{ category.target == false ? 'ok' : 'remove' }}"></span></button></td>
+									<td>{{ category.modified }}</td>
+									<td class="action">
+										<a href="#" class="btn btn-success btn-xs" ng-click="moveCategory(category.id, 'up')"><span class="glyphicon glyphicon-arrow-up"></span></a>
+										<a href="#" class="btn btn-success btn-xs" ng-click="moveCategory(category.id, 'down')"><span class="glyphicon glyphicon-arrow-down"></span></a>
+										<a href="#" class="btn btn-info btn-xs" ng-click="editCategory(category.id)">Edytuj</a>
+										<a href="#" class="btn btn-danger btn-xs" ng-click="deleteCategory(category.id, false)">Usuń</a>
+									</td>
+								</tr>
+								<tr ng-if="!categoriesList.length && !processing">
+									<td colspan="7">
+										<div class="content-center">
+											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
+											<div class="no-results">(Brak wyników)</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'add'">
+				<form class="form" role="form" method="post">
+					<div class="panel panel-primary my-panel">
+						<div class="panel-heading">Nowa pozycja</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label for="caption">Caption:</label>
+								<input type="text" class="form-control" id="caption" ng-model="categoryNew.caption" ng-disabled="processing" required>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-9">
+									<label for="item_link">Link:</label><br>
+									<input type="text" class="form-control" id="item_link" ng-model="categoryNew.item_link" ng-disabled="processing" required>
+								</div>
+								<div class="col-md-3">
+									<label for="auto_link">Auto:</label><br>
+									<input type="checkbox" class="form-control" id="auto_link" ng-model="categoryNew.auto_link" ng-disabled="processing" bootstrap-switch auto-category-id>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-6">
+									<label for="item_order">Order:</label><br>
+									<input type="number" class="form-control" id="item_order" ng-model="categoryNew.item_order" ng-disabled="processing" required>
+								</div>
+								<div class="col-md-3">
+									<label for="target">Local:</label><br>
+									<input type="checkbox" class="form-control" id="target" ng-model="categoryNew.target" ng-disabled="processing" bootstrap-switch>
+								</div>
+								<div class="col-md-3">
+									<label for="visible">Visible:</label><br>
+									<input type="checkbox" class="form-control" id="visible" ng-model="categoryNew.visible" ng-disabled="processing" bootstrap-switch>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="addCategory()">Zapisz</button>
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelCategory()" value="Anuluj">
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'edit'">
+				<form class="form" role="form" method="post">
+					<div class="panel panel-primary my-panel">
+						<div class="panel-heading">Edycja pozycji #{{ categoryEdit.id }}</div>
+						<div class="panel-body">
+							<input type="hidden" ng-model="categoryEdit.id">
+							<div class="form-group">
+								<label for="caption">Caption:</label>
+								<input type="text" class="form-control" id="caption" ng-model="categoryEdit.caption" ng-disabled="processing" required>
+							</div>
+							<div class="form-group">
+								<label for="item_link">Link:</label>
+								<input type="text" class="form-control" id="item_link" ng-model="categoryEdit.item_link" ng-disabled="processing" required>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-6">
+									<label for="item_order">Order:</label><br>
+									<input type="number" class="form-control" id="item_order" ng-model="categoryEdit.item_order" ng-disabled="processing" required>
+								</div>
+								<div class="col-md-3">
+									<label for="target">Local:</label><br>
+									<input type="checkbox" class="form-control" id="target" ng-model="categoryEdit.target" ng-disabled="processing" bootstrap-switch>
+								</div>
+								<div class="col-md-3">
+									<label for="visible">Visible:</label><br>
+									<input type="checkbox" class="form-control" id="visible" ng-model="categoryEdit.visible" ng-disabled="processing" bootstrap-switch>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="saveCategory(id)">Zapisz</button>
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelCategory()" value="Anuluj">
+						</div>
+					</div>
+					<div ng-if="processing">
+						<div class="text-center"><img src="public/img/loader.gif"></div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-12">
+				<div class="my-message">
+					<div ng-if="state == 'error'" class="alert alert-danger" role="alert">{{ message }}</div>
+					<div ng-if="state == 'info'" class="alert alert-success" role="alert">{{ message }}</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'dialog'">
+				<div class="screen-centered">
+					<div class="panel panel-primary my-dialog">
+						<div class="panel-heading">Usuwanie rekordu</div>
+						<div class="panel-body">
+							<p><div class="icon"><i class="fa fa-3x fa-trash-o" aria-hidden="true"></i></div></p>
+							<p>Uwaga! Czy na pewno chcesz usunąć wskazaną pozycję?</p>
+						</div>
+						<div class="panel-footer">
+							<a href="#" class="btn btn-danger" ng-disabled="processing" ng-click="deleteCategory(id, true)">Skasuj</a>
+							<a href="#" class="btn btn-warning" ng-disabled="processing" ng-click="cancelCategory()">Anuluj</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

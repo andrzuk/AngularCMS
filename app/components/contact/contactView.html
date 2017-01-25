@@ -1,0 +1,45 @@
+<div ng-controller="ContactController" ng-init="getPage()">
+
+    <div class="content-title text-center">
+        <ul class="nav nav-pills nav-table">
+            <li role="presentation" class="active"><a>Kontakt z serwisem</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div ng-if="processing">
+                <div class="screen-centered">
+                    <div class="text-center">
+                        <div class="loading"><img src="public/img/loader.gif"></div>
+                    </div>
+                </div>
+            </div>
+            <div ng-bind-html="page.contents"></div>
+        </div>
+
+        <div class="col-md-6" smooth-show>
+            <form class="form my-form" method="post" ng-submit="sendMessage()">
+                <h3 class="form-signin-heading my-heading">
+                    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> &nbsp; Wiadomość
+                </h3>
+                <div class="field-label">Imię lub pseudonim:</div>
+                <input type="text" class="form-control" ng-model="messageData.login" required autofocus>
+                <div class="field-label">E-mail:</div>
+                <input type="email" class="form-control" ng-model="messageData.email" required>
+                <div class="field-label">Wiadomość:</div>
+                <textarea class="form-control" ng-model="messageData.content" rows="8" required></textarea>
+                <div class="my-buttons">
+                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Wyślij">
+                </div>
+            </form>
+            <div class="my-message">
+                <div ng-if="error" class="alert alert-danger" role="alert">{{ message }}</div>
+                <div ng-if="info" class="alert alert-success" role="alert">{{ message }}</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

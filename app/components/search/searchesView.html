@@ -1,0 +1,89 @@
+<div ng-if="user.isLoggedIn">
+
+	<div class="content-title text-center">
+		<ul class="nav nav-pills nav-table">
+			<li role="presentation" class="active"><a>Wyszukiwania</a></li>
+		</ul>
+	</div>
+
+	<div ng-controller="SearchesController" ng-init="getSearches()">
+
+		<div class="row">
+
+			<div class="col-lg-12" ng-show="action == 'list'">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Searches</div>
+					<div class="panel-body">
+						<div class="row my-toolbar">
+							<div class="col-sm-4 text-left search">
+								<input type="search" class="form-control" ng-model="searchValue" placeholder="Szukaj">
+							</div>
+							<div class="col-sm-8 text-right buttons">
+								<a href="/visitors" class="btn btn-danger">Zamknij</a>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table-bordered table-striped">
+								<tr class="table-header">
+									<th>Id</th>
+									<th>IP</th>
+									<th>Search</th>
+									<th>Found</th>
+									<th>Inserted</th>
+									<th class="text-center">Action</th>
+								</tr>
+								<tr ng-if="processing">
+									<td colspan="6" class="loading"><img src="public/img/loader.gif"></td>
+								</tr>
+								<tr ng-repeat="search in searchesList | filter:searchValue">
+									<td>{{ search.id }}</td>
+									<td>{{ search.user_ip }}</td>
+									<td>{{ search.search_text | limitTo:64 }}<span ng-if="page.description.length > 64">...</span></td>
+									<td>{{ search.results }}</td>
+									<td>{{ search.search_date }}</td>
+									<td class="action">
+										<a href="#" class="btn btn-danger btn-xs" ng-click="deleteSearch(search.id, false)">Usuń</a>
+									</td>
+								</tr>
+								<tr ng-if="!searchesList.length && !processing">
+									<td colspan="6">
+										<div class="content-center">
+											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
+											<div class="no-results">(Brak wyników)</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12">
+				<div class="my-message">
+					<div ng-if="state == 'error'" class="alert alert-danger" role="alert">{{ message }}</div>
+					<div ng-if="state == 'info'" class="alert alert-success" role="alert">{{ message }}</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'dialog'">
+				<div class="screen-centered">
+					<div class="panel panel-primary my-dialog">
+						<div class="panel-heading">Usuwanie rekordu</div>
+						<div class="panel-body">
+							<p><div class="icon"><i class="fa fa-3x fa-trash-o" aria-hidden="true"></i></div></p>
+							<p>Uwaga! Czy na pewno chcesz usunąć wskazaną pozycję?</p>
+						</div>
+						<div class="panel-footer">
+							<a href="#" class="btn btn-danger" ng-disabled="processing" ng-click="deleteSearch(id, true)">Skasuj</a>
+							<a href="#" class="btn btn-warning" ng-disabled="processing" ng-click="cancelSearch()">Anuluj</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

@@ -1,0 +1,283 @@
+<div ng-if="user.isLoggedIn">
+
+	<div class="content-title text-center">
+		<ul class="nav nav-pills nav-table">
+			<li role="presentation" class="active"><a>Strony</a></li>
+		</ul>
+	</div>
+
+	<div ng-controller="PagesController" ng-init="getPages()">
+
+		<div class="row">
+
+			<div class="col-lg-12" ng-show="action == 'list'">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Pages</div>
+					<div class="panel-body">
+						<div class="row my-toolbar">
+							<div class="col-sm-4 text-left search">
+								<input type="search" class="form-control" ng-model="searchValue" placeholder="Szukaj">
+							</div>
+							<div class="col-sm-8 text-right buttons">
+								<a href="#" class="btn btn-success" ng-click="newPage()">Dodaj stronę</a>
+								<a href="/admin" class="btn btn-danger">Zamknij</a>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table-bordered table-striped">
+								<tr class="table-header">
+									<th>Id</th>
+									<th width="15%">Category</th>
+									<th width="20%">Title</th>
+									<th width="20%">Description</th>
+									<th>Author</th>
+									<th>Modified</th>
+									<th class="text-center">Action</th>
+								</tr>
+								<tr ng-if="processing">
+									<td colspan="7" class="loading"><img src="public/img/loader.gif"></td>
+								</tr>
+								<tr ng-repeat="page in pagesList | filter:searchValue" class="{{ page.visible == 1 ? 'blue' : 'red' }}">
+									<td>{{ page.id }}</td>
+									<td>{{ page.category_id > 0 ? page.category_name : '(Nie powiązana)' }} <button type="button" class="btn btn-success btn-xs" ng-if="page.main_page == '1'"><span class="glyphicon glyphicon-home"></span></button> <button type="button" class="btn btn-warning btn-xs" ng-if="page.contact_page == '1'"><span class="glyphicon glyphicon-envelope"></span></button></td>
+									<td>{{ page.title }}</td>
+									<td>{{ page.description | htmlToPlaintext | limitTo:48 }}<span ng-if="page.description.length > 48">...</span></td>
+									<td>{{ page.author_name }}</td>
+									<td>{{ page.modified }}</td>
+									<td class="action">
+										<a href="#" class="btn btn-info btn-xs" ng-click="editPage(page.id)">Edytuj</a>
+										<a href="#" class="btn btn-warning btn-xs" ng-click="archivePage(page.id)">Archiwum</a>
+										<a href="#" class="btn btn-danger btn-xs" ng-click="deletePage(page.id, false)">Usuń</a>
+									</td>
+								</tr>
+								<tr ng-if="!pagesList.length && !processing">
+									<td colspan="7">
+										<div class="content-center">
+											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
+											<div class="no-results">(Brak wyników)</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'add'">
+				<form class="form" role="form" method="post">
+					<div class="panel panel-primary">
+						<div class="panel-heading">Nowa pozycja</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label for="title">Title:</label>
+								<input type="text" class="form-control" id="title" ng-model="pageNew.title" ng-disabled="processing" required>
+							</div>
+							<div class="form-group">
+								<label for="description">Description:</label>
+								<textarea class="form-control" id="description" rows="2" ng-model="pageNew.description" ng-disabled="processing" required></textarea>
+							</div>
+							<div class="form-group">
+								<label for="contents">Contents:</label>
+								<textarea class="form-control" id="contents" rows="12" ng-model="pageNew.contents" ng-disabled="processing" required my-text></textarea>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-6">
+									<label for="category_id">Category:</label><br>
+									<select class="form-control" id="category_id" ng-model="pageNew.category_id" ng-disabled="processing" system-page-disable>
+										<option ng-repeat="option in categories" value="{{ option.id }}">{{ option.caption }}</option>
+									</select>
+								</div>
+								<div class="col-md-2">
+									<label for="main_page">Main Page:</label><br>
+									<input type="checkbox" class="form-control" id="main_page" ng-model="pageNew.main_page" ng-disabled="processing" bootstrap-switch category-disable-main>
+								</div>
+								<div class="col-md-2">
+									<label for="contact_page">Contact:</label><br>
+									<input type="checkbox" class="form-control" id="contact_page" ng-model="pageNew.contact_page" ng-disabled="processing" bootstrap-switch category-disable-contact>
+								</div>
+								<div class="col-md-2">
+									<label for="visible">Visible:</label><br>
+									<input type="checkbox" class="form-control" id="visible" ng-model="pageNew.visible" ng-disabled="processing" bootstrap-switch>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="addPage()">Zapisz</button>
+							<input class="btn btn-success" type="button" ng-disabled="processing" ng-click="showGallery()" value="Galeria">
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelPage()" value="Anuluj">
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'edit'">
+				<form class="form" role="form" method="post">
+					<div class="panel panel-primary">
+						<div class="panel-heading">Edycja pozycji #{{ pageEdit.id }}</div>
+						<div class="panel-body">
+							<input type="hidden" ng-model="pageEdit.id">
+							<div class="form-group">
+								<label for="title">Title:</label>
+								<input type="text" class="form-control" id="title" ng-model="pageEdit.title" ng-disabled="processing" required>
+							</div>
+							<div class="form-group">
+								<label for="description">Description:</label>
+								<textarea class="form-control" id="description" rows="2" ng-model="pageEdit.description" ng-disabled="processing" required></textarea>
+							</div>
+							<div class="form-group">
+								<label for="contents">Contents:</label>
+								<textarea class="form-control" id="contents" rows="12" ng-model="pageEdit.contents" ng-disabled="processing" required my-text></textarea>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-6">
+									<label for="category_id">Category:</label><br>
+									<select class="form-control" id="category_id" ng-model="pageEdit.category_id" ng-disabled="processing" system-page-disable>
+										<option ng-repeat="option in categories" value="{{ option.id }}">{{ option.caption }}</option>
+									</select>
+								</div>
+								<div class="col-md-2">
+									<label for="main_page">Main Page:</label><br>
+									<input type="checkbox" class="form-control" id="main_page" ng-model="pageEdit.main_page" ng-disabled="processing" bootstrap-switch category-disable-main>
+								</div>
+								<div class="col-md-2">
+									<label for="contact_page">Contact:</label><br>
+									<input type="checkbox" class="form-control" id="contact_page" ng-model="pageEdit.contact_page" ng-disabled="processing" bootstrap-switch category-disable-contact>
+								</div>
+								<div class="col-md-2">
+									<label for="visible">Visible:</label><br>
+									<input type="checkbox" class="form-control" id="visible" ng-model="pageEdit.visible" ng-disabled="processing" bootstrap-switch>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="savePage(id)">Zapisz</button>
+							<input class="btn btn-success" type="button" ng-disabled="processing" ng-click="showGallery()" value="Galeria">
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelPage()" value="Anuluj">
+						</div>
+					</div>
+					<div ng-if="processing">
+						<div class="text-center"><img src="public/img/loader.gif"></div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'archive'">
+				<form class="form" role="form" method="post">
+					<div class="panel panel-primary my-panel">
+						<div class="panel-heading">Archiwum pozycji #{{ pageArchive.id }}</div>
+						<div class="panel-body">
+							<input type="hidden" ng-model="pageArchive.id">
+							<div class="row form-group">
+								<div class="col-md-8">
+									<label for="title">Title:</label>
+									<input type="text" class="form-control" id="title" ng-model="pageArchive.title" ng-disabled="true"><br>
+									<button class="btn btn-success" type="submit" ng-disabled="processing" ng-click="storePage(id)">Archiwizuj</button>
+								</div>
+								<div class="col-md-4">
+									<label for="archive_id">Archiwa:</label><br>
+									<select class="form-control" id="archive_id" ng-model="pageArchive.archive_id" ng-disabled="processing" system-page-disable>
+										<option ng-repeat="option in archives" value="{{ option.id }}">{{ option.label }}</option>
+									</select><br>
+									<button class="btn btn-info" type="submit" ng-disabled="processing" ng-click="previewPage()">Podgląd</button>
+									<button class="btn btn-danger" type="submit" ng-disabled="processing" ng-click="restorePage(id)">Przywróć</button>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelPage()" value="Anuluj">
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'preview'">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Preview</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+								<h3>{{ pageArchive.title }}</h3>
+								<div class="article-header">
+									<i class="fa fa-calendar"></i> &nbsp; {{ pageArchive.modified | limitTo:10 }} &nbsp; <i class="fa fa-user"></i> &nbsp; {{ pageArchive.author_name }}
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="article-content" smooth-show>
+									<div ng-bind-html="pageArchive.contents"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer text-center">
+						<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelPage()" value="Anuluj">
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'gallery'">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Gallery</div>
+					<div class="panel-body">
+						<div class="row text-center">
+							<span ng-repeat="image in imagesList">
+								<a href="#" ng-click="insertImage(image.id)">
+									<div class="gallery-frame">
+										<img ng-src="{{ images_data[image.id] }}" title="Id: {{ image.id }}">
+									</div>
+								</a>
+							</span>
+							<span ng-if="!imagesList.length && !processing">
+								<div class="content-center">
+									<img src="public/img/not-found.png" class="img-responsive" alt="No results">
+									<div class="no-results">(Brak wyników)</div>
+								</div>
+							</span>
+							<span ng-if="appending">
+								<div class="content-center">
+									<img src="public/img/loader.gif">
+								</div>
+							</span>
+							<span ng-if="!appending && moreRows">
+								<div class="content-center">
+									<div class="show-more"><a href="#" class="btn btn-primary btn-xs" ng-click="showMore()">Pokaż więcej</a></div>
+								</div>
+							</span>
+						</div>
+					</div>
+					<div class="panel-footer text-center">
+						<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelGallery()" value="Anuluj">
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12">
+				<div class="my-message">
+					<div ng-if="state == 'error'" class="alert alert-danger" role="alert">{{ message }}</div>
+					<div ng-if="state == 'info'" class="alert alert-success" role="alert">{{ message }}</div>
+				</div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'dialog'">
+				<div class="screen-centered">
+					<div class="panel panel-primary my-dialog">
+						<div class="panel-heading">Usuwanie rekordu</div>
+						<div class="panel-body">
+							<p><div class="icon"><i class="fa fa-3x fa-trash-o" aria-hidden="true"></i></div></p>
+							<p>Uwaga! Czy na pewno chcesz usunąć wskazaną pozycję?</p>
+						</div>
+						<div class="panel-footer">
+							<a href="#" class="btn btn-danger" ng-disabled="processing" ng-click="deletePage(id, true)">Skasuj</a>
+							<a href="#" class="btn btn-warning" ng-disabled="processing" ng-click="cancelPage()">Anuluj</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
