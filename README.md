@@ -1,6 +1,6 @@
 # AngularCMS
 
-## Simple CMS based on AngularJS frontend framework
+## Simple CMS based on AngularJS frontend framework. On-line: http://angular-cms.pl
 
 ### Application features:
 * users authentication (login, register)
