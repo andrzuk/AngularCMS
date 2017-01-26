@@ -106,6 +106,26 @@ ul.nav-table {
 	display: inline-table;
 }
 
+ul.nav-pills > li > a {
+	margin: 2px 1px;
+}
+
+ul.nav-pills > li.module > a { 
+	background-color: #999; color: #fff; 
+}
+
+ul.nav-pills > li.active > a { 
+	background-color: #84bd46; color: #fff; 
+}
+
+ul.nav-pills > li.module > a:hover, ul.nav-pills > li.module > a:focus { 
+	background-color: #aaa; color: #fff; 
+}
+
+ul.nav-pills > li.active > a:hover, ul.nav-pills > li.active > a:focus { 
+	background-color: #94cd56; color: #fff; 
+}
+
 .panel-primary {
 	border-color: cadetblue;
 }

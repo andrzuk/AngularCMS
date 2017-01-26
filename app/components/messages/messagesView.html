@@ -1,9 +1,11 @@
 <div ng-if="user.isLoggedIn">
 
-	<div class="content-title text-center">
-		<ul class="nav nav-pills nav-table">
-			<li role="presentation" class="active"><a>Wiadomości</a></li>
-		</ul>
+	<div ng-controller="NavController">
+		<div class="content-title text-center">
+			<ul class="nav nav-pills nav-table">
+				<li ng-repeat="pill in navPills" class="{{ pill.link == 'messages' ? 'active' : 'module'}}"><a href="/{{ pill.link }}">{{ pill.caption }}</a></li>
+			</ul>
+		</div>
 	</div>
 
 	<div ng-controller="MessagesController" ng-init="getMessages(1)">

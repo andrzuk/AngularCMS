@@ -2,6 +2,52 @@ angular.module('navController', ['navService'])
 
 .controller('NavController', ['$scope', function($scope) {
 	
+	$scope.navPills = [
+		{
+			'link': 'settings',
+			'caption': 'Ustawienia'
+		},
+		{
+			'link': 'scripts',
+			'caption': 'JS'
+		},
+		{
+			'link': 'styles',
+			'caption': 'CSS'
+		},
+		{
+			'link': 'users',
+			'caption': 'Konta'
+		},
+		{
+			'link': 'acl',
+			'caption': 'Dostęp'
+		},
+		{
+			'link': 'categories',
+			'caption': 'Kategorie'
+		},
+		{
+			'link': 'pages',
+			'caption': 'Strony'
+		},
+		{
+			'link': 'images',
+			'caption': 'Galeria'
+		},
+		{
+			'link': 'messages',
+			'caption': 'Wiadomości'
+		},
+		{
+			'link': 'visitors',
+			'caption': 'Wizyty'
+		},
+		{
+			'link': 'searches',
+			'caption': 'Szukania'
+		}
+	];
 }])
 
 .controller('MenuController', ['$rootScope', '$scope', '$location', 'Menu', function($rootScope, $scope, $location, Menu) {
