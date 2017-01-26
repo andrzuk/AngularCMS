@@ -1,6 +1,5 @@
 <?php
 
-include dirname(__FILE__) . '/../../db/config.php';
 include dirname(__FILE__) . '/../../db/connection.php';
 include dirname(__FILE__) . '/../../db/access.php';
 

@@ -1,6 +1,6 @@
 # AngularCMS
 
-## Simple CMS based on AngularJS frontend framework. On-line: http://angular-cms.pl
+## Simple CMS based on AngularJS frontend framework
 
 ### Application features:
 * users authentication (login, register)
@@ -9,17 +9,17 @@
 * activity reports (messages, searches, visits)
 
 ### General:
-* Language: JavaScript, jQuery
 * Framework: AngularJS
-* API services: PHP
+* Language: JavaScript, jQuery
+* API services: PHP / JSON
 * Database: MySQL
-* User Interface: Bootstrap 3
+* User Interface: Bootstrap
 * On-line: http://angular-cms.pl
 
 ### Installation:
 * create new empty database on hosting account
 * unpack ZIP and upload to hosting server to public_html folder
-* write database connection parameters in app/db/connection.php
+* write database connection parameters to config/config.php file
 * open web page in the browser - URL: http://{your-domain}/
 * fill settings form and submit
 * that's all!

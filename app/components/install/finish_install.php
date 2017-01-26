@@ -1,6 +1,6 @@
 <?php
 
-include dirname(__FILE__) . '/../../db/config.php';
+include dirname(__FILE__) . '/../../../config/config.php';
 
 $delete_result = false;
 

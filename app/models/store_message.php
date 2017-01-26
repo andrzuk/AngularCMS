@@ -2,7 +2,6 @@
 
 include dirname(__FILE__) . '/../db/connection.php';
 include dirname(__FILE__) . '/../db/setting.php';
-include dirname(__FILE__) . '/../db/config.php';
 
 $form_data = $_POST;
 

@@ -2,10 +2,7 @@
 
 header("Access-Control-Allow-Origin: *");
 
-define ('DB_HOST', '');
-define ('DB_NAME', '');
-define ('DB_USER', '');
-define ('DB_PASS', '');
+include dirname(__FILE__) . '/../../config/config.php';
 
 function connect()
 {
