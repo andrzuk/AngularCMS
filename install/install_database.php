@@ -627,6 +627,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 }
 else
 {
+	$settings = NULL;
 	$message = 'Nie wprowadzono wymaganych danych.';
 	$success = false;
 }
