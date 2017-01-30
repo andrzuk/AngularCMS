@@ -303,3 +303,78 @@ var browsePicturesWithButtons = function(itemsCount, itemWidth, itemHeight, prev
 		}
 	});
 };
+
+/*
+ *  Slider v1.0
+ *  Copyright (C) 2017 Andrzej Żukowski
+ *  http://angular-cms.pl
+ */
+
+var slowSlider = {
+	
+	galleryName: null,
+	imageClass: null,
+	slideTime: 0,
+	fadeTime: 0,
+	loopIndex: 0,
+	sliderItems: 0,
+	itemIndex: 1,
+	runMode: false,
+	
+	init: function(galleryName, imageClass, slideTime, fadeTime) {
+		
+		this.galleryName = galleryName;
+		this.imageClass = imageClass;
+		this.slideTime = slideTime;
+		this.fadeTime = fadeTime;
+		
+		this.sliderItems = $('div#' + this.galleryName).children().size();
+	},
+	
+	showSlide: function() {
+		
+		slowSlider.runMode = true;
+		$('img.' + slowSlider.imageClass + '#image-' + slowSlider.itemIndex).fadeOut(slowSlider.fadeTime, function() {
+			$('img.' + slowSlider.imageClass).css({ display: 'none' });
+			slowSlider.itemIndex = slowSlider.itemIndex == slowSlider.sliderItems ? 1 : slowSlider.itemIndex + 1;
+			$('img.' + slowSlider.imageClass + '#image-' + slowSlider.itemIndex).fadeIn(slowSlider.fadeTime, function() {
+				if (slowSlider.loopIndex < slowSlider.sliderItems) {
+					setTimeout(function() {
+						slowSlider.showSlide();
+					}, slowSlider.slideTime);
+					slowSlider.loopIndex++;
+				}
+				else {
+					slowSlider.loopIndex = 0;
+					slowSlider.runMode = false;
+				}
+			});
+		});
+	},
+	
+	show: function() {
+		
+		var loadedItems = 0;
+		$('img.' + slowSlider.imageClass).on('load', function() {
+			loadedItems++;
+			if (loadedItems == slowSlider.sliderItems) {
+				slowSlider.showSlide();
+			}
+		});
+		$('img.' + slowSlider.imageClass).on('click', function() {
+			if (!slowSlider.runMode) {
+				slowSlider.showSlide();
+			}
+		});
+		$('img.' + slowSlider.imageClass).hover(function() {
+			if (slowSlider.runMode) {
+				$(this).css({ cursor: 'default' });
+				$(this).attr('title', 'Proszę czekać...');
+			}
+			else {
+				$(this).css({ cursor: 'pointer' });
+				$(this).attr('title', 'Kliknij, aby uruchomić ponownie.');
+			}
+		});
+	}
+};
