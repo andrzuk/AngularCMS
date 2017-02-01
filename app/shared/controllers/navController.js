@@ -4,49 +4,45 @@ angular.module('navController', ['navService'])
 	
 	$scope.navPills = [
 		{
+			'icon': 'cog',
 			'link': 'settings',
 			'caption': 'Ustawienia'
 		},
 		{
-			'link': 'scripts',
-			'caption': 'JS'
-		},
-		{
-			'link': 'styles',
-			'caption': 'CSS'
-		},
-		{
+			'icon': 'user',
 			'link': 'users',
 			'caption': 'Konta'
 		},
 		{
+			'icon': 'check-square-o',
 			'link': 'acl',
 			'caption': 'Dostęp'
 		},
 		{
+			'icon': 'folder-open-o',
 			'link': 'categories',
 			'caption': 'Kategorie'
 		},
 		{
+			'icon': 'clone',
 			'link': 'pages',
 			'caption': 'Strony'
 		},
 		{
+			'icon': 'film',
 			'link': 'images',
 			'caption': 'Galeria'
 		},
 		{
+			'icon': 'envelope-o',
 			'link': 'messages',
 			'caption': 'Wiadomości'
 		},
 		{
+			'icon': 'globe',
 			'link': 'visitors',
 			'caption': 'Wizyty'
 		},
-		{
-			'link': 'searches',
-			'caption': 'Szukania'
-		}
 	];
 }])
 

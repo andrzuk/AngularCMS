@@ -3,7 +3,7 @@
 	<div ng-controller="NavController">
 		<div class="content-title text-center">
 			<ul class="nav nav-pills nav-table">
-				<li ng-repeat="pill in navPills" class="{{ pill.link == 'acl' ? 'active' : 'module' }}"><a href="/{{ pill.link }}">{{ pill.caption }}</a></li>
+				<li ng-repeat="pill in navPills" class="{{ pill.link == 'acl' ? 'active' : 'module' }}"><a href="/{{ pill.link }}"><i class="fa fa-{{ pill.icon }}"></i> {{ pill.caption }}</a></li>
 			</ul>
 		</div>
 	</div>
