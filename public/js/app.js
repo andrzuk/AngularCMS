@@ -41,21 +41,40 @@ var dynamicPictureLoad = function() {
 	});
 };
 
-var blinkPictures = function(count, period) {
+var blinkPictures = function(count, period, effects) {
 	var idx = 0;
 	var direction = false;
 	var picCount = 0;
+	var directionCount = 0;
+	var runMode = false;
 	$('img.bordered').hide();
 	$('img.bordered').on('load', function() {
 		$(this).show();
 		picCount++;
 		if (picCount == count) {
 			startPictures();
+			runMode = true;
 		}
 	});
 	var startPictures = function() {
 		picturesInterval = setInterval(function() {
-			if (idx % count == 0) direction = !direction;
+			if (idx % count == 0) {
+				direction = !direction;
+				directionCount++;
+			}
+			if (directionCount == (effects ? 2 : 5)) {
+				clearInterval(picturesInterval);
+				if (effects) {
+					directionCount = 0;
+					idx = count - 1;
+					movePictures();
+				}
+				else {
+					$('img.bordered').show();
+					runMode = false;
+				}
+				return;
+			}
 			if (direction) {
 				$('img#img-' + (idx % count + 1)).hide();
 			}
@@ -65,6 +84,54 @@ var blinkPictures = function(count, period) {
 			idx++;
 		}, period);
 	};
+	var movePictures = function() {
+		picturesInterval = setInterval(function() {
+			$('img#img-' + (idx % count + 1)).hide();
+			idx++;
+			if (idx % count == 0) {
+				directionCount++;
+			}
+			if (directionCount == 2) {
+				clearInterval(picturesInterval);
+				directionCount = 0;
+				tailPictures();
+				return;
+			}
+			$('img#img-' + (idx % count + 1)).show();
+		}, period);
+	};
+	var tailPictures = function() {
+		picturesInterval = setInterval(function() {
+			$('img#img-' + (idx % count + 1)).show();
+			idx++;
+			if (idx % count == 0) {
+				directionCount++;
+			}
+			if (directionCount == 1) {
+				clearInterval(picturesInterval);
+				directionCount = 0;
+				runMode = false;
+				return;
+			}
+		}, period);
+	};
+	$('img.bordered').on('click', function() {
+		if (!runMode) {
+			idx = 0;
+			directionCount = 0;
+			direction = false;
+			startPictures();
+			runMode = true;
+		}
+	});
+	$('img.bordered').hover(function() {
+		if (runMode) {
+			$(this).css({ cursor: 'default' });
+		}
+		else {
+			$(this).css({ cursor: 'pointer' });
+		}
+	});
 };
 
 var previewPictures = function(itemWidth, itemHeight, previewWidth, previewHeight, distance) {
