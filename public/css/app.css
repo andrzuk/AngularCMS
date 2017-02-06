@@ -181,8 +181,11 @@ td.loading {
 	height: 100px;
 }
 
-tr.table-header {
+table.table-bordered > tbody > tr.table-header {
 	line-height: 2.5em;
+}
+
+table.table-bordered > tbody > tr.table-header > th {
 	background-color: #D9EDF7;
 }
 
