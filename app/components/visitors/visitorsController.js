@@ -1,13 +1,28 @@
-angular.module('visitorsController', ['visitorsService', 'config'])
+angular.module('visitorsController', ['visitorsService', 'config', 'paginService'])
 
-.controller('VisitorsController', ['$scope', 'Visitors', function($scope, Visitors) {
+.controller('VisitorsController', ['$scope', 'Visitors', 'Paginator', function($scope, Visitors, Paginator) {
 	
+	$scope.moduleName = 'visitors';
+
 	$scope.getVisitors = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
-		Visitors.all().then(function(response) {
+		Paginator.reset();
+		$scope.currentPage = 1;
+		var showRows = Paginator.getLines();
+		Visitors.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.visitorsList = response.data;
 			$scope.processing = false;
+		});
+	};
+
+	$scope.changePage = function(page) {
+		var newPage = Paginator.getPage(page);
+		if (newPage == $scope.currentPage) return;
+		$scope.currentPage = newPage;
+		var showRows = Paginator.getLines();
+		Visitors.all(showRows, $scope.currentPage).then(function(response) {
+			$scope.visitorsList = response.data;
 		});
 	};
 

@@ -6,8 +6,8 @@ angular.module('settingsService', [])
 
 	var componentName = 'settings';
 
-	settingsFactory.all = function() {
-		return $http.get(config.apiUrl + componentName + '/get_settings_list.php');
+	settingsFactory.all = function(rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_settings_list.php?rows=' + rows + '&page=' + page);
 	};
 
 	settingsFactory.one = function(id) {

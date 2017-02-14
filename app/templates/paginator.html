@@ -1,0 +1,11 @@
+<div ng-controller="PaginatorController" ng-init="initPaginator(moduleName)">
+	<nav class="text-center" ng-if="!processing">
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href="#" ng-click="changePage('first')"><i class="fa fa-step-backward" aria-hidden="true"></i></a></li>
+			<li class="page-item"><a class="page-link" href="#" ng-click="changePage('prev')"><i class="fa fa-caret-left" aria-hidden="true"></i></a></li>
+			<li ng-repeat="pointer in pointers" class="page-item {{ pointer.label == currentPage ? 'active' : null }}"><a class="page-link" href="#" ng-click="changePage(pointer.label)">{{ pointer.label }}</a></li>
+			<li class="page-item"><a class="page-link" href="#" ng-click="changePage('next')"><i class="fa fa-caret-right" aria-hidden="true"></i></a></li>
+			<li class="page-item"><a class="page-link" href="#" ng-click="changePage('last')"><i class="fa fa-step-forward" aria-hidden="true"></i></a></li>
+		</ul>
+	</nav>
+</div>

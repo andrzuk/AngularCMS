@@ -10,6 +10,10 @@ $dbc = connect();
 
 if (check_access($dbc)) // if user rights are sufficient, get database content
 {
+	$rows = intval($_GET['rows']);
+	$page = intval($_GET['page']) - 1;
+	$start = $page * $rows;
+
 	$visitors_period = get_setting_value($dbc, 'visitors_period');
 	$visitors_excluded = get_setting_value($dbc, 'visitors_excluded');
 	$visitors_referer = get_setting_value($dbc, 'visitors_referer');
@@ -19,7 +23,7 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 
 	$query = 'SELECT * FROM visitors' . 
 	'         WHERE visited > :visited AND http_referer LIKE :referer AND visitor_ip NOT IN ('. $visitors_excluded .')' .
-	'         ORDER BY id DESC';
+	'         ORDER BY id DESC LIMIT '. $start .', '. $rows;
 
 	$statement = $dbc->prepare($query);
 

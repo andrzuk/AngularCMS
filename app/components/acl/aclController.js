@@ -1,15 +1,30 @@
-angular.module('aclController', ['aclService', 'config'])
+angular.module('aclController', ['aclService', 'config', 'paginService'])
 
-.controller('AclController', ['$location', '$scope', 'Acl', function($location, $scope, Acl) {
+.controller('AclController', ['$location', '$scope', 'Acl', 'Paginator', function($location, $scope, Acl, Paginator) {
 	
 	$scope.options = [{id: 0, name: 'Niedostępny'}, {id: 1, name: 'Dostępny'}];
 
+	$scope.moduleName = 'access_levels';
+	
 	$scope.getAcl = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
-		Acl.all().then(function(response) {
+		Paginator.reset();
+		$scope.currentPage = 1;
+		var showRows = Paginator.getLines();
+		Acl.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.aclList = response.data;
 			$scope.processing = false;
+		});
+	};
+
+	$scope.changePage = function(page) {
+		var newPage = Paginator.getPage(page);
+		if (newPage == $scope.currentPage) return;
+		$scope.currentPage = newPage;
+		var showRows = Paginator.getLines();
+		Acl.all(showRows, $scope.currentPage).then(function(response) {
+			$scope.aclList = response.data;
 		});
 	};
 

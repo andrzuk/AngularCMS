@@ -1,13 +1,28 @@
-angular.module('settingsController', ['settingsService', 'config'])
+angular.module('settingsController', ['settingsService', 'config', 'paginService'])
 
-.controller('SettingsController', ['$location', '$scope', 'Settings', function($location, $scope, Settings) {
+.controller('SettingsController', ['$location', '$scope', 'Settings', 'Paginator', function($location, $scope, Settings, Paginator) {
 	
+	$scope.moduleName = 'settings';
+
 	$scope.getSettings = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
-		Settings.all().then(function(response) {
+		Paginator.reset();
+		$scope.currentPage = 1;
+		var showRows = Paginator.getLines();
+		Settings.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.settingsList = response.data;
 			$scope.processing = false;
+		});
+	};
+
+	$scope.changePage = function(page) {
+		var newPage = Paginator.getPage(page);
+		if (newPage == $scope.currentPage) return;
+		$scope.currentPage = newPage;
+		var showRows = Paginator.getLines();
+		Settings.all(showRows, $scope.currentPage).then(function(response) {
+			$scope.settingsList = response.data;
 		});
 	};
 

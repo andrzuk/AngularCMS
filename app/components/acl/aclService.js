@@ -6,8 +6,8 @@ angular.module('aclService', [])
 
 	var componentName = 'acl';
 
-	aclFactory.all = function() {
-		return $http.get(config.apiUrl + componentName + '/get_acl_list.php');
+	aclFactory.all = function(rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_acl_list.php?rows=' + rows + '&page=' + page);
 	};
 
 	aclFactory.one = function(id) {

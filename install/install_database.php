@@ -419,18 +419,20 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(19, 'carousel_search_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie wyszukiwania', NOW()),
 			(20, 'send_new_message_report', 'true', 'wysyłanie e-mailem raportów o pojawieniu się nowej wiadomości', NOW()),
 			(21, 'gallery_list_packet', '9', 'liczba wierszy wczytywanych pakietowo dla listy galerii', NOW()),
-			(22, 'email_host', 'mail.domain.pl', 'host wysyłania maili', NOW()),
-			(23, 'email_port', '587', 'port smtp', NOW()),
-			(24, 'email_password', '', 'hasło konta mailingowego', NOW()),
-			(25, 'email_sender_name', 'Mail Manager', 'nazwa konta e-mailowego serwisu', NOW()),
-			(26, 'email_sender_address', 'sender@domain.pl', 'adres konta e-mailowego serwisu', NOW()),
-			(27, 'email_admin_name', :admin_name, 'nazwa konta e-mailowego administratora serwisu', NOW()),
-			(28, 'email_admin_address', :admin_email, 'adres e-mail administratora serwisu', NOW()),
-			(29, 'email_report_address', :admin_email, 'adres e-mail odbiorcy raportów', NOW()),
-			(30, 'email_report_subject', 'Raport serwisu', 'temat maila raportującego zdarzenie', NOW()),
-			(31, 'email_report_body', 'Raport o zdarzeniu w serwisie', 'treść maila rapotującego', NOW()),
-			(32, 'email_password_subject', 'Nowe hasło do konta', 'temat generowanego maila z nowym hasłem', NOW()),
-			(33, 'email_password_body', 'Na Twoją prośbę przesyłamy Ci nowe hasło logowania. Oto Twoje dane:', 'treść generowanego maila z nowym hasłem', NOW());
+			(22, 'list_rows_per_page', '10', 'liczba wierszy na stronę na listach systemowych', NOW()),
+			(23, 'paginator_pointer_band', '5', 'zakres wskaźników paginatora na każdą stronę', NOW()),
+			(24, 'email_host', 'mail.domain.pl', 'host wysyłania maili', NOW()),
+			(25, 'email_port', '587', 'port smtp', NOW()),
+			(26, 'email_password', '', 'hasło konta mailingowego', NOW()),
+			(27, 'email_sender_name', 'Mail Manager', 'nazwa konta e-mailowego serwisu', NOW()),
+			(28, 'email_sender_address', 'sender@domain.pl', 'adres konta e-mailowego serwisu', NOW()),
+			(29, 'email_admin_name', :admin_name, 'nazwa konta e-mailowego administratora serwisu', NOW()),
+			(30, 'email_admin_address', :admin_email, 'adres e-mail administratora serwisu', NOW()),
+			(31, 'email_report_address', :admin_email, 'adres e-mail odbiorcy raportów', NOW()),
+			(32, 'email_report_subject', 'Raport serwisu', 'temat maila raportującego zdarzenie', NOW()),
+			(33, 'email_report_body', 'Raport o zdarzeniu w serwisie', 'treść maila rapotującego', NOW()),
+			(34, 'email_password_subject', 'Nowe hasło do konta', 'temat generowanego maila z nowym hasłem', NOW()),
+			(35, 'email_password_body', 'Na Twoją prośbę przesyłamy Ci nowe hasło logowania. Oto Twoje dane:', 'treść generowanego maila z nowym hasłem', NOW());
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->bindParam(':brand', $brand, PDO::PARAM_STR);
@@ -580,7 +582,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 		ALTER TABLE `settings`
-		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
 
 		ALTER TABLE `users`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;

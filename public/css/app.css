@@ -130,6 +130,16 @@ ul.nav-pills > li.active > a:hover, ul.nav-pills > li.active > a:focus {
 	color: #fff; 
 }
 
+ul.pagination {
+	margin: 0;
+}
+
+ul.pagination > li.page-item.active > a {
+    background: #428bca;
+    color: white;
+    border: 1px solid #337ab7;
+}
+
 .panel-primary {
 	border-color: cadetblue;
 }
@@ -438,4 +448,3 @@ div.no-results {
 div.show-more {
 	padding: 10px;
 }
-

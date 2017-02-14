@@ -6,8 +6,8 @@ angular.module('visitorsService', [])
 
 	var componentName = 'visitors';
 
-	visitorsFactory.all = function() {
-		return $http.get(config.apiUrl + componentName + '/get_visitors_list.php');
+	visitorsFactory.all = function(rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_visitors_list.php?rows=' + rows + '&page=' + page);
 	};
 
 	visitorsFactory.one = function(id) {

@@ -10,6 +10,8 @@ angular.module('MainApp', [
     'metaService',
     'authController',
     'authService',
+    'paginController',
+    'paginService',
     'adminController',
     'adminService',
     'contactController',
