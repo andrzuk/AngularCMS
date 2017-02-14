@@ -67,7 +67,8 @@ angular.module('paginService', [])
 						this.pagination.selected++;
 				break;
 				case 'last':
-					this.pagination.selected = this.pagination.pages;
+					if (this.pagination.pages)
+						this.pagination.selected = this.pagination.pages;
 				break;
 			}
 		}

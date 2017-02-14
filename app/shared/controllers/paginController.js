@@ -28,6 +28,9 @@ angular.module('paginController', ['paginService'])
 				$scope.pointers.push({ label: j, active: true });
 			}
 		}
+		if (!$scope.pointers.length) {
+			$scope.pointers.push({ label: 1, active: true });
+		}
 	};
 
 }]);
