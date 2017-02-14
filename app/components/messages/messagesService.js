@@ -6,8 +6,8 @@ angular.module('messagesService', [])
 
 	var componentName = 'messages';
 
-	messagesFactory.all = function(mode) {
-		return $http.get(config.apiUrl + componentName + '/get_messages_list.php?mode=' + mode);
+	messagesFactory.all = function(mode, rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_messages_list.php?mode=' + mode + '&rows=' + rows + '&page=' + page);
 	};
 
 	messagesFactory.one = function(id) {

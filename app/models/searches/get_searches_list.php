@@ -10,11 +10,15 @@ $dbc = connect();
 
 if (check_access($dbc)) // if user rights are sufficient, get database content
 {
+	$rows = intval($_GET['rows']);
+	$page = intval($_GET['page']) - 1;
+	$start = $page * $rows;
+
 	$visitors_excluded = get_setting_value($dbc, 'visitors_excluded');
 
 	$query = 'SELECT * FROM searches' . 
 	'         WHERE user_ip NOT IN ('. $visitors_excluded .')' .
-	'         ORDER BY id DESC';
+	'         ORDER BY id DESC LIMIT '. $start .', '. $rows;
 
 	$statement = $dbc->prepare($query);
 

@@ -6,8 +6,8 @@ angular.module('searchesService', [])
 
 	var componentName = 'searches';
 
-	searchesFactory.all = function() {
-		return $http.get(config.apiUrl + componentName + '/get_searches_list.php');
+	searchesFactory.all = function(rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_searches_list.php?rows=' + rows + '&page=' + page);
 	};
 
 	searchesFactory.delete = function(id) {

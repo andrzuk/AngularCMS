@@ -1,13 +1,28 @@
-angular.module('searchesController', ['searchesService', 'config'])
+angular.module('searchesController', ['searchesService', 'config', 'paginService'])
 
-.controller('SearchesController', ['$scope', 'Searches', function($scope, Searches) {
+.controller('SearchesController', ['$scope', 'Searches', 'Paginator', function($scope, Searches, Paginator) {
+	
+	$scope.moduleName = 'searches';
 	
 	$scope.getSearches = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
-		Searches.all().then(function(response) {
+		Paginator.reset();
+		$scope.currentPage = 1;
+		var showRows = Paginator.getLines();
+		Searches.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.searchesList = response.data;
 			$scope.processing = false;
+		});
+	};
+
+	$scope.changePage = function(page) {
+		var newPage = Paginator.getPage(page);
+		if (newPage == $scope.currentPage) return;
+		$scope.currentPage = newPage;
+		var showRows = Paginator.getLines();
+		Searches.all(showRows, $scope.currentPage).then(function(response) {
+			$scope.searchesList = response.data;
 		});
 	};
 

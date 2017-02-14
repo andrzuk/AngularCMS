@@ -34,6 +34,21 @@ try
 
 		$result['counter'] = intval($result['counter']);
 	}
+	else if ($table_name == 'searches')
+	{
+		$visitors_excluded = get_setting_value($dbc, 'visitors_excluded');
+
+		$query = 'SELECT COUNT(*) AS counter FROM ' . $table_name .
+		'         WHERE user_ip NOT IN ('. $visitors_excluded .')';
+
+		$statement = $dbc->prepare($query);
+
+		$statement->execute();
+
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+		$result['counter'] = intval($result['counter']);
+	}
 	else
 	{
 		$query = 'SELECT COUNT(*) AS counter FROM ' . $table_name;
