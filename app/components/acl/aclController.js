@@ -5,13 +5,14 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 	$scope.options = [{id: 0, name: 'Niedostępny'}, {id: 1, name: 'Dostępny'}];
 
 	$scope.moduleName = 'access_levels';
+	$scope.componentName = 'acl';
 	
 	$scope.getAcl = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
 		Paginator.reset();
 		$scope.currentPage = 1;
-		var showRows = Paginator.getLines();
+		var showRows = Paginator.getLines($scope.moduleName);
 		Acl.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.aclList = response.data;
 			$scope.processing = false;
@@ -22,7 +23,7 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 		var newPage = Paginator.getPage(page);
 		if (newPage == $scope.currentPage) return;
 		$scope.currentPage = newPage;
-		var showRows = Paginator.getLines();
+		var showRows = Paginator.getLines($scope.moduleName);
 		Acl.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.aclList = response.data;
 		});

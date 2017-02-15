@@ -1,14 +1,8 @@
 <div ng-if="user.isLoggedIn">
 
-	<div ng-controller="NavController">
-		<div class="content-title text-center">
-			<ul class="nav nav-pills nav-table">
-				<li ng-repeat="pill in navPills" class="{{ pill.link == 'pages' ? 'active' : 'module' }}"><a href="/{{ pill.link }}"><i class="fa fa-{{ pill.icon }}"></i> {{ pill.caption }}</a></li>
-			</ul>
-		</div>
-	</div>
-
 	<div ng-controller="PagesController" ng-init="getPages()">
+
+		<div ng-include="layout.navigator"></div>
 
 		<div class="row">
 
@@ -29,11 +23,11 @@
 							<table class="table-bordered table-striped">
 								<tr class="table-header">
 									<th>Id</th>
-									<th width="15%">Category</th>
+									<th width="13%">Category</th>
 									<th width="20%">Title</th>
-									<th width="20%">Description</th>
-									<th>Author</th>
-									<th>Modified</th>
+									<th width="30%">Description</th>
+									<th class="text-center" width="5%">Author</th>
+									<th class="text-center" width="10%">Modified</th>
 									<th class="text-center">Action</th>
 								</tr>
 								<tr ng-if="processing">
@@ -43,9 +37,9 @@
 									<td>{{ page.id }}</td>
 									<td>{{ page.category_id > 0 ? page.category_name : '(Nie powiązana)' }} <button type="button" class="btn btn-success btn-xs" ng-if="page.main_page == '1'"><span class="glyphicon glyphicon-home"></span></button> <button type="button" class="btn btn-warning btn-xs" ng-if="page.contact_page == '1'"><span class="glyphicon glyphicon-envelope"></span></button></td>
 									<td>{{ page.title }}</td>
-									<td>{{ page.description | htmlToPlaintext | limitTo:48 }}<span ng-if="page.description.length > 48">...</span></td>
-									<td>{{ page.author_name }}</td>
-									<td>{{ page.modified }}</td>
+									<td>{{ page.description | htmlToPlaintext | limitTo:150 }}<span ng-if="page.description.length > 48">...</span></td>
+									<td class="text-center">{{ page.author_name }}</td>
+									<td class="text-center">{{ page.modified }}</td>
 									<td class="action">
 										<a href="#" class="btn btn-info btn-xs" ng-click="editPage(page.id)">Edytuj</a>
 										<a href="#" class="btn btn-warning btn-xs" ng-click="archivePage(page.id)">Archiwum</a>
@@ -64,6 +58,7 @@
 						</div>
 					</div>
 				</div>
+				<div ng-include="layout.paginator"></div>
 			</div>
 
 			<div class="col-lg-12" ng-show="action == 'add'">
@@ -256,10 +251,7 @@
 			</div>
 
 			<div class="col-lg-12">
-				<div class="my-message">
-					<div ng-if="state == 'error'" class="alert alert-danger" role="alert">{{ message }}</div>
-					<div ng-if="state == 'info'" class="alert alert-success" role="alert">{{ message }}</div>
-				</div>
+				<div ng-include="layout.messager"></div>
 			</div>
 
 			<div class="col-lg-12" ng-show="action == 'dialog'">

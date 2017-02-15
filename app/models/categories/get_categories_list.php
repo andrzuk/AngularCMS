@@ -9,7 +9,11 @@ $dbc = connect();
 
 if (check_access($dbc)) // if user rights are sufficient, get database content
 {
-	$query = 'SELECT * FROM categories ORDER BY id';
+	$rows = intval($_GET['rows']);
+	$page = intval($_GET['page']) - 1;
+	$start = $page * $rows;
+
+	$query = 'SELECT * FROM categories ORDER BY id LIMIT '. $start .', '. $rows;
 
 	$statement = $dbc->prepare($query);
 

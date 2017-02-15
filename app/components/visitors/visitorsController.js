@@ -3,13 +3,14 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 .controller('VisitorsController', ['$scope', 'Visitors', 'Paginator', function($scope, Visitors, Paginator) {
 	
 	$scope.moduleName = 'visitors';
+	$scope.componentName = 'visitors';
 
 	$scope.getVisitors = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
 		Paginator.reset();
 		$scope.currentPage = 1;
-		var showRows = Paginator.getLines();
+		var showRows = Paginator.getLines($scope.moduleName);
 		Visitors.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.visitorsList = response.data;
 			$scope.processing = false;
@@ -20,7 +21,7 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		var newPage = Paginator.getPage(page);
 		if (newPage == $scope.currentPage) return;
 		$scope.currentPage = newPage;
-		var showRows = Paginator.getLines();
+		var showRows = Paginator.getLines($scope.moduleName);
 		Visitors.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.visitorsList = response.data;
 		});

@@ -2,6 +2,8 @@ angular.module('stylesController', ['stylesService', 'config'])
 
 .controller('StylesController', ['$location', '$scope', 'Styles', function($location, $scope, Styles) {
 	
+	$scope.componentName = 'styles';
+	
 	$scope.editStyle = function() {
 		$scope.processing = true;
 		Styles.one().then(function(response) {

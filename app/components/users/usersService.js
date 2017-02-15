@@ -73,8 +73,8 @@ angular.module('usersService', [])
 		return $http.get(config.apiUrl + componentName + '/delete_user.php?id=' + id + '&author=' + author);
 	};
 
-	usersFactory.rights = function(id, author) {
-		return $http.get(config.apiUrl + componentName + '/get_user_rights.php?id=' + id + '&author=' + author);
+	usersFactory.rights = function(id, author, rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_user_rights.php?id=' + id + '&author=' + author + '&rows=' + rows + '&page=' + page);
 	};
 
 	usersFactory.access = function(itemData) {

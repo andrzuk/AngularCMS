@@ -8,13 +8,14 @@ angular.module('paginService', [])
 		selected: 0,
 		pages: 0,
 		band: 5,
-		rows: 10
+		rows: 10,
+		modules: []
 	};
 
 	paginFactory.init = function() {
 		this.reset();
 		$http.get(config.apiUrl + 'get_settings_value.php?key=list_rows_per_page').then(function(response) {
-			paginFactory.pagination.rows = response.data.value;
+			paginFactory.pagination.modules = angular.fromJson(response.data.value);
 		});
 		$http.get(config.apiUrl + 'get_settings_value.php?key=paginator_pointer_band').then(function(response) {
 			paginFactory.pagination.band = response.data.value;
@@ -29,7 +30,12 @@ angular.module('paginService', [])
 		return $http.get(config.apiUrl + 'get_table_size.php?name=' + table);
 	};
 
-	paginFactory.getLines = function() {
+	paginFactory.getLines = function(module) {
+		angular.forEach(this.pagination.modules, function(value, key) {
+			if (value.module == module) {
+				paginFactory.pagination.rows = value.lines;
+			}
+		});
 		return this.pagination.rows;
 	};
 

@@ -6,8 +6,8 @@ angular.module('pagesService', [])
 
 	var componentName = 'pages';
 
-	pagesFactory.all = function() {
-		return $http.get(config.apiUrl + componentName + '/get_pages_list.php');
+	pagesFactory.all = function(rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_pages_list.php?rows=' + rows + '&page=' + page);
 	};
 
 	pagesFactory.one = function(id) {

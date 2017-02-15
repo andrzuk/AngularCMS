@@ -4,6 +4,8 @@ angular.module('imagesController', ['imagesService', 'config'])
 	
 	$scope.images_data = [];
 	$scope.lastImageId = 0;
+	
+	$scope.componentName = 'images';
 
 	$scope.getImages = function() {
 		$scope.action = 'list';

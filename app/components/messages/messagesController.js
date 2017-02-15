@@ -3,6 +3,7 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 .controller('MessagesController', ['$location', '$scope', 'Messages', 'Paginator', function($location, $scope, Messages, Paginator) {
 	
 	$scope.moduleName = 'messages';
+	$scope.componentName = 'messages';
 	
 	$scope.getMessages = function(mode) {
 		$scope.mode = mode;
@@ -10,7 +11,7 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		$scope.processing = true;
 		Paginator.reset();
 		$scope.currentPage = 1;
-		var showRows = Paginator.getLines();
+		var showRows = Paginator.getLines($scope.moduleName);
 		Messages.all($scope.mode, showRows, $scope.currentPage).then(function(response) {
 			$scope.messagesList = response.data;
 			$scope.processing = false;
@@ -21,7 +22,7 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		var newPage = Paginator.getPage(page);
 		if (newPage == $scope.currentPage) return;
 		$scope.currentPage = newPage;
-		var showRows = Paginator.getLines();
+		var showRows = Paginator.getLines($scope.moduleName);
 		Messages.all($scope.mode, showRows, $scope.currentPage).then(function(response) {
 			$scope.messagesList = response.data;
 		});

@@ -1,14 +1,8 @@
 <div ng-if="user.isLoggedIn">
 
-	<div ng-controller="NavController">
-		<div class="content-title text-center">
-			<ul class="nav nav-pills nav-table">
-				<li ng-repeat="pill in navPills" class="{{ pill.link == 'styles' ? 'active' : 'module' }}"><a href="/{{ pill.link }}"><i class="fa fa-{{ pill.icon }}"></i> {{ pill.caption }}</a></li>
-			</ul>
-		</div>
-	</div>
-
 	<div ng-controller="StylesController" ng-init="editStyle()">
+
+		<div ng-include="layout.navigator"></div>
 
 		<div class="row">
 
@@ -31,10 +25,7 @@
 			</div>
 
 			<div class="col-lg-12">
-				<div class="my-message">
-					<div ng-if="state == 'error'" class="alert alert-danger" role="alert">{{ message }}</div>
-					<div ng-if="state == 'info'" class="alert alert-success" role="alert">{{ message }}</div>
-				</div>
+				<div ng-include="layout.messager"></div>
 			</div>
 
 		</div>

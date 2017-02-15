@@ -8,13 +8,13 @@ angular.module('paginController', ['paginService'])
 		$scope.pointers.push({ label: '...', active: false });
 		Paginator.getSize(table).then(function(response) {
 			Paginator.setPages(response.data.counter);
-			$scope.pointers = [];
-			$scope.setPointers(Paginator.getPages());
+			$scope.setPointers();
 		});
 	};
 
-	$scope.setPointers = function(pages) {
+	$scope.setPointers = function() {
 		var i = 0, j = 0;
+		$scope.pointers = [];
 		for (i = 1; i <= Paginator.getBand(); i++) {
 			if (i <= Paginator.getPages()) {
 				$scope.pointers.push({ label: i, active: true });

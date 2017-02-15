@@ -2,6 +2,8 @@ angular.module('scriptsController', ['scriptsService', 'config'])
 
 .controller('ScriptsController', ['$location', '$scope', 'Scripts', function($location, $scope, Scripts) {
 	
+	$scope.componentName = 'scripts';
+	
 	$scope.editScript = function() {
 		$scope.processing = true;
 		Scripts.one().then(function(response) {

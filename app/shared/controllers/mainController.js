@@ -10,7 +10,9 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 		header: 'app/templates/header.html',
 		content: 'app/templates/content.html',
 		footer: 'app/templates/footer.html',
+		navigator: 'app/templates/navigator.html',
 		paginator: 'app/templates/paginator.html',
+		messager: 'app/templates/messager.html',
 	};
 
 	$scope.$location = $location;

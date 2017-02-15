@@ -1,8 +1,15 @@
-angular.module('usersController', ['usersService', 'config'])
+angular.module('usersController', ['usersService', 'config', 'paginService'])
 
-.controller('UsersController', ['$location', '$scope', 'Users', function($location, $scope, Users) {
+.controller('UsersController', ['$location', '$scope', 'Users', 'Paginator', function($location, $scope, Users, Paginator) {
 	
 	$scope.roles = [{id: 1, name: 'Admin'}, {id: 2, name: 'Operator'}, {id: 3, name: 'User'}];
+
+	$scope.moduleName = 'access_levels';
+	$scope.componentName = 'users';
+
+	Paginator.reset();
+	var showRows = Paginator.getLines($scope.moduleName);
+	$scope.currentPage = 1;
 
 	$scope.getUsers = function() {
 		$scope.action = 'list';
@@ -10,6 +17,21 @@ angular.module('usersController', ['usersService', 'config'])
 		Users.all().then(function(response) {
 			$scope.usersList = response.data;
 			$scope.processing = false;
+		});
+	};
+
+	$scope.changePage = function(page) {
+		var newPage = Paginator.getPage(page);
+		if (newPage == $scope.currentPage) return;
+		$scope.currentPage = newPage;
+		Users.rights($scope.id, $scope.user.id, showRows, $scope.currentPage).then(function(response) {
+			$scope.rightsList = response.data;
+			angular.forEach($scope.usersList, function(value, key) {
+				if (value.id == $scope.id) {
+					$scope.userEdit = $scope.usersList[key];
+				}
+			});
+			$scope.userEdit.author = $scope.user.id;
 		});
 	};
 
@@ -137,14 +159,15 @@ angular.module('usersController', ['usersService', 'config'])
 	};
 
 	$scope.editRights = function(id) {
+		$scope.id = id;
 		$scope.action = 'rights';
 		$scope.state = null;
 		$scope.processing = true;
 		$scope.rightsList = [];
-		Users.rights(id, $scope.user.id).then(function(response) {
+		Users.rights($scope.id, $scope.user.id, showRows, $scope.currentPage).then(function(response) {
 			$scope.rightsList = response.data;
 			angular.forEach($scope.usersList, function(value, key) {
-				if (value.id == id) {
+				if (value.id == $scope.id) {
 					$scope.userEdit = $scope.usersList[key];
 				}
 			});

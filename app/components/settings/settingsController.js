@@ -3,13 +3,14 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 .controller('SettingsController', ['$location', '$scope', 'Settings', 'Paginator', function($location, $scope, Settings, Paginator) {
 	
 	$scope.moduleName = 'settings';
+	$scope.componentName = 'settings';
 
 	$scope.getSettings = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
 		Paginator.reset();
 		$scope.currentPage = 1;
-		var showRows = Paginator.getLines();
+		var showRows = Paginator.getLines($scope.moduleName);
 		Settings.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.settingsList = response.data;
 			$scope.processing = false;
@@ -20,7 +21,7 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 		var newPage = Paginator.getPage(page);
 		if (newPage == $scope.currentPage) return;
 		$scope.currentPage = newPage;
-		var showRows = Paginator.getLines();
+		var showRows = Paginator.getLines($scope.moduleName);
 		Settings.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.settingsList = response.data;
 		});

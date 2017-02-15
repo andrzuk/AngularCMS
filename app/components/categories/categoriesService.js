@@ -6,8 +6,8 @@ angular.module('categoriesService', [])
 
 	var componentName = 'categories';
 
-	categoriesFactory.all = function() {
-		return $http.get(config.apiUrl + componentName + '/get_categories_list.php');
+	categoriesFactory.all = function(rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_categories_list.php?rows=' + rows + '&page=' + page);
 	};
 
 	categoriesFactory.one = function(id) {

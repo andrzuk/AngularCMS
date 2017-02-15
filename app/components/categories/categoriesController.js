@@ -1,13 +1,29 @@
-angular.module('categoriesController', ['categoriesService', 'config'])
+angular.module('categoriesController', ['categoriesService', 'config', 'paginService'])
 
-.controller('CategoriesController', ['$location', '$scope', 'Categories', function($location, $scope, Categories) {
+.controller('CategoriesController', ['$location', '$scope', 'Categories', 'Paginator', function($location, $scope, Categories, Paginator) {
 	
+	$scope.moduleName = 'categories';
+	$scope.componentName = 'categories';
+
 	$scope.getCategories = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
-		Categories.all().then(function(response) {
+		Paginator.reset();
+		$scope.currentPage = 1;
+		var showRows = Paginator.getLines($scope.moduleName);
+		Categories.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.categoriesList = response.data;
 			$scope.processing = false;
+		});
+	};
+
+	$scope.changePage = function(page) {
+		var newPage = Paginator.getPage(page);
+		if (newPage == $scope.currentPage) return;
+		$scope.currentPage = newPage;
+		var showRows = Paginator.getLines($scope.moduleName);
+		Categories.all(showRows, $scope.currentPage).then(function(response) {
+			$scope.categoriesList = response.data;
 		});
 	};
 
