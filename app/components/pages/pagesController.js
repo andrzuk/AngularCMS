@@ -34,7 +34,7 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		$scope.action = 'add';
 		$scope.state = null;
 		$scope.pageNew = null;
-		Categories.all().then(function(response) {
+		Categories.all(1000, 1).then(function(response) {
 			$scope.categories = response.data;
 		});
 	};
@@ -64,7 +64,7 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		$scope.action = 'edit';
 		$scope.state = null;
 		$scope.processing = true;
-		Categories.all().then(function(response) {
+		Categories.all(1000, 1).then(function(response) {
 			$scope.categories = response.data;
 			Pages.one(id).then(function(response) {
 				$scope.pageEdit = response.data;

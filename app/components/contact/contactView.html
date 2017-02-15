@@ -34,7 +34,10 @@
                     <input class="btn btn-lg btn-primary btn-block" type="submit" value="Wyślij">
                 </div>
             </form>
-            <div ng-include="layout.messager"></div>
+            <div class="my-message">
+                <div ng-if="error" class="alert alert-danger" role="alert">{{ message }}</div>
+                <div ng-if="info" class="alert alert-success" role="alert">{{ message }}</div>
+            </div>
         </div>
 
     </div>

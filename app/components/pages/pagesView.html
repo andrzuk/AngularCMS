@@ -37,7 +37,7 @@
 									<td>{{ page.id }}</td>
 									<td>{{ page.category_id > 0 ? page.category_name : '(Nie powiązana)' }} <button type="button" class="btn btn-success btn-xs" ng-if="page.main_page == '1'"><span class="glyphicon glyphicon-home"></span></button> <button type="button" class="btn btn-warning btn-xs" ng-if="page.contact_page == '1'"><span class="glyphicon glyphicon-envelope"></span></button></td>
 									<td>{{ page.title }}</td>
-									<td>{{ page.description | htmlToPlaintext | limitTo:150 }}<span ng-if="page.description.length > 48">...</span></td>
+									<td>{{ page.description | htmlToPlaintext | limitTo:150 }}<span ng-if="page.description.length > 150">...</span></td>
 									<td class="text-center">{{ page.author_name }}</td>
 									<td class="text-center">{{ page.modified }}</td>
 									<td class="action">

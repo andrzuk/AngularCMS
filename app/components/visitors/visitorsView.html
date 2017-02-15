@@ -35,7 +35,7 @@
 								<tr ng-repeat="visitor in visitorsList | filter:searchValue">
 									<td>{{ visitor.id }}</td>
 									<td>{{ visitor.visitor_ip }}</td>
-									<td>{{ visitor.http_referer | limitTo:128 }}<span ng-if="visitor.http_referer.length > 128">...</span></td>
+									<td>{{ visitor.http_referer | limitTo:80 }}<span ng-if="visitor.http_referer.length > 80">...</span></td>
 									<td>{{ visitor.request_uri }}</td>
 									<td>{{ visitor.visited }}</td>
 									<td class="action">

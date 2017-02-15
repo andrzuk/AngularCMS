@@ -42,7 +42,9 @@
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
-                <div ng-include="layout.messager"></div>
+                <div class="my-message">
+                    <div ng-if="error" class="alert alert-danger" role="alert">{{ message }}</div>
+                </div>
             </div>
             <div class="col-md-3"></div>
         </div>
