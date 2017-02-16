@@ -34,7 +34,7 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		$scope.action = 'add';
 		$scope.state = null;
 		$scope.pageNew = null;
-		Categories.all(1000, 1).then(function(response) {
+		Categories.all().then(function(response) {
 			$scope.categories = response.data;
 		});
 	};
@@ -64,7 +64,7 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		$scope.action = 'edit';
 		$scope.state = null;
 		$scope.processing = true;
-		Categories.all(1000, 1).then(function(response) {
+		Categories.all().then(function(response) {
 			$scope.categories = response.data;
 			Pages.one(id).then(function(response) {
 				$scope.pageEdit = response.data;
@@ -78,10 +78,14 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 			$scope.processing = true;
 			Pages.update($scope.pageEdit).then(function(response) {
 				if (response.data.success) {
+					angular.forEach($scope.pagesList, function(value, key) {
+						if (value.id == id) {
+							$scope.pagesList[key] = $scope.pageEdit;
+						}
+					});
 					$scope.pageEdit = null;
 					$scope.action = 'list';
 					$scope.state = 'info';
-					$scope.getPages();
 				}
 				else {
 					$scope.action = 'edit';

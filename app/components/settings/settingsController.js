@@ -69,10 +69,14 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 			$scope.processing = true;
 			Settings.update($scope.settingEdit).then(function(response) {
 				if (response.data.success) {
+					angular.forEach($scope.settingsList, function(value, key) {
+						if (value.id == id) {
+							$scope.settingsList[key] = $scope.settingEdit;
+						}
+					});
 					$scope.settingEdit = null;
 					$scope.action = 'list';
 					$scope.state = 'info';
-					$scope.getSettings();
 				}
 				else {
 					$scope.action = 'edit';

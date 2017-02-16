@@ -44,10 +44,14 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 			$scope.processing = true;
 			Messages.update($scope.messageEdit).then(function(response) {
 				if (response.data.success) {
+					angular.forEach($scope.messagesList, function(value, key) {
+						if (value.id == id) {
+							$scope.messagesList[key] = $scope.messageEdit;
+						}
+					});
 					$scope.messageEdit = null;
 					$scope.action = 'list';
 					$scope.state = 'info';
-					$scope.getMessages($scope.mode);
 				}
 				else {
 					$scope.action = 'edit';

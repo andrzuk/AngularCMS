@@ -12,8 +12,15 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 	$rows = intval($_GET['rows']);
 	$page = intval($_GET['page']) - 1;
 	$start = $page * $rows;
-
-	$query = 'SELECT * FROM categories ORDER BY id LIMIT '. $start .', '. $rows;
+	
+	if ($rows)
+	{
+		$query = 'SELECT * FROM categories ORDER BY id LIMIT '. $start .', '. $rows;
+	}
+	else
+	{
+		$query = 'SELECT * FROM categories ORDER BY id';
+	}
 
 	$statement = $dbc->prepare($query);
 

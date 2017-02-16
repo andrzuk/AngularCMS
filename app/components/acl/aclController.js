@@ -71,10 +71,14 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 			$scope.processing = true;
 			Acl.update($scope.aclEdit).then(function(response) {
 				if (response.data.success) {
+					angular.forEach($scope.aclList, function(value, key) {
+						if (value.id == id) {
+							$scope.aclList[key] = $scope.aclEdit;
+						}
+					});
 					$scope.aclEdit = null;
 					$scope.action = 'list';
 					$scope.state = 'info';
-					$scope.getAcl();
 				}
 				else {
 					$scope.action = 'edit';
