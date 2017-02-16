@@ -18,7 +18,7 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 		$caption = $form_data['caption'];
 		$item_link = $form_data['item_link'];
 		$item_order = intval($form_data['item_order']);
-		$target = $form_data['target'] == 'true' ? 0 : 1;
+		$target = $form_data['target'] == 'true' ? 1 : 0;
 		$visible = $form_data['visible'] == 'true' ? 1 : 0;
 
 		$query = ' UPDATE categories SET item_order = :item_order, caption = :caption, item_link = :item_link, visible = :visible, target = :target, modified = NOW()' .

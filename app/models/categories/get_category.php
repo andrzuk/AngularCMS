@@ -21,7 +21,7 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 
 	$result = $statement->fetch(PDO::FETCH_ASSOC);
 
-	$result['target'] = $result['target'] ? false : true;
+	$result['target'] = $result['target'] ? true : false;
 	$result['visible'] = $result['visible'] ? true : false;
 	$result['item_order'] = intval($result['item_order']);
 }

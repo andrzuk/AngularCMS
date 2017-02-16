@@ -69,10 +69,13 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 			$scope.processing = true;
 			Categories.update($scope.categoryEdit).then(function(response) {
 				if (response.data.success) {
-					angular.forEach($scope.categoriesList, function(value, key) {
-						if (value.id == id) {
-							$scope.categoriesList[key] = $scope.categoryEdit;
-						}
+					Categories.one(id).then(function(response) {
+						$scope.categoryEdit = response.data;
+						angular.forEach($scope.categoriesList, function(value, key) {
+							if (value.id == id) {
+								$scope.categoriesList[key] = $scope.categoryEdit;
+							}
+						});
 					});
 					$scope.categoryEdit = null;
 					$scope.action = 'list';

@@ -78,10 +78,13 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 			$scope.processing = true;
 			Pages.update($scope.pageEdit).then(function(response) {
 				if (response.data.success) {
-					angular.forEach($scope.pagesList, function(value, key) {
-						if (value.id == id) {
-							$scope.pagesList[key] = $scope.pageEdit;
-						}
+					Pages.one(id).then(function(response) {
+						$scope.pageEdit = response.data;
+						angular.forEach($scope.pagesList, function(value, key) {
+							if (value.id == id) {
+								$scope.pagesList[key] = $scope.pageEdit;
+							}
+						});
 					});
 					$scope.pageEdit = null;
 					$scope.action = 'list';

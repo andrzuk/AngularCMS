@@ -79,10 +79,14 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 			$scope.processing = true;
 			Users.update($scope.userEdit).then(function(response) {
 				if (response.data.success) {
-					angular.forEach($scope.usersList, function(value, key) {
-						if (value.id == id) {
-							$scope.usersList[key] = $scope.userEdit;
-						}
+					Users.one(id).then(function(response) {
+						$scope.userEdit = response.data;
+						$scope.userEdit.author = $scope.user.id;
+						angular.forEach($scope.usersList, function(value, key) {
+							if (value.id == id) {
+								$scope.usersList[key] = $scope.userEdit;
+							}
+						});
 					});
 					$scope.userEdit = null;
 					$scope.action = 'list';

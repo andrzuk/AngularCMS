@@ -17,7 +17,7 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 		$caption = $form_data['caption'];
 		$item_link = $form_data['item_link'];
 		$item_order = intval($form_data['item_order']);
-		$target = $form_data['target'] == 'true' ? 0 : 1;
+		$target = $form_data['target'] == 'true' ? 1 : 0;
 		$visible = $form_data['visible'] == 'true' ? 1 : 0;
 
 		$query = ' INSERT INTO categories (parent_id, item_order, caption, item_link, visible, target, modified)' .

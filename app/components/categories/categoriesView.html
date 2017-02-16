@@ -26,7 +26,7 @@
 									<th>Order</th>
 									<th>Caption</th>
 									<th>Link</th>
-									<th class="text-center">Local</th>
+									<th class="text-center">External</th>
 									<th>Modified</th>
 									<th class="text-center">Action</th>
 								</tr>
@@ -38,7 +38,7 @@
 									<td>{{ category.item_order }}</td>
 									<td>{{ category.caption }}</td>
 									<td>{{ category.item_link }}</td>
-									<td class="text-center"><button type="button" class="btn btn-{{ category.target == false ? 'success' : 'danger' }} btn-xs"><span class="glyphicon glyphicon-{{ category.target == false ? 'ok' : 'remove' }}"></span></button></td>
+									<td class="text-center"><button type="button" class="btn btn-{{ category.target == true ? 'success' : 'danger' }} btn-xs"><span class="glyphicon glyphicon-{{ category.target == true ? 'ok' : 'remove' }}"></span></button></td>
 									<td>{{ category.modified }}</td>
 									<td class="action">
 										<a href="#" class="btn btn-success btn-xs" ng-click="moveCategory(category.id, 'up')"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -87,7 +87,7 @@
 									<input type="number" class="form-control" id="item_order" ng-model="categoryNew.item_order" ng-disabled="processing" required>
 								</div>
 								<div class="col-md-3">
-									<label for="target">Local:</label><br>
+									<label for="target">External:</label><br>
 									<input type="checkbox" class="form-control" id="target" ng-model="categoryNew.target" ng-disabled="processing" bootstrap-switch>
 								</div>
 								<div class="col-md-3">
@@ -124,7 +124,7 @@
 									<input type="number" class="form-control" id="item_order" ng-model="categoryEdit.item_order" ng-disabled="processing" required>
 								</div>
 								<div class="col-md-3">
-									<label for="target">Local:</label><br>
+									<label for="target">External:</label><br>
 									<input type="checkbox" class="form-control" id="target" ng-model="categoryEdit.target" ng-disabled="processing" bootstrap-switch>
 								</div>
 								<div class="col-md-3">
