@@ -8,8 +8,10 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 	$scope.getSettings = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
-		Paginator.reset();
 		$scope.currentPage = 1;
+		Paginator.getSize($scope.moduleName).then(function(response) {
+			Paginator.reset(response.data.counter);
+		});
 		var showRows = Paginator.getLines($scope.moduleName);
 		Settings.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.settingsList = response.data;

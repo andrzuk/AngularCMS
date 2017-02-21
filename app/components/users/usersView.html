@@ -60,6 +60,7 @@
 						</div>
 					</div>
 				</div>
+				<div ng-include="layout.paginator"></div>
 			</div>
 
 			<div class="col-lg-12" ng-show="action == 'add'">
@@ -170,7 +171,7 @@
 								<input type="search" class="form-control" ng-model="rightsValue" placeholder="Szukaj">
 							</div>
 							<div class="col-sm-8 text-right buttons">
-								<input class="btn btn-danger" type="button" ng-click="cancelUser()" value="Zamknij">
+								<input class="btn btn-danger" type="button" ng-click="getUsers()" value="Zamknij">
 							</div>
 						</div>
 						<div class="table-responsive">

@@ -11,9 +11,31 @@ angular.module('paginService', [])
 		rows: 10,
 		modules: []
 	};
+	
+	paginFactory.pointers = [];
 
+	paginFactory.setPointers = function() {
+		var i = 0, j = 0;
+		paginFactory.pointers = [];
+		for (i = 1; i <= paginFactory.getBand(); i++) {
+			if (i <= paginFactory.getPages()) {
+				paginFactory.pointers.push({ label: i, active: true });
+			}
+		}
+		if (paginFactory.getPages() > 2 * paginFactory.getBand()) {
+			paginFactory.pointers.push({ label: '...', active: false });
+		}
+		for (j = paginFactory.getPages() - paginFactory.getBand() + 1; j <= paginFactory.getPages(); j++) {
+			if (j >= i) {
+				paginFactory.pointers.push({ label: j, active: true });
+			}
+		}
+		if (!paginFactory.pointers.length) {
+			paginFactory.pointers.push({ label: 1, active: true });
+		}
+	};
+	
 	paginFactory.init = function() {
-		this.reset();
 		$http.get(config.apiUrl + 'get_settings_value.php?key=list_rows_per_page').then(function(response) {
 			paginFactory.pagination.modules = angular.fromJson(response.data.value);
 		});
@@ -22,7 +44,9 @@ angular.module('paginService', [])
 		});
 	};
 
-	paginFactory.reset = function() {
+	paginFactory.reset = function(count) {
+		this.setPages(count);
+		this.setPointers();
 		this.pagination.selected = 1;
 	};
 

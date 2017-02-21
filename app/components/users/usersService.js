@@ -6,8 +6,8 @@ angular.module('usersService', [])
 
 	var componentName = 'users';
 
-	usersFactory.all = function() {
-		return $http.get(config.apiUrl + componentName + '/get_users_list.php');
+	usersFactory.all = function(rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_users_list.php?rows=' + rows + '&page=' + page);
 	};
 
 	usersFactory.one = function(id) {

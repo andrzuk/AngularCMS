@@ -23,7 +23,6 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 	{
 		$query = 'SELECT * FROM messages WHERE requested = 1 ORDER BY id LIMIT '. $start .', '. $rows;
 	}
-
 	if ($mode == 2) // zatwierdzone
 	{
 		$query = 'SELECT * FROM messages WHERE requested = 0 ORDER BY id LIMIT '. $start .', '. $rows;

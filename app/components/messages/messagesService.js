@@ -6,6 +6,10 @@ angular.module('messagesService', [])
 
 	var componentName = 'messages';
 
+	messagesFactory.getCount = function(mode) {
+		return $http.get(config.apiUrl + componentName + '/get_messages_count.php?mode=' + mode);
+	};
+
 	messagesFactory.all = function(mode, rows, page) {
 		return $http.get(config.apiUrl + componentName + '/get_messages_list.php?mode=' + mode + '&rows=' + rows + '&page=' + page);
 	};

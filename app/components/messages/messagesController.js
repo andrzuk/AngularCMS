@@ -9,8 +9,10 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		$scope.mode = mode;
 		$scope.action = 'list';
 		$scope.processing = true;
-		Paginator.reset();
 		$scope.currentPage = 1;
+		Messages.getCount($scope.mode).then(function(response) {
+			Paginator.reset(response.data.counter);
+		});
 		var showRows = Paginator.getLines($scope.moduleName);
 		Messages.all($scope.mode, showRows, $scope.currentPage).then(function(response) {
 			$scope.messagesList = response.data;

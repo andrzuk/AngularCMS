@@ -11,8 +11,10 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 	$scope.getPages = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
-		Paginator.reset();
 		$scope.currentPage = 1;
+		Paginator.getSize($scope.moduleName).then(function(response) {
+			Paginator.reset(response.data.counter);
+		});
 		var showRows = Paginator.getLines($scope.moduleName);
 		Pages.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.pagesList = response.data;

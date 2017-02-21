@@ -7,14 +7,15 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 	$scope.moduleName = 'access_levels';
 	$scope.componentName = 'users';
 
-	Paginator.reset();
-	var showRows = Paginator.getLines($scope.moduleName);
-	$scope.currentPage = 1;
-
 	$scope.getUsers = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
-		Users.all().then(function(response) {
+		$scope.currentPage = 1;
+		Paginator.getSize($scope.componentName).then(function(response) {
+			Paginator.reset(response.data.counter);
+		});
+		var showRows = Paginator.getLines($scope.componentName);
+		Users.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.usersList = response.data;
 			$scope.processing = false;
 		});
@@ -24,15 +25,24 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		var newPage = Paginator.getPage(page);
 		if (newPage == $scope.currentPage) return;
 		$scope.currentPage = newPage;
-		Users.rights($scope.id, $scope.user.id, showRows, $scope.currentPage).then(function(response) {
-			$scope.rightsList = response.data;
-			angular.forEach($scope.usersList, function(value, key) {
-				if (value.id == $scope.id) {
-					$scope.userEdit = $scope.usersList[key];
-				}
+		if ($scope.action == 'list') {
+			var showRows = Paginator.getLines($scope.componentName);
+			Users.all(showRows, $scope.currentPage).then(function(response) {
+				$scope.usersList = response.data;
 			});
-			$scope.userEdit.author = $scope.user.id;
-		});
+		}
+		if ($scope.action == 'rights') {
+			var showRows = Paginator.getLines($scope.moduleName);
+			Users.rights($scope.id, $scope.user.id, showRows, $scope.currentPage).then(function(response) {
+				$scope.rightsList = response.data;
+				angular.forEach($scope.usersList, function(value, key) {
+					if (value.id == $scope.id) {
+						$scope.userEdit = $scope.usersList[key];
+					}
+				});
+				$scope.userEdit.author = $scope.user.id;
+			});
+		}
 	};
 
 	$scope.newUser = function() {
@@ -172,6 +182,11 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		$scope.state = null;
 		$scope.processing = true;
 		$scope.rightsList = [];
+		$scope.currentPage = 1;
+		Paginator.getSize($scope.moduleName).then(function(response) {
+			Paginator.reset(response.data.counter);
+		});
+		var showRows = Paginator.getLines($scope.moduleName);
 		Users.rights($scope.id, $scope.user.id, showRows, $scope.currentPage).then(function(response) {
 			$scope.rightsList = response.data;
 			angular.forEach($scope.usersList, function(value, key) {
