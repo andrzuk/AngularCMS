@@ -11,6 +11,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		$scope.action = 'list';
 		$scope.processing = true;
 		$scope.currentPage = 1;
+		$scope.usersList = [];
 		Paginator.getSize($scope.componentName).then(function(response) {
 			Paginator.reset(response.data.counter);
 		});
