@@ -53,16 +53,6 @@
 										<a href="#" class="btn btn-danger btn-xs" ng-click="deleteImage(image.id, false)">Usuń</a>
 									</td>
 								</tr>
-								<tr ng-if="appending">
-									<td colspan="10" class="loading"><img src="public/img/loader.gif"></td>
-								</tr>
-								<tr ng-if="!appending && moreRows">
-									<td colspan="10">
-										<div class="content-center">
-											<div class="show-more"><a href="#" class="btn btn-primary btn-xs" ng-click="getMore()">Pokaż więcej</a></div>
-										</div>
-									</td>
-								</tr>
 								<tr ng-if="!imagesList.length && !processing">
 									<td colspan="10">
 										<div class="content-center">
@@ -75,6 +65,7 @@
 						</div>
 					</div>
 				</div>
+				<div ng-include="layout.paginator"></div>
 			</div>
 
 			<div class="col-lg-12" ng-show="action == 'add'">
@@ -166,22 +157,13 @@
 									<div class="no-results">(Brak wyników)</div>
 								</div>
 							</span>
-							<span ng-if="appending">
-								<div class="content-center">
-									<img src="public/img/loader.gif">
-								</div>
-							</span>
-							<span ng-if="!appending && moreRows">
-								<div class="content-center">
-									<div class="show-more"><a href="#" class="btn btn-primary btn-xs" ng-click="showMore()">Pokaż więcej</a></div>
-								</div>
-							</span>
 						</div>
 					</div>
 					<div class="panel-footer text-center">
-						<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelImage()" value="Anuluj">
+						<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="getImages()" value="Anuluj">
 					</div>
 				</div>
+				<div ng-include="layout.paginator"></div>
 			</div>
 
 			<div class="col-lg-12">

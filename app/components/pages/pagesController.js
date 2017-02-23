@@ -3,13 +3,15 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 .controller('PagesController', ['$location', '$scope', '$sce', 'Pages', 'Categories', 'Images', 'Paginator', function($location, $scope, $sce, Pages, Categories, Images, Paginator) {
 	
 	$scope.images_data = [];
-	$scope.lastImageId = 0;
 
 	$scope.moduleName = 'pages';
 	$scope.componentName = 'pages';
+	$scope.galleryName = 'gallery';
+	$scope.imagesName = 'images';
 
 	$scope.getPages = function() {
 		$scope.action = 'list';
+		$scope.mode = 1;
 		$scope.processing = true;
 		$scope.currentPage = 1;
 		Paginator.getSize($scope.moduleName).then(function(response) {
@@ -26,10 +28,21 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		var newPage = Paginator.getPage(page);
 		if (newPage == $scope.currentPage) return;
 		$scope.currentPage = newPage;
-		var showRows = Paginator.getLines($scope.moduleName);
-		Pages.all(showRows, $scope.currentPage).then(function(response) {
-			$scope.pagesList = response.data;
-		});
+		if ($scope.action == 'list') {
+			var showRows = Paginator.getLines($scope.moduleName);
+			Pages.all(showRows, $scope.currentPage).then(function(response) {
+				$scope.pagesList = response.data;
+			});
+		}
+		if ($scope.action == 'gallery') {
+			var showRows = Paginator.getLines($scope.galleryName);
+			Images.all(showRows, $scope.currentPage).then(function(response) {
+				$scope.imagesList = response.data;
+				angular.forEach($scope.imagesList, function(value, key) {
+					$scope.getImage(value.id, 'thumbnail');
+				});
+			});
+		}
 	};
 
 	$scope.newPage = function() {
@@ -89,8 +102,13 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 						});
 					});
 					$scope.pageEdit = null;
-					$scope.action = 'list';
 					$scope.state = 'info';
+					if ($scope.mode == 1) {
+						$scope.action = 'list';
+					}
+					if ($scope.mode == 2) {
+						$scope.getPages();
+					}
 				}
 				else {
 					$scope.action = 'edit';
@@ -194,39 +212,22 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 	$scope.showGallery = function() {
 		$scope.lastAction = $scope.action;
 		$scope.action = 'gallery';
+		$scope.mode = 2;
 		$scope.state = null;
-		if (!$scope.lastImageId) {
-			$scope.processing = true;
-			Images.all($scope.lastImageId).then(function(response) {
-				$scope.galleryDir = Images.config().gallery;
-				$scope.thumbDir = Images.config().thumb;
-				$scope.imagesList = response.data;
-				angular.forEach($scope.imagesList, function(value, key) {
-					$scope.getImage(value.id, 'thumbnail');
-				});
-				if ($scope.imagesList.length) {
-					$scope.lastImageId = $scope.imagesList[$scope.imagesList.length - 1].id;
-				}
-				$scope.moreRows = response.data.length > 0;
-				$scope.processing = false;
-			});
-		}
-	};
-
-	$scope.showMore = function() {
-		$scope.action = 'gallery';
-		$scope.appending = true;
-		$scope.state = null;
-		Images.more($scope.lastImageId).then(function(response) {
-			angular.forEach(response.data, function(value, key) {
-				$scope.imagesList.push(value);
+		$scope.processing = true;
+		$scope.currentPage = 1;
+		$scope.galleryDir = Images.config().gallery;
+		$scope.thumbDir = Images.config().thumb;
+		Paginator.getSize($scope.imagesName).then(function(response) {
+			Paginator.reset(response.data.counter);
+		});
+		var showRows = Paginator.getLines($scope.galleryName);
+		Images.all(showRows, $scope.currentPage).then(function(response) {
+			$scope.imagesList = response.data;
+			angular.forEach($scope.imagesList, function(value, key) {
 				$scope.getImage(value.id, 'thumbnail');
 			});
-			if ($scope.imagesList.length) {
-				$scope.lastImageId = $scope.imagesList[$scope.imagesList.length - 1].id;
-			}
-			$scope.moreRows = response.data.length > 0;
-			$scope.appending = false;
+			$scope.processing = false;
 		});
 	};
 
@@ -251,7 +252,12 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 	$scope.cancelPage = function() {
 		$scope.pageNew = null;
 		$scope.pageEdit = null;
-		$scope.action = 'list';
+		if ($scope.mode == 1) {
+			$scope.action = 'list';
+		}
+		if ($scope.mode == 2) {
+			$scope.getPages();
+		}
 		$scope.state = null;
 	};
 

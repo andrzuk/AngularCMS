@@ -407,32 +407,31 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(7, 'app_author', 'Andrzej Żukowski &copy; 2016', 'autor aplikacji internetowej', NOW()),
 			(8, 'app_domain', :domain, 'domena internetowa serwisu', NOW()),
 			(9, 'app_footer', '<a href=\"http://swoja-strona.eu\" target=\"_blank\" class=\"footer-link\">&copy; 2016 MyCMS</a>', 'treść stopki serwisu', NOW()),
-			(10, 'list_rows_per_page', '[\n{\"module\": \"settings\", \"lines\": 10},\n{\"module\": \"categories\", \"lines\": 13},\n{\"module\": \"pages\", \"lines\": 8},\n{\"module\": \"users\", \"lines\": 13},\n{\"module\": \"access_levels\", \"lines\": 13},\n{\"module\": \"messages\", \"lines\": 10},\n{\"module\": \"visitors\", \"lines\": 13},\n{\"module\": \"searches\", \"lines\": 15}\n]', 'liczba wierszy na stronę na listach systemowych', NOW()),
+			(10, 'list_rows_per_page', '[\n{\"module\": \"settings\", \"lines\": 10},\n{\"module\": \"categories\", \"lines\": 13},\n{\"module\": \"pages\", \"lines\": 8},\n{\"module\": \"images\", \"lines\": 6},\n{\"module\": \"gallery\", \"lines\": 21},\n{\"module\": \"users\", \"lines\": 13},\n{\"module\": \"access_levels\", \"lines\": 13},\n{\"module\": \"messages\", \"lines\": 10},\n{\"module\": \"visitors\", \"lines\": 13},\n{\"module\": \"searches\", \"lines\": 15}\n]', 'liczba wierszy na stronę na listach systemowych', NOW()),
 			(11, 'paginator_pointer_band', '5', 'zakres wskaźników paginatora na każdą stronę', NOW()),
-			(12, 'gallery_list_packet', '9', 'liczba wierszy wczytywanych pakietowo dla listy galerii', NOW()),
-			(13, 'visitors_excluded', '''192.168.0.1'', ''192.168.0.100''', 'Adresy IP wykluczone z wyświetlania w raporcie odwiedzin', NOW()),
-			(14, 'visitors_period', '-180 days', 'Liczba ostatnich dni wczytywanych do raportu odwiedzin', NOW()),
-			(15, 'visitors_referer', 'http', 'Filtr HTTP Referer przeglądarki użytkownika w raporcie odwiedzin', NOW()),
-			(16, 'carousel_images', '[\n{\"image\": \"1\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"2\", \"text\": \"Angular CMS slider\"},\n{\"image\": \"3\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"4\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"5\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"6\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"7\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"8\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"9\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"10\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"11\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"12\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"13\", \"text\": \"Angular CMS slider\"} \n]', 'indeksy obrazków z galerii, które będą pokazywane w karuzeli slajdów', NOW()),
-			(17, 'carousel_interval', '5000', 'interwał czasowy wyświetlania obrazków w karuzeli slajdów', NOW()),
-			(18, 'carousel_index_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie głównej', NOW()),
-			(19, 'carousel_page_enabled', 'true', 'czy ma być włączona karuzela slajdów na podstronie', NOW()),
-			(20, 'carousel_category_enabled', 'true', 'czy ma być włączona karuzela slajdów na kategorii', NOW()),
-			(21, 'carousel_contact_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie kontaktowej', NOW()),
-			(22, 'carousel_search_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie wyszukiwania', NOW()),
-			(23, 'send_new_message_report', 'true', 'wysyłanie e-mailem raportów o pojawieniu się nowej wiadomości', NOW()),
-			(24, 'email_host', 'mail.domain.pl', 'host wysyłania maili', NOW()),
-			(25, 'email_port', '587', 'port smtp', NOW()),
-			(26, 'email_password', '', 'hasło konta mailingowego', NOW()),
-			(27, 'email_sender_name', 'Mail Manager', 'nazwa konta e-mailowego serwisu', NOW()),
-			(28, 'email_sender_address', 'sender@domain.pl', 'adres konta e-mailowego serwisu', NOW()),
-			(29, 'email_admin_name', :admin_name, 'nazwa konta e-mailowego administratora serwisu', NOW()),
-			(30, 'email_admin_address', :admin_email, 'adres e-mail administratora serwisu', NOW()),
-			(31, 'email_report_address', :admin_email, 'adres e-mail odbiorcy raportów', NOW()),
-			(32, 'email_report_subject', 'Raport serwisu', 'temat maila raportującego zdarzenie', NOW()),
-			(33, 'email_report_body', 'Raport o zdarzeniu w serwisie', 'treść maila rapotującego', NOW()),
-			(34, 'email_password_subject', 'Nowe hasło do konta', 'temat generowanego maila z nowym hasłem', NOW()),
-			(35, 'email_password_body', 'Na Twoją prośbę przesyłamy Ci nowe hasło logowania. Oto Twoje dane:', 'treść generowanego maila z nowym hasłem', NOW());
+			(12, 'visitors_excluded', '''192.168.0.1'', ''192.168.0.100''', 'Adresy IP wykluczone z wyświetlania w raporcie odwiedzin', NOW()),
+			(13, 'visitors_period', '-180 days', 'Liczba ostatnich dni wczytywanych do raportu odwiedzin', NOW()),
+			(14, 'visitors_referer', 'http', 'Filtr HTTP Referer przeglądarki użytkownika w raporcie odwiedzin', NOW()),
+			(15, 'carousel_images', '[\n{\"image\": \"1\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"2\", \"text\": \"Angular CMS slider\"},\n{\"image\": \"3\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"4\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"5\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"6\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"7\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"8\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"9\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"10\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"11\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"12\", \"text\": \"Angular CMS slider\"}, \n{\"image\": \"13\", \"text\": \"Angular CMS slider\"} \n]', 'indeksy obrazków z galerii, które będą pokazywane w karuzeli slajdów', NOW()),
+			(16, 'carousel_interval', '5000', 'interwał czasowy wyświetlania obrazków w karuzeli slajdów', NOW()),
+			(17, 'carousel_index_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie głównej', NOW()),
+			(18, 'carousel_page_enabled', 'true', 'czy ma być włączona karuzela slajdów na podstronie', NOW()),
+			(19, 'carousel_category_enabled', 'true', 'czy ma być włączona karuzela slajdów na kategorii', NOW()),
+			(20, 'carousel_contact_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie kontaktowej', NOW()),
+			(21, 'carousel_search_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie wyszukiwania', NOW()),
+			(22, 'send_new_message_report', 'true', 'wysyłanie e-mailem raportów o pojawieniu się nowej wiadomości', NOW()),
+			(23, 'email_host', 'mail.domain.pl', 'host wysyłania maili', NOW()),
+			(24, 'email_port', '587', 'port smtp', NOW()),
+			(25, 'email_password', '', 'hasło konta mailingowego', NOW()),
+			(26, 'email_sender_name', 'Mail Manager', 'nazwa konta e-mailowego serwisu', NOW()),
+			(27, 'email_sender_address', 'sender@domain.pl', 'adres konta e-mailowego serwisu', NOW()),
+			(28, 'email_admin_name', :admin_name, 'nazwa konta e-mailowego administratora serwisu', NOW()),
+			(29, 'email_admin_address', :admin_email, 'adres e-mail administratora serwisu', NOW()),
+			(30, 'email_report_address', :admin_email, 'adres e-mail odbiorcy raportów', NOW()),
+			(31, 'email_report_subject', 'Raport serwisu', 'temat maila raportującego zdarzenie', NOW()),
+			(32, 'email_report_body', 'Raport o zdarzeniu w serwisie', 'treść maila rapotującego', NOW()),
+			(33, 'email_password_subject', 'Nowe hasło do konta', 'temat generowanego maila z nowym hasłem', NOW()),
+			(34, 'email_password_body', 'Na Twoją prośbę przesyłamy Ci nowe hasło logowania. Oto Twoje dane:', 'treść generowanego maila z nowym hasłem', NOW());
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->bindParam(':brand', $brand, PDO::PARAM_STR);
@@ -582,7 +581,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 		ALTER TABLE `settings`
-		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
 
 		ALTER TABLE `users`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;

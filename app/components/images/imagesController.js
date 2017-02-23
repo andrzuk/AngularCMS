@@ -1,60 +1,53 @@
-angular.module('imagesController', ['imagesService', 'config'])
+angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 
-.controller('ImagesController', ['$location', '$scope', 'Images', function($location, $scope, Images) {
+.controller('ImagesController', ['$location', '$scope', 'Images', 'Paginator', function($location, $scope, Images, Paginator) {
 	
 	$scope.images_data = [];
-	$scope.lastImageId = 0;
 	
 	$scope.componentName = 'images';
+	$scope.moduleName = 'gallery';
 
 	$scope.getImages = function() {
 		$scope.action = 'list';
+		$scope.mode = 1;
 		$scope.processing = true;
-		Images.all($scope.lastImageId).then(function(response) {
+		$scope.currentPage = 1;
+		$scope.imagesList = [];
+		Paginator.getSize($scope.componentName).then(function(response) {
+			Paginator.reset(response.data.counter);
+		});
+		var showRows = Paginator.getLines($scope.componentName);
+		Images.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.imagesList = response.data;
 			angular.forEach($scope.imagesList, function(value, key) {
 				$scope.getImage(value.id, 'thumbnail');
 			});
-			if ($scope.imagesList.length) {
-				$scope.lastImageId = $scope.imagesList[$scope.imagesList.length - 1].id;
-			}
-			$scope.moreRows = response.data.length > 0;
 			$scope.processing = false;
 		});
 	};
 
-	$scope.getMore = function() {
-		$scope.action = 'list';
-		$scope.appending = true;
-		$scope.state = null;
-		Images.more($scope.lastImageId).then(function(response) {
-			angular.forEach(response.data, function(value, key) {
-				$scope.imagesList.push(value);
-				$scope.getImage(value.id, 'thumbnail');
+	$scope.changePage = function(page) {
+		var newPage = Paginator.getPage(page);
+		if (newPage == $scope.currentPage) return;
+		$scope.currentPage = newPage;
+		if ($scope.action == 'list') {
+			var showRows = Paginator.getLines($scope.componentName);
+			Images.all(showRows, $scope.currentPage).then(function(response) {
+				$scope.imagesList = response.data;
+				angular.forEach($scope.imagesList, function(value, key) {
+					$scope.getImage(value.id, 'thumbnail');
+				});
 			});
-			if ($scope.imagesList.length) {
-				$scope.lastImageId = $scope.imagesList[$scope.imagesList.length - 1].id;
-			}
-			$scope.moreRows = response.data.length > 0;
-			$scope.appending = false;
-		});
-	};
-
-	$scope.showMore = function() {
-		$scope.action = 'gallery';
-		$scope.appending = true;
-		$scope.state = null;
-		Images.more($scope.lastImageId).then(function(response) {
-			angular.forEach(response.data, function(value, key) {
-				$scope.imagesList.push(value);
-				$scope.getImage(value.id, 'thumbnail');
+		}
+		if ($scope.action == 'gallery') {
+			var showRows = Paginator.getLines($scope.moduleName);
+			Images.all(showRows, $scope.currentPage).then(function(response) {
+				$scope.imagesList = response.data;
+				angular.forEach($scope.imagesList, function(value, key) {
+					$scope.getImage(value.id, 'thumbnail');
+				});
 			});
-			if ($scope.imagesList.length) {
-				$scope.lastImageId = $scope.imagesList[$scope.imagesList.length - 1].id;
-			}
-			$scope.moreRows = response.data.length > 0;
-			$scope.appending = false;
-		});
+		}
 	};
 
 	$scope.getImage = function(id, type) {
@@ -77,7 +70,7 @@ angular.module('imagesController', ['imagesService', 'config'])
 					$scope.imageNew = null;
 					$scope.action = 'list';
 					$scope.state = 'info';
-					$scope.moreRows = true;
+					$scope.getImages();
 				}
 				else {
 					$scope.action = 'add';
@@ -137,11 +130,7 @@ angular.module('imagesController', ['imagesService', 'config'])
 				else {
 					$scope.state = 'error';
 				}
-				angular.forEach($scope.imagesList, function(value, key) {
-					if (value.id == id) {
-						$scope.imagesList.splice(key, 1);
-					}
-				});
+				$scope.getImages();
 				$scope.action = 'list';
 				$scope.message = response.data.message;
 				$scope.processing = false;
@@ -173,13 +162,32 @@ angular.module('imagesController', ['imagesService', 'config'])
 
 	$scope.showGallery = function() {
 		$scope.action = 'gallery';
+		$scope.mode = 2;
 		$scope.state = null;
+		$scope.processing = true;
+		$scope.currentPage = 1;
+		Paginator.getSize($scope.componentName).then(function(response) {
+			Paginator.reset(response.data.counter);
+		});
+		var showRows = Paginator.getLines($scope.moduleName);
+		Images.all(showRows, $scope.currentPage).then(function(response) {
+			$scope.imagesList = response.data;
+			angular.forEach($scope.imagesList, function(value, key) {
+				$scope.getImage(value.id, 'thumbnail');
+			});
+			$scope.processing = false;
+		});
 	};
 
 	$scope.cancelImage = function() {
 		$scope.imageNew = null;
 		$scope.imageEdit = null;
-		$scope.action = 'list';
+		if ($scope.mode == 1) {
+			$scope.action = 'list';
+		}
+		if ($scope.mode == 2) {
+			$scope.action = 'gallery';
+		}
 		$scope.state = null;
 	};
 

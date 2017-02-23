@@ -6,12 +6,8 @@ angular.module('imagesService', [])
 
 	var componentName = 'images';
 
-	imagesFactory.all = function(id) {
-		return $http.get(config.apiUrl + componentName + '/get_images_list.php?id=' + id);
-	};
-
-	imagesFactory.more = function(id) {
-		return $http.get(config.apiUrl + componentName + '/get_images_list.php?id=' + id);
+	imagesFactory.all = function(rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_images_list.php?rows=' + rows + '&page=' + page);
 	};
 
 	imagesFactory.one = function(id, type) {
