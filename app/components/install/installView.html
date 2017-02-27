@@ -10,36 +10,60 @@
 
 		<div class="col-lg-12" ng-show="action == 'init'">
 			<form class="form" role="form" method="post">
-				<div class="panel panel-primary my-panel">
+				<div class="panel panel-primary">
 					<div class="panel-heading">Ustawienia</div>
 					<div class="panel-body">
-						<div class="form-group">
-							<label for="brand">Krótka nazwa serwisu (logo):</label>
-							<input type="text" class="form-control" id="brand" ng-model="installInit.brand" ng-disabled="processing" required>
+						<div class="col-lg-12">
+							<p>Proszę wprowadzić podstawowe informacje o serwisie i administratorze. Informacje te można będzie w każdej chwili zmienić z poziomu konta administratora za pomocą modułu Ustawienia w Panelu Administratora.</p>
 						</div>
-						<div class="form-group">
-							<label for="description">Długa nazwa serwisu (opis):</label>
-							<input type="text" class="form-control" id="description" ng-model="installInit.description" ng-disabled="processing" required>
+						<div class="col-lg-6">
+							<div class="panel panel-info">
+								<div class="panel-heading" style="color: #369;">Serwis</div>
+								<div class="panel-body">
+									<div class="form-group">
+										<label for="brand">Krótka nazwa (brand):</label>
+										<input type="text" class="form-control" id="brand" ng-model="installInit.brand" ng-disabled="processing" required>
+										<p>Pojawi się jako napis na górze strony po lewej stronie obok logo.</p>
+									</div>
+									<div class="form-group">
+										<label for="description">Długa nazwa (tytuł):</label>
+										<input type="text" class="form-control" id="description" ng-model="installInit.description" ng-disabled="processing" required>
+										<p>Będzie występować jako główny tytuł serwisu.</p>
+									</div>
+									<div class="form-group">
+										<label for="keywords">Keywords:</label>
+										<input type="text" class="form-control" id="keywords" ng-model="installInit.keywords" ng-disabled="processing" required>
+										<p>Słowa kluczowe opisujące treści na stronie.</p>
+									</div>
+									<div class="form-group">
+										<label for="domain">Domena (adres):</label>
+										<input type="text" class="form-control" id="domain" ng-model="installInit.domain" ng-disabled="processing" required>
+										<p>Adres internetowy serwisu (np. http://moja-domena.com).</p>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="form-group">
-							<label for="keywords">Słowa kluczowe serwisu (keywords):</label>
-							<textarea class="form-control" id="keywords" rows="2" ng-model="installInit.keywords" ng-disabled="processing" required></textarea>
-						</div>
-						<div class="form-group">
-							<label for="domain">Domena serwisu (adres):</label>
-							<input type="text" class="form-control" id="domain" ng-model="installInit.domain" ng-disabled="processing" required>
-						</div>
-						<div class="form-group">
-							<label for="admin_email">Adres e-mail administratora:</label>
-							<input type="text" class="form-control" id="admin_email" ng-model="installInit.admin_email" ng-disabled="processing" required>
-						</div>
-						<div class="form-group">
-							<label for="admin_name">Nazwa konta administratora:</label>
-							<input type="text" class="form-control" id="admin_name" ng-model="installInit.admin_name" ng-disabled="processing" required>
-						</div>
-						<div class="form-group">
-							<label for="admin_password">Hasło konta administratora:</label>
-							<input type="password" class="form-control" id="admin_password" ng-model="installInit.admin_password" ng-disabled="processing" required>
+						<div class="col-lg-6">
+							<div class="panel panel-info">
+								<div class="panel-heading" style="color: #369;">Administrator</div>
+								<div class="panel-body">
+									<div class="form-group">
+										<label for="admin_email">Adres e-mail:</label>
+										<input type="text" class="form-control" id="admin_email" ng-model="installInit.admin_email" ng-disabled="processing" required>
+										<p>Adres, na który mają trafiać raporty aktywności serwisu, a także nowe hasło w przypadku resetu.</p>
+									</div>
+									<div class="form-group">
+										<label for="admin_name">Nazwa konta:</label>
+										<input type="text" class="form-control" id="admin_name" ng-model="installInit.admin_name" ng-disabled="processing" required>
+										<p>Login konta administratora (np. admin, superuser, master).</p>
+									</div>
+									<div class="form-group">
+										<label for="admin_password">Hasło:</label>
+										<input type="password" class="form-control" id="admin_password" ng-model="installInit.admin_password" ng-disabled="processing" required>
+										<p>Hasło do zalogowania na konto administratora serwisu.</p>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="panel-footer text-center">
@@ -66,14 +90,14 @@
 					<hr>
 					<div class="form-group">
 						<div class="row">
-							<div class="col-lg-4">Duga nazwa serwisu:</div>
+							<div class="col-lg-4">Długa nazwa serwisu:</div>
 							<div class="col-lg-8"><b>{{ result.description }}</b></div>
 						</div>
 					</div>
 					<hr>
 					<div class="form-group">
 						<div class="row">
-							<div class="col-lg-4">Słowa kluczowe serwisu:</div>
+							<div class="col-lg-4">Keywords serwisu:</div>
 							<div class="col-lg-8"><b>{{ result.keywords }}</b></div>
 						</div>
 					</div>
