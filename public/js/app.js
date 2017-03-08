@@ -369,6 +369,15 @@ var browsePicturesWithButtons = function(itemsCount, itemWidth, itemHeight, prev
 			});
 		}
 	});
+	document.addEventListener('keydown', function(event) {
+		var keyCode = event.keyCode;
+		if (keyCode == 37) { // Left cursor
+			$('input#btn-prev').click();
+		}
+		if (keyCode == 39) { // Right cursor
+			$('input#btn-next').click();
+		}
+	});
 };
 
 /*
