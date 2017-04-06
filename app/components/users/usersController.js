@@ -16,7 +16,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 			Paginator.reset(response.data.counter);
 		});
 		var showRows = Paginator.getLines($scope.componentName);
-		Users.all(showRows, $scope.currentPage).then(function(response) {
+		Users.all(showRows, $scope.currentPage, $scope.user.id).then(function(response) {
 			$scope.usersList = response.data;
 			$scope.processing = false;
 		});
@@ -28,7 +28,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		$scope.currentPage = newPage;
 		if ($scope.action == 'list') {
 			var showRows = Paginator.getLines($scope.componentName);
-			Users.all(showRows, $scope.currentPage).then(function(response) {
+			Users.all(showRows, $scope.currentPage, $scope.user.id).then(function(response) {
 				$scope.usersList = response.data;
 			});
 		}
