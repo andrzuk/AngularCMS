@@ -132,7 +132,13 @@ var player = {
 	name: null,
 	score: 0,
 	showInput: function() {
-		$('div#player-modal').modal('show');
+		$('div#player-modal').modal('show').on('shown.bs.modal', function() {
+			$('div#player-modal input#player-name').focus().keypress(function(event) {
+				if (event.keyCode == 13) {
+					$('button#save-player-name').click();
+				}
+			});
+		});
 	},
 	getName: function() {
 		if (!this.name) {
@@ -311,7 +317,7 @@ $("select#period").on('change', function() {
 });
 
 $("button#save-player-name").on('click', function() {
-	player.name = $("#player-name").val().trim();
+	player.name = $("#player-name").val().trim().substring(0, 20);
 	player.getName();
 });
 
