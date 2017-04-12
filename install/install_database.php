@@ -62,6 +62,8 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			DROP TABLE IF EXISTS `settings`;
 			DROP TABLE IF EXISTS `users`;
 			DROP TABLE IF EXISTS `visitors`;
+			DROP TABLE IF EXISTS `stat_ip`;
+			DROP TABLE IF EXISTS `stat_main`;
 			DROP TABLE IF EXISTS `_game_scores`;
 		";
 		$statement = $db_connection->prepare($query);
@@ -70,14 +72,14 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 
 	$query = "
 		CREATE TABLE `access_levels` (
-			`id` int(10) unsigned NOT NULL,
+			`id` int(11) unsigned NOT NULL,
 			`resource` varchar(64) NOT NULL,
 			`description` varchar(128) NOT NULL,
 			`mask_a` tinyint(1) NOT NULL,
 			`mask_o` tinyint(1) NOT NULL,
 			`mask_u` tinyint(1) NOT NULL,
 			`mask_g` tinyint(1) NOT NULL
-			) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -137,13 +139,14 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(51, 'restore_page', 'Przywracanie archiwum strony', 1, 1, 0, 0),
 			(52, 'get_visitors_list', 'Lista odwiedzin', 1, 1, 0, 0),
 			(53, 'get_visitor', 'Informacja o odwiedzinach', 1, 1, 0, 0),
-			(54, 'get_style', 'Pobranie zawartości pliku stylów', 1, 0, 0, 0),
-			(55, 'update_style', 'Zapis zawartości stylów do pliku', 1, 0, 0, 0),
-			(56, 'get_script', 'Pobranie zawartości pliku skryptów', 1, 0, 0, 0),
-			(57, 'update_script', 'Zapis zawartości skryptów do pliku', 1, 0, 0, 0),
-			(58, 'get_found_list', 'Pobieranie listy znalezionych stron dla usługi wyszukiwania', 0, 0, 0, 1),
-			(59, 'get_searches_list', 'Pobieranie listy wyszukiwanych przez użytkowników fraz', 1, 1, 0, 0),
-			(60, 'delete_search', 'Usuwanie wyszukiwanych przez użytkowników fraz', 1, 0, 0, 0);
+			(54, 'get_statistics', 'Statystyki odwiedzin', 1, 1, 0, 0),
+			(55, 'get_style', 'Pobranie zawartości pliku stylów', 1, 0, 0, 0),
+			(56, 'update_style', 'Zapis zawartości stylów do pliku', 1, 0, 0, 0),
+			(57, 'get_script', 'Pobranie zawartości pliku skryptów', 1, 0, 0, 0),
+			(58, 'update_script', 'Zapis zawartości skryptów do pliku', 1, 0, 0, 0),
+			(59, 'get_found_list', 'Pobieranie listy znalezionych stron dla usługi wyszukiwania', 0, 0, 0, 1),
+			(60, 'get_searches_list', 'Pobieranie listy wyszukiwanych przez użytkowników fraz', 1, 1, 0, 0),
+			(61, 'delete_search', 'Usuwanie wyszukiwanych przez użytkowników fraz', 1, 0, 0, 0);
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -220,7 +223,8 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		(57, 1, 57, 1),
 		(58, 1, 58, 1),
 		(59, 1, 59, 1),
-		(60, 1, 60, 1);
+		(60, 1, 60, 1),
+		(61, 1, 61, 1);
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -262,7 +266,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			`visible` tinyint(1) NOT NULL,
 			`target` tinyint(1) NOT NULL,
 			`modified` datetime NOT NULL
-			) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -284,7 +288,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			`picture_width` int(11) NOT NULL,
 			`picture_height` int(11) NOT NULL,
 			`modified` datetime NOT NULL
-			) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -318,7 +322,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			`requested` tinyint(1) NOT NULL,
 			`send_date` datetime NOT NULL,
 			`close_date` datetime NOT NULL
-			) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -335,7 +339,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			`author_id` int(11) unsigned NOT NULL,
 			`visible` tinyint(1) NOT NULL,
 			`modified` datetime NOT NULL
-			) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -351,13 +355,13 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 
 	$query = "
 		CREATE TABLE `roles` (
-			`id` int(10) unsigned NOT NULL,
+			`id` int(11) unsigned NOT NULL,
 			`name` varchar(16) NOT NULL,
 			`mask_a` tinyint(1) NOT NULL,
 			`mask_o` tinyint(1) NOT NULL,
 			`mask_u` tinyint(1) NOT NULL,
 			`mask_g` tinyint(1) NOT NULL
-			) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -374,12 +378,12 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 
 	$query = "
 		CREATE TABLE `searches` (
-			`id` int(10) unsigned NOT NULL,
+			`id` int(11) unsigned NOT NULL,
 			`user_ip` varchar(20) NOT NULL,
 			`search_text` text CHARACTER SET utf8 NOT NULL,
 			`results` int(11) NOT NULL,
 			`search_date` datetime NOT NULL
-			) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -391,7 +395,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			`key_value` text NOT NULL,
 			`meaning` varchar(128) DEFAULT NULL,
 			`modified` datetime NOT NULL
-			) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -454,7 +458,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			`active` tinyint(1) NOT NULL,
 			`logged_in` datetime NOT NULL,
 			`token` varchar(255) NOT NULL
-			) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -476,7 +480,32 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			`http_referer` text,
 			`request_uri` text NOT NULL,
 			`visited` datetime NOT NULL
-			) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	";
+	$statement = $db_connection->prepare($query);
+	$statement->execute();
+
+	$query = "
+		CREATE TABLE `stat_ip` (
+		  `id` int(11) UNSIGNED NOT NULL,
+		  `date` date NOT NULL,
+		  `ip` varchar(15) NOT NULL,
+		  `counter` int(11) UNSIGNED NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	";
+	$statement = $db_connection->prepare($query);
+	$statement->execute();
+
+	$query = "
+		CREATE TABLE `stat_main` (
+		  `id` int(11) UNSIGNED NOT NULL,
+		  `date` date NOT NULL,
+		  `start` int(11) UNSIGNED NOT NULL,
+		  `contact` int(11) UNSIGNED NOT NULL,
+		  `admin` int(11) UNSIGNED NOT NULL,
+		  `login` int(11) UNSIGNED NOT NULL,
+		  `register` int(11) UNSIGNED NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -545,6 +574,14 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		ALTER TABLE `visitors`
 		  ADD PRIMARY KEY (`id`);
 
+		ALTER TABLE `stat_ip`
+		  ADD PRIMARY KEY (`id`),
+		  ADD KEY `date` (`date`);
+		  
+		ALTER TABLE `stat_main`
+		  ADD PRIMARY KEY (`id`),
+		  ADD KEY `date` (`date`);
+		  
 		ALTER TABLE `_game_scores`
 		  ADD PRIMARY KEY (`id`),
 		  ADD UNIQUE KEY `player` (`player`,`ip`);
@@ -554,10 +591,10 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 
 	$query = "
 		ALTER TABLE `access_levels`
-		  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=61;
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=62;
 
 		ALTER TABLE `access_rights`
-		  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=61;
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=62;
 
 		ALTER TABLE `archives`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
@@ -575,7 +612,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 
 		ALTER TABLE `roles`
-		  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 
 		ALTER TABLE `searches`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
@@ -587,6 +624,12 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 
 		ALTER TABLE `visitors`
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+
+		ALTER TABLE `stat_ip`
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+
+		ALTER TABLE `stat_main`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 		ALTER TABLE `_game_scores`

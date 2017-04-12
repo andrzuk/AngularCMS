@@ -14,5 +14,9 @@ angular.module('visitorsService', [])
 		return $http.get(config.apiUrl + componentName + '/get_visitor.php?id=' + id);
 	};
 
+	visitorsFactory.statistics = function() {
+		return $http.get(config.apiUrl + componentName + '/get_statistics.php');
+	};
+
 	return visitorsFactory;
 }]);

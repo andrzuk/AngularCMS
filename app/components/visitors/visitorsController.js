@@ -1,4 +1,4 @@
-angular.module('visitorsController', ['visitorsService', 'config', 'paginService'])
+angular.module('visitorsController', ['visitorsService', 'config', 'paginService', 'chart.js'])
 
 .controller('VisitorsController', ['$scope', 'Visitors', 'Paginator', function($scope, Visitors, Paginator) {
 	
@@ -35,6 +35,34 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		$scope.state = null;
 		Visitors.one(id).then(function(response) {
 			$scope.visitorView = response.data;
+		});
+	};
+
+	$scope.viewChart = function() {
+		$scope.action = 'chart';
+		$scope.state = null;
+		$scope.processing = true;
+		Visitors.statistics().then(function(response) {
+			$scope.statisticsData = response.data;
+			$scope.labels = [];
+			$scope.series = ['Unique Visitors', 'Navigations Count'];
+			$scope.colors = ['#97BBCD', '#F2C099'];
+			$scope.data = [[], []];
+			angular.forEach($scope.statisticsData, function(value, key) {
+				$scope.labels.push(value.date);
+				$scope.data[0].push(value.count);
+				$scope.data[1].push(value.sum);
+			});
+			$scope.datasetOverride = [{ yAxisID: 'y-axis-left' }, { yAxisID: 'y-axis-right' }];
+			$scope.options = {
+				scales: {
+					yAxes: [
+						{ id: 'y-axis-left', type: 'linear', display: true, position: 'left' },
+						{ id: 'y-axis-right', type: 'linear', display: true, position: 'right' }
+					]
+				}
+			};
+			$scope.processing = false;
 		});
 	};
 
