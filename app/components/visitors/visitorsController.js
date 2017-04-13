@@ -43,12 +43,11 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		$scope.state = null;
 		$scope.processing = true;
 		Visitors.statistics().then(function(response) {
-			$scope.statisticsData = response.data;
 			$scope.labels = [];
 			$scope.series = ['Unique Visitors', 'Navigations Count'];
 			$scope.colors = ['#97BBCD', '#F2C099'];
 			$scope.data = [[], []];
-			angular.forEach($scope.statisticsData, function(value, key) {
+			angular.forEach(response.data, function(value, key) {
 				$scope.labels.push(value.date);
 				$scope.data[0].push(value.count);
 				$scope.data[1].push(value.sum);

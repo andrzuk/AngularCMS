@@ -16,7 +16,7 @@
 							</div>
 							<div class="col-sm-8 text-right buttons">
 								<a href="/searches" class="btn btn-warning">Wyszukiwania</a>
-								<a href="#" class="btn btn-primary" ng-click="viewChart()">Wykres</a>
+								<a href="#" class="btn btn-primary" ng-click="viewChart()">Wykresy</a>
 								<a href="/admin" class="btn btn-danger">Zamknij</a>
 							</div>
 						</div>
@@ -109,13 +109,13 @@
 						<div class="panel-heading">Wizyty użytkowników oraz ilość nawigacji</div>
 						<div class="panel-body">
 							<div ng-if="processing">
-								<div class="screen-centered">
-									<div class="text-center">
-										<div class="loading"><img src="public/img/loader.gif"></div>
-									</div>
+								<div class="text-center">
+									<div class="loading"><img src="public/img/loader.gif"></div>
 								</div>
 							</div>
-							<canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors"></canvas>
+							<div ng-if="!processing">
+								<canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors"></canvas>
+							</div>
 						</div>
 						<div class="panel-footer text-center">
 							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelVisitor()" value="Anuluj">
