@@ -191,6 +191,14 @@ td.loading {
 	height: 100px;
 }
 
+td.loading > img {
+	padding: 55px;
+}
+
+div.loading > img {
+	padding: 100px;
+}
+
 table.table-bordered > tbody > tr.table-header > th {
 	background-color: #D9EDF7;
 	line-height: 3.0em;
