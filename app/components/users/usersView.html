@@ -26,20 +26,22 @@
 									<th>Login</th>
 									<th>Email</th>
 									<th>Role</th>
+									<th>Registered</th>
 									<th>Logged</th>
 									<th>Token</th>
 									<th class="text-center">Action</th>
 								</tr>
 								<tr ng-if="processing">
-									<td colspan="7" class="loading"><img src="public/img/loader.gif"></td>
+									<td colspan="8" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
-								<tr ng-repeat="userItem in usersList | filter:searchValue" class="{{ userItem.id == user.id ? 'green-bold' : (userItem.active == 1 ? 'blue' : 'red') }}">
+								<tr ng-if="!processing" ng-repeat="userItem in usersList | filter:searchValue" class="{{ userItem.id == user.id ? 'green-bold' : (userItem.active == 1 ? 'blue' : 'red') }}">
 									<td>{{ userItem.id }}</td>
 									<td>{{ userItem.login }}</td>
 									<td>{{ userItem.email }}</td>
 									<td>{{ roles[userItem.role - 1].name }}</td>
+									<td>{{ userItem.registered }}</td>
 									<td>{{ userItem.logged_in }}</td>
-									<td>{{ userItem.token | limitTo:24 }}<span ng-if="userItem.token.length > 24">...</span></td>
+									<td>{{ userItem.token | limitTo:10 }}<span ng-if="userItem.token.length > 10">...</span></td>
 									<td class="action">
 										<a href="#" class="btn btn-info btn-xs" ng-click="editUser(userItem.id)">Edytuj</a>
 										<a href="#" class="btn btn-warning btn-xs" ng-click="changePassword(userItem.id)">Hasło</a>
@@ -49,7 +51,7 @@
 									</td>
 								</tr>
 								<tr ng-if="!usersList.length && !processing">
-									<td colspan="7">
+									<td colspan="8">
 										<div class="content-center">
 											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
 											<div class="no-results">(Brak wyników)</div>
@@ -186,7 +188,7 @@
 								<tr ng-if="processing">
 									<td colspan="5" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
-								<tr ng-repeat="right in rightsList | filter:rightsValue">
+								<tr ng-if="!processing" ng-repeat="right in rightsList | filter:rightsValue">
 									<td>{{ right.id }}</td>
 									<td>{{ right.resource }}</td>
 									<td>{{ right.description }}</td>

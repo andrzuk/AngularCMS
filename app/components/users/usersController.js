@@ -57,6 +57,8 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 			$scope.processing = true;
 			$scope.userNew.author = $scope.user.id;
 			Users.add($scope.userNew).then(function(response) {
+				$scope.message = response.data.message;
+				$scope.processing = false;
 				if (response.data.success) {
 					$scope.userNew = null;
 					$scope.action = 'list';
@@ -67,8 +69,6 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 					$scope.action = 'add';
 					$scope.state = 'error';
 				}
-				$scope.message = response.data.message;
-				$scope.processing = false;
 			});
 		}
 	};
@@ -128,10 +128,10 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 				else {
 					$scope.state = 'error';
 				}
-				$scope.getUsers();
 				$scope.action = 'list';
-				$scope.message = response.data.message;
 				$scope.processing = false;
+				$scope.message = response.data.message;
+				$scope.getUsers();
 			});
 		}
 	};

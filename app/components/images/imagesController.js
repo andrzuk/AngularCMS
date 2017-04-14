@@ -66,6 +66,8 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 		if ($scope.imageNew) {
 			$scope.processing = true;
 			Images.add($scope.imageNew).then(function(response) {
+				$scope.message = response.data.message;
+				$scope.processing = false;
 				if (response.data.success) {
 					$scope.imageNew = null;
 					$scope.action = 'list';
@@ -76,8 +78,6 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 					$scope.action = 'add';
 					$scope.state = 'error';
 				}
-				$scope.message = response.data.message;
-				$scope.processing = false;
 			});
 		}
 	};
@@ -130,10 +130,10 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 				else {
 					$scope.state = 'error';
 				}
-				$scope.getImages();
 				$scope.action = 'list';
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				$scope.getImages();
 			});
 		}
 	};

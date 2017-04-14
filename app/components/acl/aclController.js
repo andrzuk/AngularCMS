@@ -41,6 +41,8 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 		if ($scope.aclNew) {
 			$scope.processing = true;
 			Acl.add($scope.aclNew).then(function(response) {
+				$scope.message = response.data.message;
+				$scope.processing = false;
 				if (response.data.success) {
 					$scope.aclNew = null;
 					$scope.action = 'list';
@@ -51,8 +53,6 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 					$scope.action = 'add';
 					$scope.state = 'error';
 				}
-				$scope.message = response.data.message;
-				$scope.processing = false;
 			});
 		}
 	};
@@ -107,10 +107,10 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 				else {
 					$scope.state = 'error';
 				}
-				$scope.getAcl();
 				$scope.action = 'list';
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				$scope.getAcl();
 			});
 		}
 	};

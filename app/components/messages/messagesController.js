@@ -45,6 +45,8 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		if ($scope.messageEdit) {
 			$scope.processing = true;
 			Messages.update($scope.messageEdit).then(function(response) {
+				$scope.message = response.data.message;
+				$scope.processing = false;
 				if (response.data.success) {
 					$scope.messageEdit = null;
 					$scope.action = 'list';
@@ -55,8 +57,6 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 					$scope.action = 'edit';
 					$scope.state = 'error';
 				}
-				$scope.message = response.data.message;
-				$scope.processing = false;
 			});
 		}
 	};
@@ -76,10 +76,10 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 				else {
 					$scope.state = 'error';
 				}
-				$scope.getMessages($scope.mode);
 				$scope.action = 'list';
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				$scope.getMessages($scope.mode);
 			});
 		}
 	};

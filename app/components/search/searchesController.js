@@ -44,10 +44,10 @@ angular.module('searchesController', ['searchesService', 'config', 'paginService
 				else {
 					$scope.state = 'error';
 				}
-				$scope.getSearches();
 				$scope.action = 'list';
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				$scope.getSearches();
 			});
 		}
 	};

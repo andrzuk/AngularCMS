@@ -38,8 +38,8 @@ if (!empty($credentials['login']) && !empty($credentials['email']) && !empty($cr
 			$active = 1;
 			$token = hash('sha256', uniqid());
 
-			$query = ' INSERT INTO users (login, password, email, role, active, logged_in, token)' .
-			'          VALUES (:login, :password, :email, :role, :active, NOW(), :token)';
+			$query = ' INSERT INTO users (login, password, email, role, active, registered, logged_in, token)' .
+			'          VALUES (:login, :password, :email, :role, :active, NOW(), NOW(), :token)';
 
 			$statement = $db_connection->prepare($query);
 

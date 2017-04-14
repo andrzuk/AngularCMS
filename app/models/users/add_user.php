@@ -37,8 +37,8 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 
 			if ($row_item['counter'] == 0)
 			{
-				$query = ' INSERT INTO users (login, password, email, role, active, logged_in, token)' .
-				'          VALUES (:login, :password, :email, :role, :active, NOW(), :token)';
+				$query = ' INSERT INTO users (login, password, email, role, active, registered, logged_in, token)' .
+				'          VALUES (:login, :password, :email, :role, :active, NOW(), NOW(), :token)';
 
 				$statement = $dbc->prepare($query);
 

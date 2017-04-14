@@ -33,7 +33,7 @@
 								<tr ng-if="processing">
 									<td colspan="7" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
-								<tr ng-repeat="category in categoriesList | filter:searchValue" class="{{ category.visible == 1 ? 'blue' : 'red' }}">
+								<tr ng-if="!processing" ng-repeat="category in categoriesList | filter:searchValue" class="{{ category.visible == 1 ? 'blue' : 'red' }}">
 									<td>{{ category.id }}</td>
 									<td>{{ category.item_order }}</td>
 									<td>{{ category.caption }}</td>

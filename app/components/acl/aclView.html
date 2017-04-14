@@ -34,7 +34,7 @@
 								<tr ng-if="processing">
 									<td colspan="8" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
-								<tr ng-repeat="acl in aclList | filter:searchValue">
+								<tr ng-if="!processing" ng-repeat="acl in aclList | filter:searchValue">
 									<td>{{ acl.id }}</td>
 									<td>{{ acl.resource }}</td>
 									<td>{{ acl.description }}</td>

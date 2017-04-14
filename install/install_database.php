@@ -456,6 +456,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			`email` varchar(128) NOT NULL,
 			`role` smallint(3) unsigned NOT NULL,
 			`active` tinyint(1) NOT NULL,
+			`registered` datetime NOT NULL,
 			`logged_in` datetime NOT NULL,
 			`token` varchar(255) NOT NULL
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -464,8 +465,8 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement->execute();
 
 	$query = "
-		INSERT INTO `users` (`id`, `login`, `password`, `email`, `role`, `active`, `logged_in`, `token`) VALUES
-			(1, :admin_name, :admin_password, :admin_email, 1, 1, NOW(), 'Installed');
+		INSERT INTO `users` (`id`, `login`, `password`, `email`, `role`, `active`, `registered`, `logged_in`, `token`) VALUES
+			(1, :admin_name, :admin_password, :admin_email, 1, 1, NOW(), NOW(), 'Installed');
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->bindParam(':admin_name', $admin_name, PDO::PARAM_STR);

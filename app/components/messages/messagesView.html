@@ -35,7 +35,7 @@
 								<tr ng-if="processing">
 									<td colspan="7" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
-								<tr ng-repeat="message in messagesList | filter:searchValue" class="{{ message.requested == 1 ? 'requested' : 'commited' }}">
+								<tr ng-if="!processing" ng-repeat="message in messagesList | filter:searchValue" class="{{ message.requested == 1 ? 'requested' : 'commited' }}">
 									<td>{{ message.id }}</td>
 									<td>{{ message.client_ip }}</td>
 									<td>{{ message.client_name }}</td>

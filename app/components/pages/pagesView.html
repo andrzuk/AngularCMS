@@ -33,7 +33,7 @@
 								<tr ng-if="processing">
 									<td colspan="7" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
-								<tr ng-repeat="page in pagesList | filter:searchValue" class="{{ page.visible == 1 ? 'blue' : 'red' }}">
+								<tr ng-if="!processing" ng-repeat="page in pagesList | filter:searchValue" class="{{ page.visible == 1 ? 'blue' : 'red' }}">
 									<td>{{ page.id }}</td>
 									<td>{{ page.category_id > 0 ? page.category_name : '(Nie powiązana)' }} <button type="button" class="btn btn-success btn-xs" ng-if="page.main_page == '1'"><span class="glyphicon glyphicon-home"></span></button> <button type="button" class="btn btn-warning btn-xs" ng-if="page.contact_page == '1'"><span class="glyphicon glyphicon-envelope"></span></button></td>
 									<td>{{ page.title }}</td>

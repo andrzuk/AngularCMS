@@ -39,6 +39,8 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 		if ($scope.settingNew) {
 			$scope.processing = true;
 			Settings.add($scope.settingNew).then(function(response) {
+				$scope.message = response.data.message;
+				$scope.processing = false;
 				if (response.data.success) {
 					$scope.settingNew = null;
 					$scope.action = 'list';
@@ -49,8 +51,6 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 					$scope.action = 'add';
 					$scope.state = 'error';
 				}
-				$scope.message = response.data.message;
-				$scope.processing = false;
 			});
 		}
 	};
@@ -108,10 +108,10 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 				else {
 					$scope.state = 'error';
 				}
-				$scope.getSettings();
 				$scope.action = 'list';
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				$scope.getSettings();
 			});
 		}
 	};

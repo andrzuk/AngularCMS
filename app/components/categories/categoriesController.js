@@ -39,6 +39,8 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 		if ($scope.categoryNew) {
 			$scope.processing = true;
 			Categories.add($scope.categoryNew).then(function(response) {
+				$scope.message = response.data.message;
+				$scope.processing = false;
 				if (response.data.success) {
 					$scope.categoryNew = null;
 					$scope.action = 'list';
@@ -49,8 +51,6 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 					$scope.action = 'add';
 					$scope.state = 'error';
 				}
-				$scope.message = response.data.message;
-				$scope.processing = false;
 			});
 		}
 	};
@@ -108,10 +108,10 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 				else {
 					$scope.state = 'error';
 				}
-				$scope.getCategories();
 				$scope.action = 'list';
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				$scope.getCategories();
 			});
 		}
 	};
@@ -119,6 +119,8 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 	$scope.moveCategory = function(id, direction) {
 		$scope.processing = true;
 		Categories.move(id, direction).then(function(response) {
+			$scope.message = response.data.message;
+			$scope.processing = false;
 			if (response.data.success) {
 				$scope.state = 'info';
 				$scope.getCategories();
@@ -126,8 +128,6 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 			else {
 				$scope.state = 'error';
 			}
-			$scope.message = response.data.message;
-			$scope.processing = false;
 		});
 	};
 

@@ -58,6 +58,8 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		if ($scope.pageNew) {
 			$scope.processing = true;
 			Pages.add($scope.pageNew).then(function(response) {
+				$scope.message = response.data.message;
+				$scope.processing = false;
 				if (response.data.success) {
 					$scope.pageNew = null;
 					$scope.action = 'list';
@@ -68,8 +70,6 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 					$scope.action = 'add';
 					$scope.state = 'error';
 				}
-				$scope.message = response.data.message;
-				$scope.processing = false;
 			});
 		}
 	};
@@ -157,6 +157,8 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		if ($scope.pageArchive) {
 			$scope.processing = true;
 			Pages.restore($scope.pageArchive).then(function(response) {
+				$scope.message = response.data.message;
+				$scope.processing = false;
 				if (response.data.success) {
 					$scope.pageArchive = null;
 					$scope.action = 'list';
@@ -167,8 +169,6 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 					$scope.action = 'archive';
 					$scope.state = 'error';
 				}
-				$scope.message = response.data.message;
-				$scope.processing = false;
 			});
 		}
 	};
@@ -188,10 +188,10 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 				else {
 					$scope.state = 'error';
 				}
-				$scope.getPages();
 				$scope.action = 'list';
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				$scope.getPages();
 			});
 		}
 	};
