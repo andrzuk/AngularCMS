@@ -16,7 +16,7 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 	$date_from = date("Y-m-d", strtotime($visitors_period));
 	$date_to = date("Y-m-d", time());
 
-	$query = 	"SELECT date AS date, COUNT(*) AS count, SUM(counter) AS sum" .
+	$query = 	"SELECT substring(date, 6, 5) AS date, COUNT(*) AS count, SUM(counter) AS sum" .
 				" FROM stat_ip" .
 				" WHERE date BETWEEN '".$date_from."' AND '".$date_to."'" . 
 				" AND ip NOT IN (". $visitors_excluded .")" .

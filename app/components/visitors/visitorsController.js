@@ -48,7 +48,7 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 			$scope.colors = ['#97BBCD', '#F2C099'];
 			$scope.data = [[], []];
 			angular.forEach(response.data, function(value, key) {
-				$scope.labels.push(value.date);
+				$scope.labels.push(key % 4 ? '' : value.date);
 				$scope.data[0].push(value.count);
 				$scope.data[1].push(value.sum);
 			});
