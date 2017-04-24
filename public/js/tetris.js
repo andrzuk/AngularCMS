@@ -174,6 +174,7 @@ var gameFigure = {
 		this.drop = false;
 		stepTime = playTime;
 		this.counter++;
+		gameArea.scores += gameArea.level;
 		playGame = true;
 		$('#blocks').text('Bloczek: ' + gameFigure.counter.toString());
 		$('#level').text('Poziom: ' + gameArea.level.toString());
