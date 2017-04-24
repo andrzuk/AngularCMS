@@ -237,28 +237,31 @@ var gameFigure = {
 		}
 	},
 	rotate: function(direction) {
-		var map = [
-			[this.shape.map[0][0], this.shape.map[0][1], this.shape.map[0][2]],
-			[this.shape.map[1][0], this.shape.map[1][1], this.shape.map[1][2]],
-			[this.shape.map[2][0], this.shape.map[2][1], this.shape.map[2][2]],
-		];
+		var map = [], row = [];
+		for (i = 0; i < this.size; i++) {
+			row = [];
+			for (j = 0; j < this.size; j++) {
+				row.push(this.shape.map[i][j]);
+			}
+			map.push(row);
+		}
 		if (direction == 'left') {
 			gameArea.clearFigure(this);
-			this.shape.map = [
-				[map[2][0], map[1][0], map[0][0]],
-				[map[2][1], map[1][1], map[0][1]],
-				[map[2][2], map[1][2], map[0][2]],
-			];
+			for (i = 0; i < this.size; i++) {
+				for (j = 0; j < this.size; j++) {
+					this.shape.map[i][j] = map[this.size - j - 1][i];
+				}
+			}
 			if (gameArea.checkCollision(this)) this.shape.map = map;
 			gameArea.paintFigure(this);
 		}
 		if (direction == 'right') {
 			gameArea.clearFigure(this);
-			this.shape.map = [
-				[map[0][2], map[1][2], map[2][2]],
-				[map[0][1], map[1][1], map[2][1]],
-				[map[0][0], map[1][0], map[2][0]],
-			];
+			for (i = 0; i < this.size; i++) {
+				for (j = 0; j < this.size; j++) {
+					this.shape.map[i][j] = map[j][this.size - i - 1];
+				}
+			}
 			if (gameArea.checkCollision(this)) this.shape.map = map;
 			gameArea.paintFigure(this);
 		}
