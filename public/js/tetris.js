@@ -13,34 +13,38 @@ canvas.height = parseInt($("canvas#game-canvas").css("height"));
 var shapes = [
 	{
 		map: [[0, 0, 0], [1, 1, 1], [0, 0, 0]],
-		color: '#c00'
+		color: '#cc0000'
 	},
 	{
 		map: [[1, 1, 0], [1, 1, 0], [0, 0, 0]],
-		color: '#09f'
+		color: '#0099ff'
 	},
 	{
 		map: [[1, 0, 0], [1, 1, 0], [0, 1, 0]],
-		color: '#0c0'
+		color: '#00cc00'
 	},
 	{
 		map: [[0, 0, 1], [0, 1, 1], [0, 1, 0]],
-		color: '#c0c'
+		color: '#cc00cc'
 	},
 	{
 		map: [[0, 1, 0], [0, 1, 0], [0, 1, 1]],
-		color: '#fc3'
+		color: '#ffcc33'
 	},
 	{
 		map: [[0, 1, 0], [0, 1, 0], [1, 1, 0]],
-		color: '#f93'
+		color: '#ff9933'
 	},
 	{
 		map: [[0, 1, 0], [1, 1, 1], [0, 0, 0]],
-		color: '#96c'
+		color: '#9966cc'
+	},
+	{
+		map: [[0, 0, 0], [1, 1, 1], [1, 0, 1]],
+		color: '#cc6600'
 	},
 ];
-var playGame = false, stepTime, playTime = 500;
+var playGame = false, stepTime, playTime = 500, localStorageKeyName = 'Tetris_Maps';
 
 var gameArea = {
 	cellSize: 20,
@@ -285,33 +289,288 @@ var gameFigure = {
 	},
 };
 
-document.addEventListener('keydown', function(event) {
-	if (event.keyCode == 37) {
-		gameFigure.move('left');
-	}
-	if (event.keyCode == 39) {
-		gameFigure.move('right');
-	}
-	if (event.keyCode == 38) {
-		gameFigure.move('up');
-	}
-	if (event.keyCode == 40) {
-		gameFigure.move('down');
-	}
-	if (event.keyCode == 33) {
-		gameFigure.rotate('left');
-	}
-	if (event.keyCode == 34) {
-		gameFigure.rotate('right');
-	}
-	if (event.keyCode == 32) {
-		if (!gameFigure.drop) {
-			playTime = stepTime;
-			stepTime = 20;
-			gameFigure.drop = true;
+var mapEditor = {
+	customMaps: [],
+	customMap: [],
+	customColors: [], 
+	customColor: '#336699',
+	loadMaps: function() {
+		this.customMaps = [];
+		for (item = 0; item < shapes.length; item++) {
+			this.customMap = [];
+			for (j = 0; j < shapes[item].map.length; j++) {
+				var row = [];
+				for (i = 0; i < shapes[item].map.length; i++) {
+					row.push(shapes[item].map[i][j]);
+				}
+				this.customMap.push(row);
+			}
+			this.customMaps.push(this.customMap);
+		}
+		var size = this.customMaps[this.customMaps.length - 1].length;
+		this.customMap = [];
+		for (j = 0; j < size; j++) {
+			var row = [];
+			for (i = 0; i < size; i++) {
+				row.push(0);
+			}
+			this.customMap.push(row);
+		}
+		var mapItems = '';
+		for (item = 0; item < this.customMaps.length; item++) {
+			size = this.customMaps[item].length;
+			this.customColors[item] = shapes[item].color;
+			var mapItem = '';
+			mapItem += '<tr><td class="lp">' + (item + 1).toString() + '.' + '</td><td class="map"><table>';
+			for (j = 0; j < this.customMaps[item].length; j++) {
+				mapItem += '<tr>';
+				for (i = 0; i < this.customMaps[item].length; i++) {
+					cellStyle = this.customMaps[item][i][j] ? 'background: ' + shapes[item].color : '';
+					mapItem += '<td><button id="map-' + item + '-' + i + '-' + j + '" class="btn btn-default map-element" style="' + cellStyle + '"></button></td>';
+				}
+				mapItem += '</tr>';
+			}
+			mapItem += '</table></td><td class="color"><input type="color" id="colorpicker-' + item + '" onchange="mapEditor.setColor(this.id, this.value)" value="' + shapes[item].color + '"></td><td class="actions"><button id="save-' + item + '" class="btn btn-primary update-map">Zapisz</button>&nbsp;<button id="delete-' + item + '" class="btn btn-warning delete-map">Usuń</button></td></tr>';
+			mapItems += mapItem;
+		}
+		var newItem = '';
+		newItem += '<tr><td class="lp">-</td><td class="map"><table>';
+		for (j = 0; j < size; j++) {
+			newItem += '<tr>';
+			for (i = 0; i < size; i++) {
+				newItem += '<td><button id="map-new-' + i + '-' + j + '" class="btn btn-default map-element"></button></td>';
+			}
+			newItem += '</tr>';
+		}
+		newItem += '</table></td><td class="color"><input type="color" id="colorpicker-new" onchange="mapEditor.setColor(this.id, this.value)" value="' + mapEditor.customColor + '"></td><td class="actions"><button id="add-map" class="btn btn-success disabled">Dodaj do kolekcji</button></td></tr>';
+		var mapTable = '';
+		mapTable += '<table id="maps-edit" align="center" class="table-bordered"><tr><th class="table-header">Lp.</th><th class="table-header">Mapa</th><th class="table-header">Kolor</th><th class="table-header">Akcje</th></tr>';
+		mapTable += mapItems;
+		mapTable += newItem;
+		mapTable += '</table>';
+		$('div#maps-table').html(mapTable);
+		$('button.map-element').bind('click', function() {
+			var id = $(this).attr('id');
+			var parts = id.split('-');
+			var item = parts[1], x = parts[2], y = parts[3];
+			if (item == 'new') {
+				mapEditor.customMap[x][y] = 1 - mapEditor.customMap[x][y];
+				var cellColor = mapEditor.customMap[x][y] ? mapEditor.customColor : '';
+				$('button#map-new-' + x + '-' + y).css({ 'background': cellColor });
+				var filled = false;
+				for (i = 0; i < mapEditor.customMap.length; i++) {
+					for (j = 0; j < mapEditor.customMap.length; j++) {
+						if (mapEditor.customMap[i][j]) {
+							filled = true;
+						}
+					}
+				}
+				if (filled) {
+					$('button#add-map').removeClass('disabled');
+				}
+				else {
+					$('button#add-map').addClass('disabled');
+				}
+			}
+			else {
+				mapEditor.customMaps[item][x][y] = 1 - mapEditor.customMaps[item][x][y];
+				var cellColor = mapEditor.customMaps[item][x][y] ? shapes[item].color : '';
+				$('button#map-' + item + '-' + x + '-' + y).css({ 'background': cellColor });
+				var filled = false;
+				for (i = 0; i < mapEditor.customMaps[item].length; i++) {
+					for (j = 0; j < mapEditor.customMaps[item].length; j++) {
+						if (mapEditor.customMaps[item][i][j]) {
+							filled = true;
+						}
+					}
+				}
+				if (filled) {
+					$('button#save-' + item).attr('disabled', false);
+				}
+				else {
+					$('button#save-' + item).attr('disabled', true);
+				}
+			}
+		});
+		$('button#add-map').bind('click', function() {
+			var newMap = [];
+			for (j = 0; j < mapEditor.customMap.length; j++) {
+				var row = [];
+				for (i = 0; i < mapEditor.customMap.length; i++) {
+					row.push(mapEditor.customMap[i][j]);
+				}
+				newMap.push(row);
+			}
+			if (mapEditor.checkUnique(newMap)) {
+				shapes.push({ map: newMap, color: mapEditor.customColor });
+				mapEditor.loadMaps();
+				mapEditor.setMessage('Mapa została pomyślnie dodana do kolekcji.', 'success');
+			}
+			else {
+				mapEditor.setMessage('Taka mapa już istnieje w kolekcji.', 'error');
+			}
+		});
+		$('button.update-map').bind('click', function() {
+			var object = $(this).attr('id');
+			var parts = object.split('-');
+			var id = parts[1];
+			if (mapEditor.checkOthers(mapEditor.customMaps[id], id)) {
+				for (j = 0; j < shapes[id].map.length; j++) {
+					for (i = 0; i < shapes[id].map.length; i++) {
+						shapes[id].map[i][j] = mapEditor.customMaps[id][j][i];
+					}
+				}
+				shapes[id].color = mapEditor.customColors[id];
+				mapEditor.loadMaps();
+				mapEditor.setMessage('Mapa została pomyślnie zapisana.', 'success');
+			}
+			else {
+				mapEditor.setMessage('Taka mapa już istnieje w kolekcji.', 'error');
+			}
+		});
+		$('button.delete-map').bind('click', function() {
+			var object = $(this).attr('id');
+			var parts = object.split('-');
+			var id = parts[1];
+			if (shapes.length > 1) {
+				shapes.splice(id, 1);
+				mapEditor.loadMaps();
+				mapEditor.setMessage('Mapa została pomyślnie usunięta z kolekcji.', 'success');
+			}
+			else {
+				mapEditor.setMessage('Kolekcja musi zawierać przynajmniej jedną mapę.', 'error');
+			}
+		});
+	},
+	checkUnique: function(map) {
+		for (q = 0; q < 4; q++) {
+			map = this.rotateQuarter(map);
+			for (item = 0; item < shapes.length; item++) {
+				var difference = true;
+				for (j = 0; j < shapes[item].map.length; j++) {
+					for (i = 0; i < shapes[item].map.length; i++) {
+						if (map[i][j] != shapes[item].map[i][j]) {
+							difference = false;
+						}
+					}
+				}
+				if (difference) {
+					return false;
+				}
+			}
+		}
+		return true;
+	},
+	checkOthers: function(map, id) {
+		for (q = 0; q < 4; q++) {
+			map = this.rotateQuarter(map);
+			for (item = 0; item < shapes.length; item++) {
+				if (item == id) continue;
+				var difference = true;
+				for (j = 0; j < shapes[item].map.length; j++) {
+					for (i = 0; i < shapes[item].map.length; i++) {
+						if (map[j][i] != shapes[item].map[i][j]) {
+							difference = false;
+						}
+					}
+				}
+				if (difference) {
+					return false;
+				}
+			}
+		}
+		return true;
+	},
+	rotateQuarter: function(map) {
+		var row = [], rotated = [];
+		for (i = 0; i < map.length; i++) {
+			row = [];
+			for (j = 0; j < map.length; j++) {
+				row.push(map[i][j]);
+			}
+			rotated.push(row);
+		}
+		for (i = 0; i < map.length; i++) {
+			for (j = 0; j < map.length; j++) {
+				rotated[i][j] = map[j][map.length - i - 1];
+			}
+		}
+		return rotated;
+	},
+	setColor: function(object, color) {
+		var parts = object.split('-');
+		var id = parts[1];
+		if (id == 'new') {
+			this.customColor = color;
+		}
+		else {
+			this.customColors[id] = color;
+		}
+	},
+	setMessage: function(message, type) {
+		switch (type) {
+			case 'success':
+				$('div#alert-info').text(message);
+				$('div#alert-info').css({ display: 'block' });
+				$('div#alert-danger').css({ display: 'none' });
+				break;
+			case 'error':
+				$('div#alert-danger').text(message);
+				$('div#alert-info').css({ display: 'none' });
+				$('div#alert-danger').css({ display: 'block' });
+				break;
+			default:
+				$('div#alert-info').css({ display: 'none' });
+				$('div#alert-danger').css({ display: 'none' });
+				break;
 		}
 	}
+};
+
+$(document).ready(function() {
+	var data = localStorage.getItem(localStorageKeyName);
+	if (data !== null) {
+		var object = JSON.parse(data);
+		shapes = [];
+		for (i = 0; i < object.maps.length; i++) {
+			shapes.push(object.maps[i]);
+		}
+	}
+	mapEditor.loadMaps();
 });
+
+if (typeof eventsListenerRegistered == 'undefined') {
+	
+	document.addEventListener('keydown', function(event) {
+		if (event.keyCode == 37) {
+			gameFigure.move('left');
+		}
+		if (event.keyCode == 39) {
+			gameFigure.move('right');
+		}
+		if (event.keyCode == 38) {
+			gameFigure.move('up');
+		}
+		if (event.keyCode == 40) {
+			gameFigure.move('down');
+		}
+		if (event.keyCode == 33) {
+			gameFigure.rotate('left');
+		}
+		if (event.keyCode == 34) {
+			gameFigure.rotate('right');
+		}
+		if (event.keyCode == 32) {
+			if (!gameFigure.drop) {
+				playTime = stepTime;
+				stepTime = 20;
+				gameFigure.drop = true;
+			}
+		}
+	});
+	
+	eventsListenerRegistered = true;
+}
 
 $('button#start').on('click', function() {
 	gameArea.init();
@@ -340,5 +599,23 @@ $('button.drop-down').on('click', function() {
 		stepTime = 20;
 		gameFigure.drop = true;
 	}
+});
+
+$('button#map-editor').on('click', function() {
+	$('div#game-play').css({ display: 'none' });
+	$('div#game-map').css({ display: 'block' });
+	mapEditor.setMessage(null, null);
+});
+
+$('button#close-editor').on('click', function() {
+	$('div#game-play').css({ display: 'block' });
+	$('div#game-map').css({ display: 'none' });
+	mapEditor.setMessage(null, null);
+});
+
+$('button#save-maps').on('click', function() {
+	var customMaps = { 'maps': shapes };
+	localStorage.setItem(localStorageKeyName, JSON.stringify(customMaps));
+	$('button#close-editor').click();
 });
 
