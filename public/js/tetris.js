@@ -317,11 +317,15 @@ var mapEditor = {
 			this.customMap.push(row);
 		}
 		var mapItems = '';
+		mapItems += '<div id="maps-container">';
 		for (item = 0; item < this.customMaps.length; item++) {
 			size = this.customMaps[item].length;
 			this.customColors[item] = shapes[item].color;
 			var mapItem = '';
-			mapItem += '<tr><td class="lp">' + (item + 1).toString() + '.' + '</td><td class="map"><table>';
+			mapItem += '<div class="item-container">';
+			mapItem += '<div class="lp">' + (item + 1).toString() + '.' + '</div>';
+			mapItem += '<div class="map">';
+			mapItem += '<table align="center">';
 			for (j = 0; j < this.customMaps[item].length; j++) {
 				mapItem += '<tr>';
 				for (i = 0; i < this.customMaps[item].length; i++) {
@@ -330,11 +334,18 @@ var mapEditor = {
 				}
 				mapItem += '</tr>';
 			}
-			mapItem += '</table></td><td class="color"><input type="color" id="colorpicker-' + item + '" onchange="mapEditor.setColor(this.id, this.value)" value="' + shapes[item].color + '"></td><td class="actions"><button id="save-' + item + '" class="btn btn-primary update-map">Zapisz</button>&nbsp;<button id="delete-' + item + '" class="btn btn-warning delete-map">Usuń</button></td></tr>';
+			mapItem += '</table>';
+			mapItem += '</div>';
+			mapItem += '<div class="color"><input type="color" id="colorpicker-' + item + '" onchange="mapEditor.setColor(this.id, this.value)" value="' + shapes[item].color + '"></div>';
+			mapItem += '<div class="actions"><button id="save-' + item + '" class="btn btn-xs btn-primary update-map">Zapisz</button>&nbsp;<button id="delete-' + item + '" class="btn btn-xs btn-warning delete-map">Usuń</button></div>';
+			mapItem += '</div>';
 			mapItems += mapItem;
 		}
 		var newItem = '';
-		newItem += '<tr><td class="lp">-</td><td class="map"><table>';
+		newItem += '<div class="item-container">';
+		newItem += '<div class="lp">-</div>';
+		newItem += '<div class="map">';
+		newItem += '<table align="center">';
 		for (j = 0; j < size; j++) {
 			newItem += '<tr>';
 			for (i = 0; i < size; i++) {
@@ -342,13 +353,14 @@ var mapEditor = {
 			}
 			newItem += '</tr>';
 		}
-		newItem += '</table></td><td class="color"><input type="color" id="colorpicker-new" onchange="mapEditor.setColor(this.id, this.value)" value="' + mapEditor.customColor + '"></td><td class="actions"><button id="add-map" class="btn btn-success disabled">Dodaj do kolekcji</button></td></tr>';
-		var mapTable = '';
-		mapTable += '<table id="maps-edit" align="center" class="table-bordered"><tr><th class="table-header">Lp.</th><th class="table-header">Mapa</th><th class="table-header">Kolor</th><th class="table-header">Akcje</th></tr>';
-		mapTable += mapItems;
-		mapTable += newItem;
-		mapTable += '</table>';
-		$('div#maps-table').html(mapTable);
+		newItem += '</table>';
+		newItem += '</div>';
+		newItem += '<div class="color"><input type="color" id="colorpicker-new" onchange="mapEditor.setColor(this.id, this.value)" value="' + mapEditor.customColor + '"></div>';
+		newItem += '<div class="actions"><button id="add-map" class="btn btn-xs btn-success disabled">Dodaj do kolekcji</button></div>';
+		newItem += '</div>';
+		mapItems += newItem;
+		mapItems += '</div>';
+		$('div#maps-table').html(mapItems);
 		$('button.map-element').bind('click', function() {
 			var id = $(this).attr('id');
 			var parts = id.split('-');
