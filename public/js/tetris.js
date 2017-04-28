@@ -44,7 +44,7 @@ var shapes = [
 		color: '#cc6600'
 	},
 ];
-var playGame = false, stepTime, playTime = 500, localStorageKeyName = 'Tetris_Maps';
+var playGame = false, stepTime, playTime = 500, localStorageMaps = 'Tetris_Maps', localStorageStats = 'Tetris_Stats';
 
 var gameArea = {
 	cellSize: 20,
@@ -52,9 +52,13 @@ var gameArea = {
 	colsCount: 20,
 	rowsCount: 25,
 	cellColor: "#cde",
+	blockColor: "#666",
 	cellStatus: [],
+	startTime: null,
 	level: 0,
 	scores: 0,
+	record: 0,
+	achieved: '2000-01-01 01:01:01',
 	init: function() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = "#def";
@@ -68,6 +72,7 @@ var gameArea = {
 			}
 			this.cellStatus.push(row);
 		}
+		this.startTime = new Date();
 		this.level = 0;
 		this.scores = 0;
 		gameFigure.counter = 0;
@@ -131,7 +136,12 @@ var gameArea = {
 		for (j = this.rowsCount - 1; j > 0; j--) {
 			for (i = 0; i < this.colsCount; i++) {
 				if (this.cellStatus[i][j]) {
-					this.paintCell(i, j, shapes[this.cellStatus[i][j] - 1].color);
+					if (this.cellStatus[i][j] <= shapes.length) {
+						this.paintCell(i, j, shapes[this.cellStatus[i][j] - 1].color);
+					}
+					else {
+						this.paintCell(i, j, this.blockColor);
+					}
 				}
 				else {
 					this.paintCell(i, j, this.cellColor);
@@ -145,6 +155,47 @@ var gameArea = {
 		this.scores += this.colsCount;
 		if (playTime > 20) playTime -= 10;
 		gameFigure.init();
+	},
+	saveStatistics: function() {
+		if (gameArea.scores > gameArea.record) {
+			gameArea.record = gameArea.scores;
+			gameArea.achieved = gameArea.getDate();
+		}
+		var stats = { 
+			'blocks': gameFigure.counter,
+			'level': gameArea.level,
+			'scores': gameArea.scores,
+			'record': gameArea.record,
+			'achieved': gameArea.achieved,
+			'play_time': gameArea.getTime(),
+			'finished': gameArea.getDate()
+		};
+		localStorage.setItem(localStorageStats, JSON.stringify(stats));
+		$.post("ajax/game/store_stats.php", stats, function(data, status) {
+			var response = JSON.parse(data);
+			gameArea.record = response.record;
+			gameArea.achieved = response.achieved;
+			$('#record').text('Rekord: ' + gameArea.record);
+			$('#achieved').text('(' + gameArea.achieved + ')');
+		});
+	},
+	getDate: function() {
+		var currTime = new Date();
+		var day = currTime.getDate();
+		var month = currTime.getMonth() + 1;
+		var year = currTime.getFullYear();
+		var hours = currTime.getHours();
+		var minutes = currTime.getMinutes();
+		var seconds = currTime.getSeconds();		
+		return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+	},
+	getTime: function() {
+		var currTime = new Date();
+		var minutes = Math.floor((currTime - this.startTime) / 1000 / 60);
+		var seconds = Math.floor((currTime - this.startTime) / 1000 % 60);
+		var minString = minutes < 10 ? "0" + minutes.toString() : minutes.toString();
+		var secString = seconds < 10 ? "0" + seconds.toString() : seconds.toString();
+		return minString + ":" + secString;
 	},
 };
 
@@ -183,8 +234,11 @@ var gameFigure = {
 		$('#blocks').text('Bloczek: ' + gameFigure.counter.toString());
 		$('#level').text('Poziom: ' + gameArea.level.toString());
 		$('#scores').text('Punktów: ' + gameArea.scores.toString());
+		$('#record').text('Rekord: ' + gameArea.record.toString());
+		$('#achieved').text('(' + gameArea.achieved + ')');
 		if (gameArea.checkCollision(this)) {
 			playGame = false;
+			gameArea.saveStatistics();
 			$('div#game-message').text('Gra zakończona.');
 			$('div#game-button').css({ display: 'block' });
 		}
@@ -203,6 +257,7 @@ var gameFigure = {
 		}
 		gameArea.paintFigure(this);
 		$('#position').text('Pozycja: (' + this.position.x.toString() + ', ' + this.position.y.toString() + ')');
+		$('#time').text('Czas: ' + gameArea.getTime());
 		if (collision) {
 			this.settle();
 		}
@@ -274,7 +329,7 @@ var gameFigure = {
 		for (i = 0; i < this.size; i++) {
 			for (j = 0; j < this.size; j++) {
 				if (this.shape.map[i][j]) {
-					gameArea.cellStatus[this.position.x + i][this.position.y + j] = this.shape.map[i][j] * this.index;
+					gameArea.cellStatus[this.position.x + i][this.position.y + j] = this.index;
 				}
 			}
 		}
@@ -540,7 +595,7 @@ var mapEditor = {
 };
 
 $(document).ready(function() {
-	var data = localStorage.getItem(localStorageKeyName);
+	var data = localStorage.getItem(localStorageMaps);
 	if (data !== null) {
 		var object = JSON.parse(data);
 		shapes = [];
@@ -549,6 +604,12 @@ $(document).ready(function() {
 		}
 	}
 	mapEditor.loadMaps();
+	var stats = localStorage.getItem(localStorageStats);
+	if (stats !== null) {
+		var object = JSON.parse(stats);
+		gameArea.record = object.record;
+		gameArea.achieved = object.achieved;
+	}
 });
 
 if (typeof eventsListenerRegistered == 'undefined') {
@@ -627,7 +688,7 @@ $('button#close-editor').on('click', function() {
 
 $('button#save-maps').on('click', function() {
 	var customMaps = { 'maps': shapes };
-	localStorage.setItem(localStorageKeyName, JSON.stringify(customMaps));
+	localStorage.setItem(localStorageMaps, JSON.stringify(customMaps));
 	$('button#close-editor').click();
 });
 
