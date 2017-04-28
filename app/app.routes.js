@@ -99,6 +99,10 @@ angular.module('appRoutes', ['ngRoute', 'ngMeta'])
         templateUrl: 'app/components/search/searchesView.html',
         isProtected: true,
     })
+    .when('/games', {
+        templateUrl: 'app/components/games/gamesView.html',
+        isProtected: true,
+    })
     .otherwise({
         redirectTo: '/'
     });

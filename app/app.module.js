@@ -43,6 +43,8 @@ angular.module('MainApp', [
     'installService',
     'searchesController',
     'searchesService',
+    'gamesController',
+    'gamesService',
     ])
 
 .config(function ($httpProvider) {

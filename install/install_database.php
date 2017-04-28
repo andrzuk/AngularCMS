@@ -147,7 +147,9 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(58, 'update_script', 'Zapis zawartości skryptów do pliku', 1, 0, 0, 0),
 			(59, 'get_found_list', 'Pobieranie listy znalezionych stron dla usługi wyszukiwania', 0, 0, 0, 1),
 			(60, 'get_searches_list', 'Pobieranie listy wyszukiwanych przez użytkowników fraz', 1, 1, 0, 0),
-			(61, 'delete_search', 'Usuwanie wyszukiwanych przez użytkowników fraz', 1, 0, 0, 0);
+			(61, 'delete_search', 'Usuwanie wyszukiwanych przez użytkowników fraz', 1, 0, 0, 0),
+			(62, 'get_games_list', 'Pobieranie listy statystyk granych przez użytkowników gier', 1, 1, 1, 1),
+			(63, 'delete_game', 'Usuwanie statystyk granych przez użytkowników gier', 1, 1, 0, 0);
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -225,7 +227,9 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		(58, 1, 58, 1),
 		(59, 1, 59, 1),
 		(60, 1, 60, 1),
-		(61, 1, 61, 1);
+		(61, 1, 61, 1),
+		(62, 1, 62, 1),
+		(63, 1, 63, 1);
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -414,7 +418,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(7, 'app_author', 'Andrzej Żukowski &copy; 2016', 'autor aplikacji internetowej', NOW()),
 			(8, 'app_domain', :domain, 'domena internetowa serwisu', NOW()),
 			(9, 'app_footer', '<a href=\"http://swoja-strona.eu\" target=\"_blank\" class=\"footer-link\">&copy; 2016 MyCMS</a>', 'treść stopki serwisu', NOW()),
-			(10, 'list_rows_per_page', '[\n{\"module\": \"settings\", \"lines\": 10},\n{\"module\": \"categories\", \"lines\": 13},\n{\"module\": \"pages\", \"lines\": 8},\n{\"module\": \"images\", \"lines\": 6},\n{\"module\": \"gallery\", \"lines\": 21},\n{\"module\": \"users\", \"lines\": 13},\n{\"module\": \"access_levels\", \"lines\": 13},\n{\"module\": \"messages\", \"lines\": 10},\n{\"module\": \"visitors\", \"lines\": 13},\n{\"module\": \"searches\", \"lines\": 15}\n]', 'liczba wierszy na stronę na listach systemowych', NOW()),
+			(10, 'list_rows_per_page', '[\n{\"module\": \"settings\", \"lines\": 10},\n{\"module\": \"categories\", \"lines\": 13},\n{\"module\": \"pages\", \"lines\": 8},\n{\"module\": \"images\", \"lines\": 6},\n{\"module\": \"gallery\", \"lines\": 21},\n{\"module\": \"users\", \"lines\": 13},\n{\"module\": \"access_levels\", \"lines\": 13},\n{\"module\": \"messages\", \"lines\": 10},\n{\"module\": \"visitors\", \"lines\": 13},\n{\"module\": \"searches\", \"lines\": 15},\n{\"module\": \"games\", \"lines\": 15}\n]', 'liczba wierszy na stronę na listach systemowych', NOW()),
 			(11, 'paginator_pointer_band', '5', 'zakres wskaźników paginatora na każdą stronę', NOW()),
 			(12, 'visitors_excluded', '''192.168.0.1'', ''192.168.0.100''', 'Adresy IP wykluczone z wyświetlania w raporcie odwiedzin', NOW()),
 			(13, 'visitors_period', '-180 days', 'Liczba ostatnich dni wczytywanych do raportu odwiedzin', NOW()),
@@ -614,10 +618,10 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 
 	$query = "
 		ALTER TABLE `access_levels`
-		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=62;
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=64;
 
 		ALTER TABLE `access_rights`
-		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=62;
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=64;
 
 		ALTER TABLE `archives`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
