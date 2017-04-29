@@ -163,6 +163,7 @@ var gameArea = {
 		}
 		var stats = { 
 			'blocks': gameFigure.counter,
+			'maps': shapes.length,
 			'level': gameArea.level,
 			'scores': gameArea.scores,
 			'record': gameArea.record,

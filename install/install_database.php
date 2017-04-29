@@ -535,6 +535,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		  `id` int(11) UNSIGNED NOT NULL,
 		  `ip` varchar(15) NOT NULL,
 		  `blocks` int(11) NOT NULL,
+		  `maps` int(11) NOT NULL,
 		  `level` int(11) NOT NULL,
 		  `scores` int(11) NOT NULL,
 		  `record` int(11) NOT NULL,

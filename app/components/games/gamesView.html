@@ -24,6 +24,7 @@
 									<th>Id</th>
 									<th>IP</th>
 									<th>Blocks</th>
+									<th>Maps</th>
 									<th>Level</th>
 									<th>Scores</th>
 									<th>Record</th>
@@ -33,12 +34,13 @@
 									<th class="text-center">Action</th>
 								</tr>
 								<tr ng-if="processing">
-									<td colspan="10" class="loading"><img src="public/img/loader.gif"></td>
+									<td colspan="11" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
 								<tr ng-if="!processing" ng-repeat="game in gamesList | filter:searchValue">
 									<td>{{ game.id }}</td>
 									<td>{{ game.ip }}</td>
 									<td>{{ game.blocks }}</td>
+									<td>{{ game.maps }}</td>
 									<td>{{ game.level }}</td>
 									<td>{{ game.scores }}</td>
 									<td>{{ game.record }}</td>
@@ -50,7 +52,7 @@
 									</td>
 								</tr>
 								<tr ng-if="!gamesList.length && !processing">
-									<td colspan="10">
+									<td colspan="11">
 										<div class="content-center">
 											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
 											<div class="no-results">(Brak wyników)</div>
