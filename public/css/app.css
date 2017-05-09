@@ -39,6 +39,11 @@ div#main-menu > button, div#main-submenu > button {
 	border: 1px solid #888;
 }
 
+div#show-controlls > button {
+	margin: 6px 16px 2px 16px;
+	border: 1px solid #888;
+}
+
 @media (max-width: 768px) {
 	.navbar .dropdown-menu a {
 	    color: #666;
@@ -46,6 +51,14 @@ div#main-menu > button, div#main-submenu > button {
 	ul.dropdown-menu {
 		position: fixed;
 		right: 0;
+	}
+	div#show-controlls {
+		position: fixed;
+		right: 6px;
+		top: 68px;
+	}
+	div#show-controlls > button {
+		margin: 6px 10px 10px 0px;
 	}
 }
 
@@ -63,16 +76,20 @@ form#main-search {
 	margin-right: 0px;
 }
 
+form#main-search > div.form-group {
+	display: flex;
+}
+
 form#main-search > div.form-group > input {
 	border: 1px solid #178acc;
 }
 
-form#main-search > span > button {
+form#main-search > div.form-group > span > button {
 	border: 1px solid #178acc;
 }
 
 @media screen and (max-width: 768px) {
-	form#main-search > span {
+	form#main-search > div.form-group > span {
 		display: inherit;
 	}
 }

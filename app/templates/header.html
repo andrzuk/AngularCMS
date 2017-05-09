@@ -34,13 +34,16 @@
                     <li ng-if="user.isLoggedIn"><a href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
                     <li><a href="/contact"><i class="fa fa-envelope-o"></i> Contact</a></li>
                 </ul>
-                <form id="main-search" class="navbar-form navbar-right" role="search" ng-if="!user.isLoggedIn">
+                <div id="show-controlls" class="text-right" ng-if="!searchToggled">
+                    <button type="button" class="btn btn-primary" ng-click="toggleSearch()"><i class="fa fa-search"></i></button>
+                </div>
+                <form id="main-search" class="navbar-form navbar-right" role="search" ng-if="!user.isLoggedIn && searchToggled">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Szukaj" ng-model="searchText" ng-disabled="processing">
+                        <span class="text-right">
+                            <button type="submit" class="btn btn-default" ng-click="getFound(searchText)" ng-disabled="processing"><i class="fa fa-search"></i></button>
+                        </span>
                     </div>
-                    <span class="text-right">
-                        <button type="submit" class="btn btn-default" ng-click="getFound(searchText)" ng-disabled="processing"><i class="fa fa-search"></i></button>
-                    </span>
                 </form>
             </div>
         </div>

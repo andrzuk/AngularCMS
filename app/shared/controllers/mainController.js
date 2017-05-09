@@ -5,7 +5,12 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 	$scope.user = {};
 	$scope.carouselContext = [];
 	$scope.foundList = {};
-
+	$scope.searchToggled = false;
+	
+	$scope.toggleSearch = function() {
+		$scope.searchToggled = true;
+	};
+	
 	$scope.layout = {
 		header: 'app/templates/header.html',
 		content: 'app/templates/content.html',
@@ -97,6 +102,7 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 	$scope.getFound = function(searchText) {
 		$scope.processing = true;
 		$scope.state = null;
+		searchText = searchText == undefined ? '%' : searchText;
 		Nav.found(searchText).then(function(response) {
 			$scope.foundList = response.data;
 			$scope.searchText = searchText;
@@ -105,6 +111,7 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 			Nav.store(searchText, $scope.foundList.length).then(function(response) {
 			});
 			$location.path('/search');
+			$scope.searchToggled = false;
 		});
 	};
 
