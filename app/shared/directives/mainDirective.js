@@ -1,31 +1,29 @@
 angular.module('mainDirective', ['config'])
 
-.directive('bootstrapSwitch', [
-	function() {
-		return {
-			restrict: 'A',
-			require: '?ngModel',
-			link: function(scope, element, attributes, ngModel) {
-				element.bootstrapSwitch();
-				element.on('switchChange.bootstrapSwitch', function(event, state) {
-					if (ngModel) {
-						scope.$apply(function() {
-							ngModel.$setViewValue(state);
-						});
-					}
-				});
-				scope.$watch(attributes.ngModel, function(newValue, oldValue) {
-					if (newValue) {
-						element.bootstrapSwitch('state', true, true);
-					} 
-					else {
-						element.bootstrapSwitch('state', false, true);
-					}
-				});
-			}
-		};
-	}
-	])
+.directive('bootstrapSwitch', function() {
+	return {
+		restrict: 'A',
+		require: '?ngModel',
+		link: function(scope, element, attributes, ngModel) {
+			element.bootstrapSwitch();
+			element.on('switchChange.bootstrapSwitch', function(event, state) {
+				if (ngModel) {
+					scope.$apply(function() {
+						ngModel.$setViewValue(state);
+					});
+				}
+			});
+			scope.$watch(attributes.ngModel, function(newValue, oldValue) {
+				if (newValue) {
+					element.bootstrapSwitch('state', true, true);
+				} 
+				else {
+					element.bootstrapSwitch('state', false, true);
+				}
+			});
+		}
+	};
+})
 
 .directive('fileModel', ['$parse', function ($parse) {
 	return {
@@ -178,6 +176,15 @@ angular.module('mainDirective', ['config'])
 				}
 				return origSelect.apply(this, arguments);
 			};
+		}
+	};
+})
+
+.directive('autoFocus', function() {
+	return {
+		restrict: 'A',
+		link: function(scope, element, attributes) {
+			$(element).focus();
 		}
 	};
 })

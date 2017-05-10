@@ -63,6 +63,7 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 		var referer = $document.getReferer();
 		var url = $location.url();
 		Nav.registerVisitor(referer, url);
+		$scope.searchToggled = false;
 	});
 
 	$scope.checkCarouselEnabled = function() {
