@@ -115,6 +115,19 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 			});
 		}
 	};
+	
+	$scope.findSettings = function() {
+		$scope.action = 'list';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.settingsList = [];
+		$scope.currentPage = 1;
+		Paginator.reset(0);
+		Settings.getFiltered($scope.searchValue).then(function(response) {
+			$scope.settingsList = response.data;
+			$scope.processing = false;
+		});
+	};
 
 	$scope.cancelSetting = function() {
 		$scope.settingNew = null;

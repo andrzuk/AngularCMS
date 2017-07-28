@@ -65,6 +65,19 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		});
 	};
 
+	$scope.findVisitors = function() {
+		$scope.action = 'list';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.visitorsList = [];
+		$scope.currentPage = 1;
+		Paginator.reset(0);
+		Visitors.getFiltered($scope.searchValue).then(function(response) {
+			$scope.visitorsList = response.data;
+			$scope.processing = false;
+		});
+	};
+
 	$scope.cancelVisitor = function() {
 		$scope.visitorView = null;
 		$scope.action = 'list';

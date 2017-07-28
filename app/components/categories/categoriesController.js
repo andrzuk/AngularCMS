@@ -131,6 +131,19 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 		});
 	};
 
+	$scope.findCategories = function() {
+		$scope.action = 'list';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.categoriesList = [];
+		$scope.currentPage = 1;
+		Paginator.reset(0);
+		Categories.getFiltered($scope.searchValue).then(function(response) {
+			$scope.categoriesList = response.data;
+			$scope.processing = false;
+		});
+	};
+
 	$scope.cancelCategory = function() {
 		$scope.categoryNew = null;
 		$scope.categoryEdit = null;

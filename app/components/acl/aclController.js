@@ -115,6 +115,19 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 		}
 	};
 
+	$scope.findAcl = function() {
+		$scope.action = 'list';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.aclList = [];
+		$scope.currentPage = 1;
+		Paginator.reset(0);
+		Acl.getFiltered($scope.searchValue).then(function(response) {
+			$scope.aclList = response.data;
+			$scope.processing = false;
+		});
+	};
+
 	$scope.cancelAcl = function() {
 		$scope.aclNew = null;
 		$scope.aclEdit = null;

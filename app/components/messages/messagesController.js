@@ -84,6 +84,19 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		}
 	};
 
+	$scope.findMessages = function() {
+		$scope.action = 'list';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.messagesList = [];
+		$scope.currentPage = 1;
+		Paginator.reset(0);
+		Messages.getFiltered($scope.searchValue).then(function(response) {
+			$scope.messagesList = response.data;
+			$scope.processing = false;
+		});
+	};
+
 	$scope.cancelMessage = function() {
 		$scope.messageNew = null;
 		$scope.messageEdit = null;

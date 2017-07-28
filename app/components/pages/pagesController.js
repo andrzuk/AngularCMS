@@ -244,6 +244,19 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		$scope.$broadcast('add', imgTemplate);
 	};
 
+	$scope.findPages = function() {
+		$scope.action = 'list';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.pagesList = [];
+		$scope.currentPage = 1;
+		Paginator.reset(0);
+		Pages.getFiltered($scope.searchValue).then(function(response) {
+			$scope.pagesList = response.data;
+			$scope.processing = false;
+		});
+	};
+
 	$scope.cancelGallery = function() {
 		$scope.action = $scope.lastAction;
 		$scope.state = null;

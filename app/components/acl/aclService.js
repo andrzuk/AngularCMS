@@ -14,6 +14,10 @@ angular.module('aclService', [])
 		return $http.get(config.apiUrl + componentName + '/get_acl.php?id=' + id);
 	};
 
+	aclFactory.getFiltered = function(search) {
+		return $http.get(config.apiUrl + componentName + '/get_acl_filtered.php?search=' + search);
+	};
+
 	aclFactory.add = function(formData) {
 		return $http({
 			method: 'POST',

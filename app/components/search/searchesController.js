@@ -52,6 +52,19 @@ angular.module('searchesController', ['searchesService', 'config', 'paginService
 		}
 	};
 
+	$scope.findSearches = function() {
+		$scope.action = 'list';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.searchesList = [];
+		$scope.currentPage = 1;
+		Paginator.reset(0);
+		Searches.getFiltered($scope.searchValue).then(function(response) {
+			$scope.searchesList = response.data;
+			$scope.processing = false;
+		});
+	};
+
 	$scope.cancelSearch = function() {
 		$scope.action = 'list';
 		$scope.state = null;

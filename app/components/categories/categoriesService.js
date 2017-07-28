@@ -14,6 +14,10 @@ angular.module('categoriesService', [])
 		return $http.get(config.apiUrl + componentName + '/get_category.php?id=' + id);
 	};
 
+	categoriesFactory.getFiltered = function(search) {
+		return $http.get(config.apiUrl + componentName + '/get_categories_filtered.php?search=' + search);
+	};
+
 	categoriesFactory.add = function(formData) {
 		return $http({
 			method: 'POST',

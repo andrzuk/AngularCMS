@@ -179,6 +179,22 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 		});
 	};
 
+	$scope.findImages = function() {
+		$scope.action = 'list';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.imagesList = [];
+		$scope.currentPage = 1;
+		Paginator.reset(0);
+		Images.getFiltered($scope.searchValue).then(function(response) {
+			$scope.imagesList = response.data;
+			angular.forEach($scope.imagesList, function(value, key) {
+				$scope.getImage(value.id, 'thumbnail');
+			});
+			$scope.processing = false;
+		});
+	};
+
 	$scope.cancelImage = function() {
 		$scope.imageNew = null;
 		$scope.imageEdit = null;

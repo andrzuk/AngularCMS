@@ -18,6 +18,10 @@ angular.module('imagesService', [])
 		return $http.get(config.apiUrl + componentName + '/get_image_details.php?id=' + id);
 	};
 
+	imagesFactory.getFiltered = function(search) {
+		return $http.get(config.apiUrl + componentName + '/get_images_filtered.php?search=' + search);
+	};
+
 	imagesFactory.add = function(formData) {
 		var fd = new FormData();
 		fd.append('file', formData.file_data);

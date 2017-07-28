@@ -348,6 +348,14 @@ form.my-form {
 	padding: 0;
 }
 
+.my-search {
+	display: flex;
+}
+
+.my-search a.btn {
+	margin: 0 5px;
+}
+
 .my-footer {
 	padding-top: 15px;
 }

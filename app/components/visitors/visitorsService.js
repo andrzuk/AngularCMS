@@ -14,6 +14,10 @@ angular.module('visitorsService', [])
 		return $http.get(config.apiUrl + componentName + '/get_visitor.php?id=' + id);
 	};
 
+	visitorsFactory.getFiltered = function(search) {
+		return $http.get(config.apiUrl + componentName + '/get_visitors_filtered.php?search=' + search);
+	};
+
 	visitorsFactory.statistics = function() {
 		return $http.get(config.apiUrl + componentName + '/get_statistics.php');
 	};

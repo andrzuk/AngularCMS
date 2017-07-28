@@ -18,6 +18,10 @@ angular.module('messagesService', [])
 		return $http.get(config.apiUrl + componentName + '/get_message.php?id=' + id);
 	};
 
+	messagesFactory.getFiltered = function(search) {
+		return $http.get(config.apiUrl + componentName + '/get_messages_filtered.php?search=' + search);
+	};
+
 	messagesFactory.update = function(formData) {
 		return $http({
 			method: 'POST',

@@ -34,7 +34,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		}
 		if ($scope.action == 'rights') {
 			var showRows = Paginator.getLines($scope.moduleName);
-			Users.rights($scope.id, $scope.user.id, showRows, $scope.currentPage).then(function(response) {
+			Users.rights($scope.id, showRows, $scope.currentPage).then(function(response) {
 				$scope.rightsList = response.data;
 				angular.forEach($scope.usersList, function(value, key) {
 					if (value.id == $scope.id) {
@@ -188,7 +188,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 			Paginator.reset(response.data.counter);
 		});
 		var showRows = Paginator.getLines($scope.moduleName);
-		Users.rights($scope.id, $scope.user.id, showRows, $scope.currentPage).then(function(response) {
+		Users.rights($scope.id, showRows, $scope.currentPage).then(function(response) {
 			$scope.rightsList = response.data;
 			angular.forEach($scope.usersList, function(value, key) {
 				if (value.id == $scope.id) {
@@ -222,6 +222,32 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 			}
 			$scope.message = response.data.message;
 			$scope.saving = false;
+		});
+	};
+
+	$scope.findUsers = function() {
+		$scope.action = 'list';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.usersList = [];
+		$scope.currentPage = 1;
+		Paginator.reset(0);
+		Users.getFiltered($scope.searchValue, $scope.user.id).then(function(response) {
+			$scope.usersList = response.data;
+			$scope.processing = false;
+		});
+	};
+
+	$scope.findRights = function() {
+		$scope.action = 'rights';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.rightsList = [];
+		$scope.currentPage = 1;
+		Paginator.reset(0);
+		Users.getRights($scope.rightsValue, $scope.id).then(function(response) {
+			$scope.rightsList = response.data;
+			$scope.processing = false;
 		});
 	};
 

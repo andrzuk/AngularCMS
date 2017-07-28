@@ -14,5 +14,9 @@ angular.module('searchesService', [])
 		return $http.get(config.apiUrl + componentName + '/delete_search.php?id=' + id);
 	};
 
+	searchesFactory.getFiltered = function(search) {
+		return $http.get(config.apiUrl + componentName + '/get_searches_filtered.php?search=' + search);
+	};
+
 	return searchesFactory;
 }]);

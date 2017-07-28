@@ -14,6 +14,10 @@ angular.module('settingsService', [])
 		return $http.get(config.apiUrl + componentName + '/get_setting.php?id=' + id);
 	};
 
+	settingsFactory.getFiltered = function(search) {
+		return $http.get(config.apiUrl + componentName + '/get_settings_filtered.php?search=' + search);
+	};
+
 	settingsFactory.add = function(formData) {
 		return $http({
 			method: 'POST',

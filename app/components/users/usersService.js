@@ -14,6 +14,18 @@ angular.module('usersService', [])
 		return $http.get(config.apiUrl + componentName + '/get_user.php?id=' + id);
 	};
 
+	usersFactory.getFiltered = function(search, author) {
+		return $http.get(config.apiUrl + componentName + '/get_users_filtered.php?search=' + search + '&author=' + author);
+	};
+
+	usersFactory.rights = function(id, rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_user_rights.php?id=' + id + '&rows=' + rows + '&page=' + page);
+	};
+
+	usersFactory.getRights = function(search, id) {
+		return $http.get(config.apiUrl + componentName + '/get_rights_filtered.php?search=' + search + '&id=' + id);
+	};
+
 	usersFactory.add = function(formData) {
 		return $http({
 			method: 'POST',
@@ -71,10 +83,6 @@ angular.module('usersService', [])
 
 	usersFactory.delete = function(id, author) {
 		return $http.get(config.apiUrl + componentName + '/delete_user.php?id=' + id + '&author=' + author);
-	};
-
-	usersFactory.rights = function(id, author, rows, page) {
-		return $http.get(config.apiUrl + componentName + '/get_user_rights.php?id=' + id + '&author=' + author + '&rows=' + rows + '&page=' + page);
 	};
 
 	usersFactory.access = function(itemData) {

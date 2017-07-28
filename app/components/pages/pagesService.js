@@ -14,6 +14,10 @@ angular.module('pagesService', [])
 		return $http.get(config.apiUrl + componentName + '/get_page.php?id=' + id);
 	};
 
+	pagesFactory.getFiltered = function(search) {
+		return $http.get(config.apiUrl + componentName + '/get_pages_filtered.php?search=' + search);
+	};
+
 	pagesFactory.add = function(formData) {
 		return $http({
 			method: 'POST',
