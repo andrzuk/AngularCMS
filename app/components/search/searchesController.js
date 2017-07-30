@@ -65,6 +65,11 @@ angular.module('searchesController', ['searchesService', 'config', 'paginService
 		});
 	};
 
+	$scope.closeFilter = function() {
+		$scope.searchValue = '';
+		$scope.getSearches();
+	};
+
 	$scope.cancelSearch = function() {
 		$scope.action = 'list';
 		$scope.state = null;

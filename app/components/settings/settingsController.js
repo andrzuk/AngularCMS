@@ -129,6 +129,11 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 		});
 	};
 
+	$scope.closeFilter = function() {
+		$scope.searchValue = '';
+		$scope.getSettings();
+	};
+
 	$scope.cancelSetting = function() {
 		$scope.settingNew = null;
 		$scope.settingEdit = null;

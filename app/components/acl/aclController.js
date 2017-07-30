@@ -128,6 +128,11 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 		});
 	};
 
+	$scope.closeFilter = function() {
+		$scope.searchValue = '';
+		$scope.getAcl();
+	};
+
 	$scope.cancelAcl = function() {
 		$scope.aclNew = null;
 		$scope.aclEdit = null;

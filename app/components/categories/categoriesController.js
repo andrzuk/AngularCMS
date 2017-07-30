@@ -144,6 +144,11 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 		});
 	};
 
+	$scope.closeFilter = function() {
+		$scope.searchValue = '';
+		$scope.getCategories();
+	};
+
 	$scope.cancelCategory = function() {
 		$scope.categoryNew = null;
 		$scope.categoryEdit = null;

@@ -257,6 +257,11 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		});
 	};
 
+	$scope.closeFilter = function() {
+		$scope.searchValue = '';
+		$scope.getPages();
+	};
+
 	$scope.cancelGallery = function() {
 		$scope.action = $scope.lastAction;
 		$scope.state = null;

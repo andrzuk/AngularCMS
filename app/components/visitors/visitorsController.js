@@ -78,6 +78,11 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		});
 	};
 
+	$scope.closeFilter = function() {
+		$scope.searchValue = '';
+		$scope.getVisitors();
+	};
+
 	$scope.cancelVisitor = function() {
 		$scope.visitorView = null;
 		$scope.action = 'list';

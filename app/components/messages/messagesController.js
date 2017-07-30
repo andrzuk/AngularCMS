@@ -97,6 +97,11 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		});
 	};
 
+	$scope.closeFilter = function() {
+		$scope.searchValue = '';
+		$scope.getMessages();
+	};
+
 	$scope.cancelMessage = function() {
 		$scope.messageNew = null;
 		$scope.messageEdit = null;

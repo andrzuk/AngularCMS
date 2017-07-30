@@ -251,6 +251,17 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		});
 	};
 
+	$scope.closeFilter = function() {
+		if ($scope.action == 'list') {
+			$scope.searchValue = '';
+			$scope.getUsers();
+		}
+		if ($scope.action == 'rights') {
+			$scope.rightsValue = '';
+			$scope.editRights($scope.id);
+		}
+	};
+
 	$scope.cancelUser = function() {
 		$scope.userNew = null;
 		$scope.userEdit = null;

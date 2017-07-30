@@ -195,6 +195,11 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 		});
 	};
 
+	$scope.closeFilter = function() {
+		$scope.searchValue = '';
+		$scope.getImages();
+	};
+
 	$scope.cancelImage = function() {
 		$scope.imageNew = null;
 		$scope.imageEdit = null;
