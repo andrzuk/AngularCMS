@@ -56,8 +56,8 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 			$scope.options = {
 				scales: {
 					yAxes: [
-						{ id: 'y-axis-left', type: 'linear', display: true, position: 'left' },
-						{ id: 'y-axis-right', type: 'linear', display: true, position: 'right' }
+						{ id: 'y-axis-left', type: 'linear', display: true, position: 'left', ticks: { beginAtZero: true } },
+						{ id: 'y-axis-right', type: 'linear', display: true, position: 'right', ticks: { beginAtZero: true } }
 					]
 				}
 			};
