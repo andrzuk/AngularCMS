@@ -59,6 +59,14 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 						{ id: 'y-axis-left', type: 'linear', display: true, position: 'left', ticks: { beginAtZero: true } },
 						{ id: 'y-axis-right', type: 'linear', display: true, position: 'right', ticks: { beginAtZero: true } }
 					]
+				},
+				legend: {
+					display: true,
+					labels: {
+						fontColor: 'rgb(128, 128, 128)',
+						fontSize: 13,
+						padding: 10
+					}
 				}
 			};
 			$scope.processing = false;
