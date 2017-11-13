@@ -54,6 +54,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			DROP TABLE IF EXISTS `access_rights`;
 			DROP TABLE IF EXISTS `archives`;
 			DROP TABLE IF EXISTS `categories`;
+			DROP TABLE IF EXISTS `hosts`;
 			DROP TABLE IF EXISTS `images`;
 			DROP TABLE IF EXISTS `messages`;
 			DROP TABLE IF EXISTS `pages`;
@@ -300,6 +301,16 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$query = "
 		INSERT INTO `categories` (`id`, `parent_id`, `item_order`, `caption`, `item_link`, `visible`, `target`, `modified`) VALUES
 			(1, 0, 1, 'DEMO', '/category/1', 1, 0, NOW());
+	";
+	$statement = $db_connection->prepare($query);
+	$statement->execute();
+
+	$query = "
+		CREATE TABLE `hosts` (
+			`id` int(11) UNSIGNED NOT NULL,
+			`server_ip` varchar(20) NOT NULL,
+			`server_name` varchar(256) NOT NULL
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -588,6 +599,10 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		ALTER TABLE `categories`
 		  ADD PRIMARY KEY (`id`);
 
+		ALTER TABLE `hosts`
+		  ADD PRIMARY KEY (`id`),
+		  ADD UNIQUE KEY `server_ip` (`server_ip`);
+
 		ALTER TABLE `images`
 		  ADD PRIMARY KEY (`id`),
 		  ADD KEY `fk_images_users` (`owner_id`);
@@ -649,6 +664,9 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 
 		ALTER TABLE `categories`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+
+		ALTER TABLE `hosts`
+		  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 		ALTER TABLE `images`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;

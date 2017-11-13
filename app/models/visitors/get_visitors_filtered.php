@@ -22,9 +22,10 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 
 	if (!empty($search))
 	{
-		$query = 'SELECT * FROM visitors' . 
+		$query = 'SELECT visitors.*, hosts.server_name AS host_name FROM visitors' . 
+		'         INNER JOIN hosts ON hosts.server_ip = visitors.visitor_ip' .
 		'         WHERE visited > :visited AND http_referer LIKE :referer AND visitor_ip NOT IN ('. $visitors_excluded .')' .
-		'         AND (visitor_ip LIKE :visitor_ip OR http_referer LIKE :http_referer OR request_uri LIKE :request_uri)' .
+		'         AND (visitor_ip LIKE :visitor_ip OR http_referer LIKE :http_referer OR request_uri LIKE :request_uri OR visited LIKE :visitor_date OR server_name LIKE :server_name)' .
 		'         ORDER BY id DESC';
 
 		$statement = $dbc->prepare($query);
@@ -34,6 +35,8 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 		$statement->bindValue(':visitor_ip', $search_mask, PDO::PARAM_STR);
 		$statement->bindValue(':http_referer', $search_mask, PDO::PARAM_STR);
 		$statement->bindValue(':request_uri', $search_mask, PDO::PARAM_STR);
+		$statement->bindValue(':visitor_date', $search_mask, PDO::PARAM_STR);
+		$statement->bindValue(':server_name', $search_mask, PDO::PARAM_STR);
 
 		$statement->execute();
 

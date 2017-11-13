@@ -27,17 +27,19 @@
 								<tr class="table-header">
 									<th>Id</th>
 									<th>IP</th>
+									<th>Host</th>
 									<th>Referer</th>
 									<th>Request</th>
 									<th>Visited</th>
 									<th class="text-center">Action</th>
 								</tr>
 								<tr ng-if="processing">
-									<td colspan="6" class="loading"><img src="public/img/loader.gif"></td>
+									<td colspan="7" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
 								<tr ng-if="!processing" ng-repeat="visitor in visitorsList | filter:searchValue">
 									<td>{{ visitor.id }}</td>
 									<td>{{ visitor.visitor_ip }}</td>
+									<td>{{ visitor.host_name }}</td>
 									<td>{{ visitor.http_referer | limitTo:80 }}<span ng-if="visitor.http_referer.length > 80">...</span></td>
 									<td>{{ visitor.request_uri }}</td>
 									<td>{{ visitor.visited }}</td>
@@ -46,7 +48,7 @@
 									</td>
 								</tr>
 								<tr ng-if="!visitorsList.length && !processing">
-									<td colspan="6">
+									<td colspan="7">
 										<div class="content-center">
 											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
 											<div class="no-results">(Brak wyników)</div>
@@ -71,6 +73,14 @@
 								</div>
 								<div class="col-md-9">
 									{{ visitorView.visitor_ip }}
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="host_name">Host:</label>
+								</div>
+								<div class="col-md-9">
+									{{ visitorView.host_name }}
 								</div>
 							</div>
 							<div class="row form-group">

@@ -11,7 +11,10 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 {
 	$id = intval($_GET['id']);
 
-	$query = 'SELECT * FROM visitors WHERE id = :id';
+	$query = 'SELECT visitors.*, hosts.server_name AS host_name' .
+	'         FROM visitors' .
+	'         INNER JOIN hosts ON hosts.server_ip = visitors.visitor_ip' .
+	'         WHERE visitors.id = :id';
 
 	$statement = $dbc->prepare($query);
 
