@@ -326,6 +326,7 @@ $("a#show-scores").on('click', function() {
 });
 
 document.addEventListener('keydown', function(event) {
+	event.preventDefault();
 	var keyCode = event.keyCode;
 	if (keyCode == 37) changeDirection('left');
 	if (keyCode == 38) changeDirection('up');
