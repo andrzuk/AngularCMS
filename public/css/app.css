@@ -94,6 +94,14 @@ form#main-search > div.form-group > span > button {
 	}
 }
 
+div.form-group > label { 
+	color: #666; 
+}
+
+div.form-group > p { 
+	color: #777; 
+}
+
 .carousel {
 	position: relative;
 	top: -13px;
@@ -486,4 +494,8 @@ div.no-results {
 
 div.show-more {
 	padding: 10px;
+}
+
+p.justify {
+	text-align: justify;
 }
