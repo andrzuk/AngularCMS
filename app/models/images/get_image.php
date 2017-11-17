@@ -32,8 +32,6 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 	// wczytuje plik z serwera:
 	$image_data = file_get_contents($picture_name);
 
-	header('content-type: ' . $file_format);
-
 	// koduje dane do Base64:
 	$data_encoded = 'data:' . $file_format . ';base64,' . base64_encode($image_data);
 
