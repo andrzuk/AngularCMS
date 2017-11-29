@@ -78,6 +78,10 @@ angular.module('appRoutes', ['ngRoute', 'ngMeta'])
         templateUrl: 'app/components/visitors/visitorsView.html',
         isProtected: true,
     })
+    .when('/logins', {
+        templateUrl: 'app/components/logins/loginsView.html',
+        isProtected: true,
+    })
     .when('/styles', {
         templateUrl: 'app/components/styles/stylesView.html',
         isProtected: true,

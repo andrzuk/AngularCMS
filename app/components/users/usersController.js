@@ -225,6 +225,42 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		});
 	};
 
+	$scope.editModules = function(id) {
+		$scope.id = id;
+		$scope.action = 'modules';
+		$scope.state = null;
+		$scope.processing = true;
+		Users.modules($scope.id).then(function(response) {
+			$scope.modulesList = response.data;
+			$scope.processing = false;
+		});
+	};
+
+	$scope.setModule = function(module_id, access) {
+		$scope.saving = true;
+		var admitData = {
+			user: $scope.userEdit.id,
+			module: module_id,
+			access: access,
+			author: $scope.user.id
+		};
+		Users.admit(admitData).then(function(response) {
+			if (response.data.success) {
+				angular.forEach($scope.modulesList, function(value, key) {
+					if (value.user_id == admitData.user && value.module_id == admitData.module) {
+						$scope.modulesList[key].access = access == true ? 1 : 0;
+					}
+				});
+				$scope.state = 'info';
+			}
+			else {
+				$scope.state = 'error';
+			}
+			$scope.message = response.data.message;
+			$scope.saving = false;
+		});
+	};
+
 	$scope.findUsers = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
@@ -251,6 +287,17 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		});
 	};
 
+	$scope.findModules = function() {
+		$scope.action = 'modules';
+		$scope.processing = true;
+		$scope.state = null;
+		$scope.modulesList = [];
+		Users.getModules($scope.modulesValue, $scope.id).then(function(response) {
+			$scope.modulesList = response.data;
+			$scope.processing = false;
+		});
+	};
+
 	$scope.closeFilter = function() {
 		if ($scope.action == 'list') {
 			$scope.searchValue = '';
@@ -259,6 +306,10 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		if ($scope.action == 'rights') {
 			$scope.rightsValue = '';
 			$scope.editRights($scope.id);
+		}
+		if ($scope.action == 'modules') {
+			$scope.modulesValue = '';
+			$scope.editModules($scope.id);
 		}
 	};
 

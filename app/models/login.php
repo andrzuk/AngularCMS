@@ -56,6 +56,23 @@ if (!empty($credentials['username']) && !empty($credentials['password']))
 	{
 		$message = 'Login lub e-mail lub hasło są nieprawidłowe.';
 	}
+	
+	$password = '***'; // ukrywamy hsało
+	
+	$query = ' INSERT INTO logins' .
+	'          (agent, user_ip, user_id, login, password, token, login_time)' .
+	'          VALUES (:agent, :user_ip, :user_id, :login, :password, :token, NOW())';
+
+	$statement = $db_connection->prepare($query);
+
+	$statement->bindParam(':agent', $_SERVER['HTTP_USER_AGENT'], PDO::PARAM_STR);
+	$statement->bindParam(':user_ip', $_SERVER['REMOTE_ADDR'], PDO::PARAM_STR);
+	$statement->bindParam(':user_id', $id, PDO::PARAM_INT);
+	$statement->bindParam(':login', $credentials['username'], PDO::PARAM_STR);
+	$statement->bindParam(':password', $password, PDO::PARAM_STR);
+	$statement->bindParam(':token', $token, PDO::PARAM_STR);
+
+	$statement->execute();
 }
 
 $result = array('user_id' => $id, 'username' => $login, 'token' => $token, 'success' => $success, 'message' => $message);

@@ -41,6 +41,8 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		$query = "
 			ALTER TABLE `access_rights` DROP FOREIGN KEY `fk_rights_resources`;
 			ALTER TABLE `access_rights` DROP FOREIGN KEY `fk_rights_users`;
+			ALTER TABLE `access_users` DROP FOREIGN KEY `fk_access_modules`;
+			ALTER TABLE `access_users` DROP FOREIGN KEY `fk_access_users`;
 			ALTER TABLE `archives` DROP FOREIGN KEY `fk_archives_pages`;
 			ALTER TABLE `archives` DROP FOREIGN KEY `fk_archives_users`;
 			ALTER TABLE `images` DROP FOREIGN KEY `fk_images_users`;
@@ -51,11 +53,14 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		
 		$query = "
 			DROP TABLE IF EXISTS `access_levels`;
+			DROP TABLE IF EXISTS `access_modules`;
 			DROP TABLE IF EXISTS `access_rights`;
+			DROP TABLE IF EXISTS `access_users`;
 			DROP TABLE IF EXISTS `archives`;
 			DROP TABLE IF EXISTS `categories`;
 			DROP TABLE IF EXISTS `hosts`;
 			DROP TABLE IF EXISTS `images`;
+			DROP TABLE IF EXISTS `logins`;
 			DROP TABLE IF EXISTS `messages`;
 			DROP TABLE IF EXISTS `pages`;
 			DROP TABLE IF EXISTS `roles`;
@@ -118,49 +123,85 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(28, 'get_user_rights', 'Informacja o prawach dostępu użytkownika', 1, 0, 0, 0),
 			(29, 'update_user_rights', 'Zapis praw dostępu użytkownika', 1, 0, 0, 0),
 			(30, 'get_acl_filtered', 'Pobieranie listy znalezionych praw dostępu', 1, 0, 0, 0),
-			(31, 'get_messages_list', 'Lista wiadomości', 1, 0, 0, 0),
-			(32, 'get_message', 'Informacja o wiadomości', 1, 1, 0, 0),
-			(33, 'update_message', 'Modyfikacja wiadomości', 1, 1, 0, 0),
-			(34, 'delete_message', 'Usuwanie wiadomości', 1, 0, 0, 0),
-			(35, 'get_messages_filtered', 'Pobieranie listy znalezionych wiadomości', 1, 1, 0, 0),
-			(36, 'get_images_list', 'Lista obrazków galerii', 1, 1, 0, 0),
-			(37, 'get_image', 'Pobieranie obrazków z galerii', 1, 1, 1, 1),
-			(38, 'get_image_details', 'Pobieranie informacji o obrazku w galerii', 1, 1, 1, 1),
-			(39, 'add_image', 'Dopisywanie obrazków do galerii', 1, 1, 0, 0),
-			(40, 'update_image', 'Zmiana obrazka w galerii', 1, 1, 0, 0),
-			(41, 'delete_image', 'Usuwanie obrazków z galerii', 1, 1, 0, 0),
-			(42, 'get_images_filtered', 'Pobieranie listy znalezionych obrazków galerii', 1, 1, 0, 0),
-			(43, 'get_categories_list', 'Lista kategorii', 1, 1, 0, 0),
-			(44, 'get_category', 'Odczytanie szczegółów kategorii', 1, 1, 0, 0),
-			(45, 'add_category', 'Dopisywanie kategorii', 1, 1, 0, 0),
-			(46, 'update_category', 'Modyfikacja kategorii', 1, 1, 0, 0),
-			(47, 'delete_category', 'Usuwanie kategorii', 1, 0, 0, 0),
-			(48, 'move_category', 'Zmiana kolejności kategorii', 1, 0, 0, 0),
-			(49, 'get_categories_filtered', 'Pobieranie listy znalezionych kategorii', 1, 1, 0, 0),
-			(50, 'get_pages_list', 'Lista podstron serwisu', 1, 1, 0, 0),
-			(51, 'get_page', 'Pobieranie danych o stronie', 1, 1, 0, 0),
-			(52, 'add_page', 'Dopisywanie stron', 1, 1, 0, 0),
-			(53, 'update_page', 'Modyfikacja stron', 1, 1, 0, 0),
-			(54, 'delete_page', 'Usuwanie stron', 1, 0, 0, 0),
-			(55, 'get_archives_list', 'Pobieranie listy archiwów strony', 1, 1, 0, 0),
-			(56, 'get_archive', 'Pobieranie archiwalnej wersji strony', 1, 1, 0, 0),
-			(57, 'archive_page', 'Archiwizowanie strony', 1, 1, 0, 0),
-			(58, 'restore_page', 'Przywracanie archiwum strony', 1, 1, 0, 0),
-			(59, 'get_pages_filtered', 'Pobieranie listy znalezionych stron', 1, 1, 0, 0),
-			(60, 'get_visitors_list', 'Lista odwiedzin', 1, 1, 0, 0),
-			(61, 'get_visitor', 'Informacja o odwiedzinach', 1, 1, 0, 0),
-			(62, 'get_statistics', 'Statystyki odwiedzin', 1, 1, 0, 0),
-			(63, 'get_visitors_filtered', 'Pobieranie listy znalezionych odwiedzin', 1, 1, 0, 0),
-			(64, 'get_style', 'Pobranie zawartości pliku stylów', 1, 0, 0, 0),
-			(65, 'update_style', 'Zapis zawartości stylów do pliku', 1, 0, 0, 0),
-			(66, 'get_script', 'Pobranie zawartości pliku skryptów', 1, 0, 0, 0),
-			(67, 'update_script', 'Zapis zawartości skryptów do pliku', 1, 0, 0, 0),
-			(68, 'get_found_list', 'Pobieranie listy znalezionych stron dla usługi wyszukiwania', 0, 0, 0, 1),
-			(69, 'get_searches_list', 'Pobieranie listy wyszukiwanych przez użytkowników fraz', 1, 1, 0, 0),
-			(70, 'delete_search', 'Usuwanie wyszukiwanych przez użytkowników fraz', 1, 0, 0, 0),
-			(71, 'get_searches_filtered', 'Pobieranie listy znalezionych wyszukiwań fraz użytkowników', 1, 1, 0, 0),
-			(72, 'get_games_list', 'Pobieranie listy statystyk granych przez użytkowników gier', 1, 1, 1, 1),
-			(73, 'delete_game', 'Usuwanie statystyk granych przez użytkowników gier', 1, 1, 0, 0);
+			(31, 'get_user_modules', 'Informacja o dostępie użytkownika do modułów', 1, 1, 1, 0),
+			(32, 'get_modules_filtered', 'Pobieranie listy znalezionych dostępów dla usera bez podziału na strony', 1, 1, 1, 0),
+			(33, 'update_user_modules', 'Zapis praw dostępu użytkownika do modułów', 1, 0, 0, 0),
+			(34, 'get_messages_list', 'Lista wiadomości', 1, 0, 0, 0),
+			(35, 'get_message', 'Informacja o wiadomości', 1, 1, 0, 0),
+			(36, 'update_message', 'Modyfikacja wiadomości', 1, 1, 0, 0),
+			(37, 'delete_message', 'Usuwanie wiadomości', 1, 0, 0, 0),
+			(38, 'get_messages_filtered', 'Pobieranie listy znalezionych wiadomości', 1, 1, 0, 0),
+			(39, 'get_images_list', 'Lista obrazków galerii', 1, 1, 0, 0),
+			(40, 'get_image', 'Pobieranie obrazków z galerii', 1, 1, 1, 1),
+			(41, 'get_image_details', 'Pobieranie informacji o obrazku w galerii', 1, 1, 1, 1),
+			(42, 'add_image', 'Dopisywanie obrazków do galerii', 1, 1, 0, 0),
+			(43, 'update_image', 'Zmiana obrazka w galerii', 1, 1, 0, 0),
+			(44, 'delete_image', 'Usuwanie obrazków z galerii', 1, 1, 0, 0),
+			(45, 'get_images_filtered', 'Pobieranie listy znalezionych obrazków galerii', 1, 1, 0, 0),
+			(46, 'get_categories_list', 'Lista kategorii', 1, 1, 0, 0),
+			(47, 'get_category', 'Odczytanie szczegółów kategorii', 1, 1, 0, 0),
+			(48, 'add_category', 'Dopisywanie kategorii', 1, 1, 0, 0),
+			(49, 'update_category', 'Modyfikacja kategorii', 1, 1, 0, 0),
+			(50, 'delete_category', 'Usuwanie kategorii', 1, 0, 0, 0),
+			(51, 'move_category', 'Zmiana kolejności kategorii', 1, 0, 0, 0),
+			(52, 'get_categories_filtered', 'Pobieranie listy znalezionych kategorii', 1, 1, 0, 0),
+			(53, 'get_pages_list', 'Lista podstron serwisu', 1, 1, 0, 0),
+			(54, 'get_page', 'Pobieranie danych o stronie', 1, 1, 0, 0),
+			(55, 'add_page', 'Dopisywanie stron', 1, 1, 0, 0),
+			(56, 'update_page', 'Modyfikacja stron', 1, 1, 0, 0),
+			(57, 'delete_page', 'Usuwanie stron', 1, 0, 0, 0),
+			(58, 'get_archives_list', 'Pobieranie listy archiwów strony', 1, 1, 0, 0),
+			(59, 'get_archive', 'Pobieranie archiwalnej wersji strony', 1, 1, 0, 0),
+			(60, 'archive_page', 'Archiwizowanie strony', 1, 1, 0, 0),
+			(61, 'restore_page', 'Przywracanie archiwum strony', 1, 1, 0, 0),
+			(62, 'get_pages_filtered', 'Pobieranie listy znalezionych stron', 1, 1, 0, 0),
+			(63, 'get_visitors_list', 'Lista odwiedzin', 1, 1, 0, 0),
+			(64, 'get_visitor', 'Informacja o odwiedzinach', 1, 1, 0, 0),
+			(65, 'get_statistics', 'Statystyki odwiedzin', 1, 1, 0, 0),
+			(66, 'get_visitors_filtered', 'Pobieranie listy znalezionych odwiedzin', 1, 1, 0, 0),
+			(67, 'get_logins_list', 'Lista logowań', 1, 0, 0, 0),
+			(68, 'get_login', 'Informacja o logowaniu', 1, 0, 0, 0),
+			(69, 'get_logins_filtered', 'Pobieranie listy znalezionych logowań', 1, 0, 0, 0),
+			(70, 'get_style', 'Pobranie zawartości pliku stylów', 1, 0, 0, 0),
+			(71, 'update_style', 'Zapis zawartości stylów do pliku', 1, 0, 0, 0),
+			(72, 'get_script', 'Pobranie zawartości pliku skryptów', 1, 0, 0, 0),
+			(73, 'update_script', 'Zapis zawartości skryptów do pliku', 1, 0, 0, 0),
+			(74, 'get_found_list', 'Pobieranie listy znalezionych stron dla usługi wyszukiwania', 0, 0, 0, 1),
+			(75, 'get_searches_list', 'Pobieranie listy wyszukiwanych przez użytkowników fraz', 1, 1, 0, 0),
+			(76, 'delete_search', 'Usuwanie wyszukiwanych przez użytkowników fraz', 1, 0, 0, 0),
+			(77, 'get_searches_filtered', 'Pobieranie listy znalezionych wyszukiwań fraz użytkowników', 1, 1, 0, 0),
+			(78, 'get_games_list', 'Pobieranie listy statystyk granych przez użytkowników gier', 1, 1, 1, 1),
+			(79, 'delete_game', 'Usuwanie statystyk granych przez użytkowników gier', 1, 1, 0, 0);
+	";
+	$statement = $db_connection->prepare($query);
+	$statement->execute();
+
+	$query = "
+		CREATE TABLE `access_modules` (
+		  `id` int(11) UNSIGNED NOT NULL,
+		  `module` varchar(32) NOT NULL,
+		  `description` varchar(128) NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	";
+	$statement = $db_connection->prepare($query);
+	$statement->execute();
+
+	$query = "
+		INSERT INTO `access_modules` (`id`, `module`, `description`) VALUES
+			(1, 'admin', 'Admin Panel'),
+			(2, 'acl', 'Access Control List'),
+			(3, 'categories', 'Kategorie serwisu'),
+			(4, 'images', 'Galeria serwisu'),
+			(5, 'logins', 'Logowania użytkowników'),
+			(6, 'messages', 'Wiadomości z formularza kontaktowego'),
+			(7, 'pages', 'Strony serwisu'),
+			(8, 'scripts', 'Kody JavaScript serwisu'),
+			(9, 'styles', 'Style CSS serwisu'),
+			(10, 'settings', 'Ustawienia serwisu'),
+			(11, 'users', 'Zarejestrowani użytkownicy serwisu'),
+			(12, 'visitors', 'Odwiedziny serwisu'),
+			(13, 'searches', 'Wyszukiwania na stronie'),
+			(14, 'games', 'Wyniki gier');
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -250,7 +291,44 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		(70, 1, 70, 1),
 		(71, 1, 71, 1),
 		(72, 1, 72, 1),
-		(73, 1, 73, 1);
+		(73, 1, 73, 1),
+		(74, 1, 74, 1),
+		(75, 1, 75, 1),
+		(76, 1, 76, 1),
+		(77, 1, 77, 1),
+		(78, 1, 78, 1),
+		(79, 1, 79, 1);
+	";
+	$statement = $db_connection->prepare($query);
+	$statement->execute();
+
+	$query = "
+		CREATE TABLE `access_users` (
+		  `id` int(11) UNSIGNED NOT NULL,
+		  `user_id` int(11) UNSIGNED NOT NULL,
+		  `module_id` int(11) UNSIGNED NOT NULL,
+		  `access` tinyint(1) NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	";
+	$statement = $db_connection->prepare($query);
+	$statement->execute();
+
+	$query = "
+		INSERT INTO `access_users` (`id`, `user_id`, `module_id`, `access`) VALUES
+			(1, 1, 1, 1),
+			(2, 1, 2, 1),
+			(3, 1, 3, 1),
+			(4, 1, 4, 1),
+			(5, 1, 5, 1),
+			(6, 1, 6, 1),
+			(7, 1, 7, 1),
+			(8, 1, 8, 1),
+			(9, 1, 9, 1),
+			(10, 1, 10, 1),
+			(11, 1, 11, 1),
+			(12, 1, 12, 1),
+			(13, 1, 13, 1),
+			(14, 1, 14, 1);
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -345,6 +423,21 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(11, 1, 'image/png', 'PEPANZ.png', 44828, 1200, 400, NOW()),
 			(12, 1, 'image/png', 'SprintGround Logo Light.png', 119031, 1200, 400, NOW()),
 			(13, 1, 'image/jpeg', 'support intro.jpg', 32373, 1200, 400, NOW());
+	";
+	$statement = $db_connection->prepare($query);
+	$statement->execute();
+
+	$query = "
+		CREATE TABLE `logins` (
+			`id` int(11) UNSIGNED NOT NULL,
+			`agent` varchar(256) DEFAULT NULL,
+			`user_ip` varchar(20) NOT NULL,
+			`user_id` int(11) UNSIGNED NOT NULL,
+			`login` varchar(128) NOT NULL,
+			`password` varchar(128) NOT NULL,
+			`token` varchar(128) DEFAULT NULL,
+			`login_time` datetime NOT NULL
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -449,7 +542,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(7, 'app_author', 'Andrzej Żukowski &copy; 2016', 'autor aplikacji internetowej', NOW()),
 			(8, 'app_domain', :domain, 'domena internetowa serwisu', NOW()),
 			(9, 'app_footer', '<a href=\"http://swoja-strona.eu\" target=\"_blank\" class=\"footer-link\">&copy; 2016 MyCMS</a>', 'treść stopki serwisu', NOW()),
-			(10, 'list_rows_per_page', '[\n{\"module\": \"settings\", \"lines\": 10},\n{\"module\": \"categories\", \"lines\": 13},\n{\"module\": \"pages\", \"lines\": 8},\n{\"module\": \"images\", \"lines\": 6},\n{\"module\": \"gallery\", \"lines\": 21},\n{\"module\": \"users\", \"lines\": 13},\n{\"module\": \"access_levels\", \"lines\": 13},\n{\"module\": \"messages\", \"lines\": 10},\n{\"module\": \"visitors\", \"lines\": 13},\n{\"module\": \"searches\", \"lines\": 15},\n{\"module\": \"games\", \"lines\": 15}\n]', 'liczba wierszy na stronę na listach systemowych', NOW()),
+			(10, 'list_rows_per_page', '[\n{\"module\": \"settings\", \"lines\": 10},\n{\"module\": \"categories\", \"lines\": 13},\n{\"module\": \"pages\", \"lines\": 8},\n{\"module\": \"images\", \"lines\": 6},\n{\"module\": \"gallery\", \"lines\": 21},\n{\"module\": \"users\", \"lines\": 13},\n{\"module\": \"access_levels\", \"lines\": 13},\n{\"module\": \"messages\", \"lines\": 10},\n{\"module\": \"visitors\", \"lines\": 13},\n{\"module\": \"logins\", \"lines\": 13},\n{\"module\": \"searches\", \"lines\": 15},\n{\"module\": \"games\", \"lines\": 15}\n]', 'liczba wierszy na stronę na listach systemowych', NOW()),
 			(11, 'paginator_pointer_band', '5', 'zakres wskaźników paginatora na każdą stronę', NOW()),
 			(12, 'visitors_excluded', '''192.168.0.1'', ''192.168.0.100''', 'Adresy IP wykluczone z wyświetlania w raporcie odwiedzin', NOW()),
 			(13, 'visitors_period', '-180 days', 'Liczba ostatnich dni wczytywanych do raportu odwiedzin', NOW()),
@@ -583,11 +676,21 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		  ADD PRIMARY KEY (`id`),
 		  ADD UNIQUE KEY `resource` (`resource`);
 
+		ALTER TABLE `access_modules`
+		  ADD PRIMARY KEY (`id`),
+		  ADD UNIQUE KEY `module` (`module`);
+
 		ALTER TABLE `access_rights`
 		  ADD PRIMARY KEY (`id`),
 		  ADD UNIQUE KEY `user_resource` (`user_id`, `resource_id`),
 		  ADD KEY `fk_rights_resources` (`resource_id`),
 		  ADD KEY `fk_rights_users` (`user_id`);
+
+		ALTER TABLE `access_users`
+		  ADD PRIMARY KEY (`id`),
+		  ADD UNIQUE KEY `user_module` (`user_id`, `module_id`),
+		  ADD KEY `fk_access_modules` (`module_id`),
+		  ADD KEY `fk_access_users` (`user_id`);
 
 		ALTER TABLE `archives`
 		  ADD PRIMARY KEY (`id`),
@@ -606,6 +709,9 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		ALTER TABLE `images`
 		  ADD PRIMARY KEY (`id`),
 		  ADD KEY `fk_images_users` (`owner_id`);
+
+		ALTER TABLE `logins`
+		  ADD PRIMARY KEY (`id`);
 
 		ALTER TABLE `messages`
 		  ADD PRIMARY KEY (`id`);
@@ -654,10 +760,16 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 
 	$query = "
 		ALTER TABLE `access_levels`
-		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=74;
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=80;
 
+		ALTER TABLE `access_modules`
+		  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+		  
 		ALTER TABLE `access_rights`
-		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=74;
+		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=80;
+
+		ALTER TABLE `access_users`
+		  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 		ALTER TABLE `archives`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
@@ -670,6 +782,9 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 
 		ALTER TABLE `images`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+
+		ALTER TABLE `logins`
+		  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 		ALTER TABLE `messages`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
@@ -711,6 +826,10 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		ALTER TABLE `access_rights`
 		  ADD CONSTRAINT `fk_rights_resources` FOREIGN KEY (`resource_id`) REFERENCES `access_levels` (`id`),
 		  ADD CONSTRAINT `fk_rights_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+		ALTER TABLE `access_users`
+		  ADD CONSTRAINT `fk_access_modules` FOREIGN KEY (`module_id`) REFERENCES `access_modules` (`id`),
+		  ADD CONSTRAINT `fk_access_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 		ALTER TABLE `archives`
 		  ADD CONSTRAINT `fk_archives_pages` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`),

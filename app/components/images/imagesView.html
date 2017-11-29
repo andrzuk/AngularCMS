@@ -4,7 +4,13 @@
 
 		<div ng-include="layout.navigator"></div>
 
-		<div class="row">
+		<div ng-show="user.access_table['images'] == false" class="row">
+			<div class="col-lg-12">
+			    <div ng-include="layout.access"></div>
+			</div>
+		</div>
+
+		<div ng-show="user.access_table['images'] == true" class="row">
 
 			<div class="col-lg-12" ng-show="action == 'list'">
 				<div class="panel panel-primary">
@@ -39,7 +45,7 @@
 								<tr ng-if="processing">
 									<td colspan="10" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
-								<tr ng-if="!processing" ng-repeat="image in imagesList | filter:searchValue">
+								<tr ng-if="!processing" ng-repeat="image in imagesList | filter:searchValue" class="common">
 									<td>{{ image.id }}</td>
 									<td class="text-center"><div class="image-frame"><img ng-src="{{ images_data[image.id] }}"></div></td>
 									<td>{{ image.file_name }}</td>

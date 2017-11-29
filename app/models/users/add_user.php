@@ -58,7 +58,29 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 				$role_mask = array(1 => 'mask_a', 2 => 'mask_o', 3 => 'mask_u');
 
 				$query = ' INSERT INTO access_rights (user_id, resource_id, access)' .
-				'          SELECT :user_id AS user_id, id as resource_id, ' . $role_mask[$role] . ' as access FROM access_levels ORDER BY id';
+				'          SELECT :user_id AS user_id, id AS resource_id, ' . $role_mask[$role] . ' AS access FROM access_levels ORDER BY id';
+
+				$statement = $dbc->prepare($query);
+
+				$statement->bindParam(':user_id', $inserted_id, PDO::PARAM_INT);
+
+				$statement->execute();
+
+				// dopisuje puste prawa dostępu do modułów:
+
+				$query = ' INSERT INTO access_users (user_id, module_id, access)' .
+				'          SELECT :user_id AS user_id, id AS module_id, 0 AS access FROM access_modules ORDER BY id';
+
+				$statement = $dbc->prepare($query);
+
+				$statement->bindParam(':user_id', $inserted_id, PDO::PARAM_INT);
+
+				$statement->execute();
+
+				// ustawia prawa dostępu do modułów:
+
+				$query = ' UPDATE access_users' .
+				'          SET access = 1 WHERE module_id IN (1, 4) AND user_id = :user_id';
 
 				$statement = $dbc->prepare($query);
 

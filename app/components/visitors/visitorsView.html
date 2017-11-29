@@ -4,7 +4,13 @@
 
 		<div ng-include="layout.navigator"></div>
 
-		<div class="row">
+		<div ng-show="user.access_table['visitors'] == false" class="row">
+			<div class="col-lg-12">
+			    <div ng-include="layout.access"></div>
+			</div>
+		</div>
+
+		<div ng-show="user.access_table['visitors'] == true" class="row">
 
 			<div class="col-lg-12" ng-show="action == 'list'">
 				<div class="panel panel-primary">
@@ -17,6 +23,7 @@
 								<a href="#" class="btn btn-danger" ng-click="closeFilter()"><i class="fa fa-times" aria-hidden="true"></i></a>
 							</div>
 							<div class="col-sm-8 text-right buttons">
+								<a href="/logins" class="btn btn-success">Logowania</a>
 								<a href="/searches" class="btn btn-warning">Wyszukiwania</a>
 								<a href="#" class="btn btn-primary" ng-click="viewChart()">Wykresy</a>
 								<a href="/admin" class="btn btn-danger">Zamknij</a>
@@ -36,11 +43,11 @@
 								<tr ng-if="processing">
 									<td colspan="7" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
-								<tr ng-if="!processing" ng-repeat="visitor in visitorsList | filter:searchValue">
+								<tr ng-if="!processing" ng-repeat="visitor in visitorsList | filter:searchValue" class="common">
 									<td>{{ visitor.id }}</td>
 									<td>{{ visitor.visitor_ip }}</td>
 									<td>{{ visitor.host_name }}</td>
-									<td>{{ visitor.http_referer | limitTo:80 }}<span ng-if="visitor.http_referer.length > 80">...</span></td>
+									<td>{{ visitor.http_referer | limitTo:60 }}<span ng-if="visitor.http_referer.length > 60">...</span></td>
 									<td>{{ visitor.request_uri }}</td>
 									<td>{{ visitor.visited }}</td>
 									<td class="action">

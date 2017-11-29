@@ -26,6 +26,14 @@ angular.module('usersService', [])
 		return $http.get(config.apiUrl + componentName + '/get_rights_filtered.php?search=' + search + '&id=' + id);
 	};
 
+	usersFactory.modules = function(id) {
+		return $http.get(config.apiUrl + componentName + '/get_user_modules.php?id=' + id);
+	};
+
+	usersFactory.getModules = function(search, id) {
+		return $http.get(config.apiUrl + componentName + '/get_modules_filtered.php?search=' + search + '&id=' + id);
+	};
+
 	usersFactory.add = function(formData) {
 		return $http({
 			method: 'POST',
@@ -89,6 +97,23 @@ angular.module('usersService', [])
 		return $http({
 			method: 'POST',
 			url: config.apiUrl + componentName + '/update_user_rights.php',
+			data: $.param(itemData),
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		})
+		.success(function(response) {
+			usersFactory.success = response.success;
+			return response;
+		})
+		.error(function(error) {
+			usersFactory.success = false;
+			return error;
+		});
+	};
+
+	usersFactory.admit = function(itemData) {
+		return $http({
+			method: 'POST',
+			url: config.apiUrl + componentName + '/update_user_modules.php',
 			data: $.param(itemData),
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 		})

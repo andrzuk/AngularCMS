@@ -1,0 +1,146 @@
+<div ng-if="user.isLoggedIn">
+
+	<div ng-controller="LoginsController" ng-init="getLogins()">
+
+		<div ng-include="layout.navigator"></div>
+
+		<div ng-show="user.access_table['logins'] == false" class="row">
+			<div class="col-lg-12">
+			    <div ng-include="layout.access"></div>
+			</div>
+		</div>
+
+		<div ng-show="user.access_table['logins'] == true" class="row">
+
+			<div class="col-lg-12" ng-show="action == 'list'">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Logins</div>
+					<div class="panel-body">
+						<div class="row my-toolbar">
+							<div class="col-sm-4 text-left search my-search">
+								<input type="search" class="form-control" ng-model="searchValue" placeholder="Szukaj">
+								<a href="#" class="btn btn-primary" ng-click="findLogins()">Szukaj</a>
+								<a href="#" class="btn btn-danger" ng-click="closeFilter()"><i class="fa fa-times" aria-hidden="true"></i></a>
+							</div>
+							<div class="col-sm-8 text-right buttons">
+								<a href="/visitors" class="btn btn-danger">Zamknij</a>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table-bordered table-striped">
+								<tr class="table-header">
+									<th>Id</th>
+									<th>IP</th>
+									<th>Agent</th>
+									<th>Login</th>
+									<th>Password</th>
+									<th>User</th>
+									<th>Token</th>
+									<th class="text-center">Logged</th>
+									<th class="text-center">Action</th>
+								</tr>
+								<tr ng-if="processing">
+									<td colspan="9" class="loading"><img src="public/img/loader.gif"></td>
+								</tr>
+								<tr ng-if="!processing" ng-repeat="login in loginsList | filter:searchValue" class="{{ login.user_id > 0 ? 'blue' : 'red' }}">
+									<td>{{ login.id }}</td>
+									<td>{{ login.user_ip }}</td>
+									<td>{{ login.agent | limitTo:150 }}<span ng-if="login.agent.length > 150">...</span></td>
+									<td>{{ login.login }}</td>
+									<td>{{ login.password }}</td>
+									<td>{{ login.user_id }}</td>
+									<td>{{ login.token | limitTo:20 }}<span ng-if="login.token.length > 20">...</span></td>
+									<td class="text-center">{{ login.login_time }}</td>
+									<td class="action">
+										<a href="#" class="btn btn-info btn-xs" ng-click="viewLogin(login.id)">Szczegóły</a>
+									</td>
+								</tr>
+								<tr ng-if="!loginsList.length && !processing">
+									<td colspan="9">
+										<div class="content-center">
+											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
+											<div class="no-results">(Brak wyników)</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div ng-include="layout.paginator"></div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'view'">
+				<form class="form" role="form">
+					<div class="panel panel-primary my-panel">
+						<div class="panel-heading">Szczegóły pozycji #{{ loginView.id }}</div>
+						<div class="panel-body">
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="user_ip">IP:</label>
+								</div>
+								<div class="col-md-9">
+									{{ loginView.user_ip }}
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="agent">Agent:</label>
+								</div>
+								<div class="col-md-9">
+									{{ loginView.agent }}
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="login">Login:</label>
+								</div>
+								<div class="col-md-9">
+									{{ loginView.login }}
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="password">Password:</label>
+								</div>
+								<div class="col-md-9">
+									{{ loginView.password }}
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="user_id">User:</label>
+								</div>
+								<div class="col-md-9">
+									{{ loginView.user_id }}
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="token">Token:</label>
+								</div>
+								<div class="col-md-9">
+									{{ loginView.token }}
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-3">
+									<label for="login_time">Logged:</label>
+								</div>
+								<div class="col-md-9">
+									{{ loginView.login_time }}
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelLogin()" value="Anuluj">
+						</div>
+					</div>
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

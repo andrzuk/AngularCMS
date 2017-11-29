@@ -4,7 +4,13 @@
 
 		<div ng-include="layout.navigator"></div>
 
-		<div class="row">
+		<div ng-show="user.access_table['messages'] == false" class="row">
+			<div class="col-lg-12">
+			    <div ng-include="layout.access"></div>
+			</div>
+		</div>
+
+		<div ng-show="user.access_table['messages'] == true" class="row">
 
 			<div class="col-lg-12" ng-show="action == 'list'">
 				<div class="panel panel-primary">

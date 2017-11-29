@@ -389,6 +389,41 @@ a.footer-link {
 	margin-right: auto;
 }
 
+.error-message {
+	max-width: 500px;
+	margin-left: auto;
+	margin-right: auto;
+	border-color: #a94442;
+}
+
+.error-message .panel-heading {
+	color: #fff;
+	background: brown;
+}
+
+.error-message .panel-body {
+	display: flex;
+	color: #c00;
+	background-color: #f2dede;
+}
+
+.error-message .panel-body .icon {
+	display: inline-block;
+	padding: 20px;
+	text-align: center;
+}
+
+.error-message .panel-body .message {
+	display: inline-block;
+	padding: 20px;
+	text-align: left;
+}
+
+.error-message .panel-footer {
+	text-align: center;
+	background-color: #dcc9c9;
+}
+
 img.bordered {
 	padding: 1px;
 	border: 1px solid #999;

@@ -18,6 +18,7 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 		navigator: 'app/templates/navigator.html',
 		paginator: 'app/templates/paginator.html',
 		messager: 'app/templates/messager.html',
+		access: 'app/templates/access.html',
 	};
 
 	$scope.$location = $location;

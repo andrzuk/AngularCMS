@@ -53,6 +53,14 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 
 			$statement->execute();
 
+			$query = 'DELETE FROM access_users WHERE user_id = :user_id';
+
+			$statement = $dbc->prepare($query);
+
+			$statement->bindValue(':user_id', $id, PDO::PARAM_INT); 
+
+			$statement->execute();
+
 			$query = 'DELETE FROM users WHERE id = :id';
 
 			$statement = $dbc->prepare($query);

@@ -35,6 +35,8 @@ angular.module('MainApp', [
     'messagesService',
     'visitorsController',
     'visitorsService',
+    'loginsController',
+    'loginsService',
     'stylesController',
     'stylesService',
     'scriptsController',

@@ -4,7 +4,13 @@
 
 		<div ng-include="layout.navigator"></div>
 
-		<div class="row">
+		<div ng-show="user.access_table['users'] == false" class="row">
+			<div class="col-lg-12">
+			    <div ng-include="layout.access"></div>
+			</div>
+		</div>
+
+		<div ng-show="user.access_table['users'] == true" class="row">
 
 			<div class="col-lg-12" ng-show="action == 'list'">
 				<div class="panel panel-primary">
@@ -177,6 +183,7 @@
 								<a href="#" class="btn btn-danger" ng-click="closeFilter()"><i class="fa fa-times" aria-hidden="true"></i></a>
 							</div>
 							<div class="col-sm-8 text-right buttons">
+								<input class="btn btn-success" type="button" ng-click="editModules(userEdit.id)" value="Dostęp do modułów">
 								<input class="btn btn-danger" type="button" ng-click="getUsers()" value="Zamknij">
 							</div>
 						</div>
@@ -192,7 +199,7 @@
 								<tr ng-if="processing">
 									<td colspan="5" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
-								<tr ng-if="!processing" ng-repeat="right in rightsList | filter:rightsValue">
+								<tr ng-if="!processing" ng-repeat="right in rightsList | filter:rightsValue" class="common">
 									<td>{{ right.id }}</td>
 									<td>{{ right.resource }}</td>
 									<td>{{ right.description }}</td>
@@ -215,6 +222,56 @@
 					</div>
 				</div>
 				<div ng-include="layout.paginator"></div>
+			</div>
+
+			<div class="col-lg-12" ng-show="action == 'modules'">
+				<div class="panel panel-primary">
+					<div class="panel-heading">User Access Modules (User #{{ userEdit.id }}: {{ userEdit.login }}, {{ roles[userEdit.role - 1].name }})</div>
+					<div class="panel-body">
+						<div class="row my-toolbar">
+							<div class="col-sm-4 text-left search my-search">
+								<input type="search" class="form-control" ng-model="modulesValue" placeholder="Szukaj">
+								<a href="#" class="btn btn-primary" ng-click="findModules()">Szukaj</a>
+								<a href="#" class="btn btn-danger" ng-click="closeFilter()"><i class="fa fa-times" aria-hidden="true"></i></a>
+							</div>
+							<div class="col-sm-8 text-right buttons">
+								<input class="btn btn-danger" type="button" ng-click="editRights(userEdit.id)" value="Zamknij">
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table-bordered table-striped">
+								<tr class="table-header">
+									<th>Id</th>
+									<th>Module</th>
+									<th>Description</th>
+									<th class="text-center">Access</th>
+									<th class="text-center">Action</th>
+								</tr>
+								<tr ng-if="processing">
+									<td colspan="5" class="loading"><img src="public/img/loader.gif"></td>
+								</tr>
+								<tr ng-if="!processing" ng-repeat="module in modulesList | filter:modulesValue" class="common">
+									<td>{{ module.id }}</td>
+									<td>{{ module.module }}</td>
+									<td>{{ module.description }}</td>
+									<td class="text-center"><button type="button" class="btn btn-{{ module.access == '1' ? 'success' : 'danger' }} btn-xs"><span class="glyphicon glyphicon-{{ module.access == '1' ? 'ok' : 'remove' }}"></span></button></td>
+									<td class="action">
+										<a href="#" class="btn btn-primary btn-xs" ng-click="setModule(module.id, true)" ng-disabled="saving">Pozwól</a>
+										<a href="#" class="btn btn-warning btn-xs" ng-click="setModule(module.id, false)" ng-disabled="saving">Odmów</a>
+									</td>
+								</tr>
+								<tr ng-if="!modulesList.length && !processing">
+									<td colspan="5">
+										<div class="content-center">
+											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
+											<div class="no-results">(Brak wyników)</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div class="col-lg-12">

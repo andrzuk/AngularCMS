@@ -4,7 +4,13 @@
 
 		<div ng-include="layout.navigator"></div>
 
-		<div class="row">
+		<div ng-show="user.access_table['settings'] == false" class="row">
+			<div class="col-lg-12">
+			    <div ng-include="layout.access"></div>
+			</div>
+		</div>
+
+		<div ng-show="user.access_table['settings'] == true" class="row">
 
 			<div class="col-lg-12" ng-show="action == 'list'">
 				<div class="panel panel-primary">
@@ -36,7 +42,7 @@
 								<tr ng-if="processing">
 									<td colspan="6" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
-								<tr ng-if="!processing" ng-repeat="setting in settingsList | filter:searchValue">
+								<tr ng-if="!processing" ng-repeat="setting in settingsList | filter:searchValue" class="common">
 									<td>{{ setting.id }}</td>
 									<td>{{ setting.key_name }}</td>
 									<td>{{ setting.key_value | limitTo:128 }}<span ng-if="setting.key_value.length > 128">...</span></td>
