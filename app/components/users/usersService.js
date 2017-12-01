@@ -93,6 +93,10 @@ angular.module('usersService', [])
 		return $http.get(config.apiUrl + componentName + '/delete_user.php?id=' + id + '&author=' + author);
 	};
 
+	usersFactory.lock = function(id, author) {
+		return $http.get(config.apiUrl + componentName + '/lock_user.php?id=' + id + '&author=' + author);
+	};
+
 	usersFactory.access = function(itemData) {
 		return $http({
 			method: 'POST',

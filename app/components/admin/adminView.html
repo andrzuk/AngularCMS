@@ -16,7 +16,7 @@
 
         <div ng-show="user.access_table['admin'] == true" class="row">
 
-            <div class="col-lg-12">
+            <div class="col-lg-12" ng-show="action == 'panel'">
                 <div class="panel panel-primary admin-panel">
                     <div class="panel-heading">Funkcje administracyjne</div>
                     <div class="panel-body">
@@ -24,19 +24,27 @@
                             <div class="panel panel-default panel-section">
                                 <div class="panel-body">
                                     <div class="col-md-1">
-                                        Id: <br><strong>{{ user.id }}</strong>
+                                        Id:
+                                        <br><strong>{{ user.id }}</strong>
                                     </div>
                                     <div class="col-md-2">
-                                        Login: <br><strong>{{ user.name | uppercase }}</strong>
+                                        Login:
+                                        <br><strong>{{ user.name | uppercase }}</strong>
                                     </div>
                                     <div class="col-md-2">
-                                        Rola: <br><strong>{{ user.role }}</strong>
-                                    </div>
-                                    <div class="col-md-4">
-                                        E-mail: <br><strong>{{ user.email }}</strong>
+                                        Rola:
+                                        <br><strong>{{ user.role }}</strong>
                                     </div>
                                     <div class="col-md-3">
-                                        Logowanie: <br><strong>{{ user.logged_in }}</strong>
+                                        E-mail:
+                                        <br><strong>{{ user.email }}</strong>
+                                    </div>
+                                    <div class="col-md-3">
+                                        Logowanie:
+                                        <br><strong>{{ user.logged_in }}</strong>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a href="#" class="btn btn-success" ng-click="userOptions(user.id)" title="Opcje konta użytkownika"><i class="fa fa-cog"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +94,7 @@
                                             <div class="number">{{ admin.images }}</div>
                                         </a>
                                     </div>
-                                    <div class="thumbnail tile tile-medium tile-peter-river">
+                                    <div class="thumbnail tile tile-medium tile-pumpkin">
                                         <a href="/messages" class="fa-links">
                                             <div class="icon"><i class="fa fa-3x fa-envelope-o"></i></div>
                                             <div class="label">Wiadomości</div>
@@ -114,8 +122,83 @@
                 </div>
             </div>
 
+            <div class="col-lg-12" ng-show="action == 'options'">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form class="form" role="form" method="post">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Edycja konta</div>
+                                <div class="panel-body">
+                                    <input type="hidden" ng-model="userEdit.id">
+                                    <input type="hidden" ng-model="userEdit.role">
+                                    <div class="form-group">
+                                        <label for="login">Login:</label>
+                                        <input type="text" class="form-control" id="login" ng-model="userEdit.login" ng-disabled="processing" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">E-mail:</label>
+                                        <input type="email" class="form-control" id="email" ng-model="userEdit.email" ng-disabled="processing" required>
+                                    </div>
+                                </div>
+                                <div class="panel-footer text-center">
+                                    <button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="saveUser(user.id)">Zapisz</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-6">
+                        <form class="form" role="form" method="post">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Zmiana hasła</div>
+                                <div class="panel-body">
+                                    <input type="hidden" ng-model="passwordEdit.id">
+                                    <div class="form-group">
+                                        <label for="password_set">Nowe hasło:</label>
+                                        <input type="password" class="form-control" id="password_set" ng-model="passwordEdit.password_set" ng-disabled="processing" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password_repeat">Powtórz hasło:</label>
+                                        <input type="password" class="form-control" id="password_repeat" ng-model="passwordEdit.password_repeat" ng-disabled="processing" required>
+                                    </div>
+                                </div>
+                                <div class="panel-footer text-center">
+                                    <button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="savePassword(user.id)">Zapisz</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <input class="btn btn-danger" type="button" ng-disabled="processing" ng-click="disableUser(user.id, false)" value="Usuń konto">
+                            <input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelOptions()" value="Anuluj">
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="processing">
+                    <div class="text-center"><img src="public/img/loader.gif"></div>
+                </div>
+            </div>
+
             <div class="col-lg-12">
                 <div ng-include="layout.messager"></div>
+            </div>
+
+            <div class="col-lg-12" ng-show="action == 'dialog'">
+                <div class="screen-centered">
+                    <div class="panel panel-primary my-dialog">
+                        <div class="panel-heading">Usuwanie konta</div>
+                        <div class="panel-body">
+                            <p><div class="icon"><i class="fa fa-3x fa-trash-o" aria-hidden="true"></i></div></p>
+                            <p>Uwaga! Czy na pewno chcesz usunąć swoje konto?</p>
+                        </div>
+                        <div class="panel-footer">
+                            <a href="#" class="btn btn-danger" ng-disabled="processing" ng-click="disableUser(user.id, true)">Usuń</a>
+                            <a href="#" class="btn btn-warning" ng-disabled="processing" ng-click="cancelOptions()">Anuluj</a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -123,4 +206,3 @@
     </div>
 
 </div>
-
