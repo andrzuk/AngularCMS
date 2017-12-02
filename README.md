@@ -32,3 +32,9 @@
 
 ### Note:
 * Make sure to install to public_html/ root folder - not to any subfolder, so that "base_href" was "/", not "/subfolder/" !!!
+
+### Videos:
+* installation: https://www.youtube.com/watch?v=1kFNdJUmCzY
+* starting page: https://www.youtube.com/watch?v=DFpksvgeX5w
+* contact map: https://www.youtube.com/watch?v=PfLfuvl-nuo
+* using ACL: https://www.youtube.com/watch?v=be8wSSadsXA
