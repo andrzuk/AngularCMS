@@ -269,20 +269,82 @@ function resetGame() {
 }
 
 function changeDirection(direction) {
+	var speedIndex = $("select#period").prop('selectedIndex');
+	var speedCount = $("select#period").children('option').length;
 	if (direction == 'up') {
-		if (snake.direction == 'up' || snake.direction == 'down') return;
+		if (snake.direction == 'up') {
+			if (speedIndex > 0) {
+				speedIndex--;
+				$("select#period").prop('selectedIndex', speedIndex);
+				$("select#period").change();
+			}
+			return;
+		}
+		if (snake.direction == 'down') {
+			if (speedIndex < speedCount - 1) {
+				speedIndex++;
+				$("select#period").prop('selectedIndex', speedIndex);
+				$("select#period").change();
+			}
+			return;
+		}
 		snake.direction = 'up';
 	}
 	if (direction == 'down') {
-		if (snake.direction == 'down' || snake.direction == 'up') return;
+		if (snake.direction == 'down') {
+			if (speedIndex > 0) {
+				speedIndex--;
+				$("select#period").prop('selectedIndex', speedIndex);
+				$("select#period").change();
+			}
+			return;
+		}
+		if (snake.direction == 'up') {
+			if (speedIndex < speedCount - 1) {
+				speedIndex++;
+				$("select#period").prop('selectedIndex', speedIndex);
+				$("select#period").change();
+			}
+			return;
+		}
 		snake.direction = 'down';
 	}
 	if (direction == 'left') {
-		if (snake.direction == 'left' || snake.direction == 'right') return;
+		if (snake.direction == 'left') {
+			if (speedIndex > 0) {
+				speedIndex--;
+				$("select#period").prop('selectedIndex', speedIndex);
+				$("select#period").change();
+			}
+			return;
+		}
+		if (snake.direction == 'right') {
+			if (speedIndex < speedCount - 1) {
+				speedIndex++;
+				$("select#period").prop('selectedIndex', speedIndex);
+				$("select#period").change();
+			}
+			return;
+		}
 		snake.direction = 'left';
 	}
 	if (direction == 'right') {
-		if (snake.direction == 'right' || snake.direction == 'left') return;
+		if (snake.direction == 'right') {
+			if (speedIndex > 0) {
+				speedIndex--;
+				$("select#period").prop('selectedIndex', speedIndex);
+				$("select#period").change();
+			}
+			return;
+		}
+		if (snake.direction == 'left') {
+			if (speedIndex < speedCount - 1) {
+				speedIndex++;
+				$("select#period").prop('selectedIndex', speedIndex);
+				$("select#period").change();
+			}
+			return;
+		}
 		snake.direction = 'right';
 	}
 	gameTick = 0;
@@ -326,7 +388,9 @@ $("a#show-scores").on('click', function() {
 });
 
 document.addEventListener('keydown', function(event) {
+	/*
 	event.preventDefault();
+	*/
 	var keyCode = event.keyCode;
 	if (keyCode == 37) changeDirection('left');
 	if (keyCode == 38) changeDirection('up');
