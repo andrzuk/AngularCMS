@@ -261,6 +261,15 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		$scope.action = $scope.lastAction;
 		$scope.state = null;
 		var imgTemplate = '\n<img src="' + $scope.galleryDir + '/' + id + '" width="auto" height="auto" class="img-responsive bordered" alt="">\n';
+
+		// fixed issue: "can´t insert image to content in text editor view #1"
+		if ( $scope.pageEdit ) {
+			$scope.pageEdit.contents = $scope.pageEdit.contents + imgTemplate;
+		}
+
+		if ( $scope.pageNew ) {
+			$scope.pageNew.contents = $scope.pageNew.contents + imgTemplate;
+		}
 		$scope.$broadcast('add', imgTemplate);
 	};
 
