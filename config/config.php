@@ -3,10 +3,10 @@
 /*
  * Database connection
  */
- 
-define ('DB_HOST', ''); // db hostname
-define ('DB_NAME', ''); // db name
-define ('DB_USER', ''); // db username
+
+define ('DB_HOST', 'localhost'); // db hostname
+define ('DB_NAME', 'dev_angularcms'); // db name
+define ('DB_USER', 'root'); // db username
 define ('DB_PASS', ''); // db password
 
 /*
@@ -24,14 +24,14 @@ define ('MAILER_DIR', dirname(__FILE__) . '/../lib/mailer/');
 /*
  * Gallery thumbnails
  */
- 
+
 define ('THUMB_WIDTH', 150);
 define ('THUMB_HEIGHT', 150);
 
 /*
  * Application install script
  */
- 
+
 define ('INSTALL_SCRIPT', dirname(__FILE__) . '/../install/install_database.php');
 
 ?>
