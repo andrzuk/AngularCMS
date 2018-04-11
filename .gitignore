@@ -1,6 +1,7 @@
 ### config ###
 config
 config/config.php
+install
 
 ### Windows ###
 # Windows image file caches
