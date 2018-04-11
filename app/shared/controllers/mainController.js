@@ -6,11 +6,11 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 	$scope.carouselContext = [];
 	$scope.foundList = {};
 	$scope.searchToggled = false;
-	
+
 	$scope.toggleSearch = function() {
 		$scope.searchToggled = true;
 	};
-	
+
 	$scope.layout = {
 		header: 'app/templates/header.html',
 		content: 'app/templates/content.html',
@@ -35,7 +35,16 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 		});
 		$scope.carouselEnabled = $scope.checkCarouselEnabled();
 	});
-	
+
+	Nav.sidebar().then(function(response) {
+		$scope.sidebarTemplate = 'app/templates/sidebar.html';
+		$scope.sidebarContext = [];
+		angular.forEach(response.data.context_list, function(item, i) {
+			$scope.sidebarContext.push(item);
+		});
+		$scope.sidebarEnabled = $scope.checkSidebarEnabled();
+	});
+
 	$rootScope.$on('$routeChangeStart', function (event, next, current) {
 		$scope.user.isLoggedIn = Auth.isLoggedIn();
 		if ($scope.user.isLoggedIn) {
@@ -58,6 +67,7 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
 		$scope.carouselEnabled = $scope.checkCarouselEnabled();
+		$scope.sidebarEnabled = $scope.checkSidebarEnabled();
 	});
 
 	$rootScope.$on('$routeChangeSuccess', function (event, next, current) {
@@ -94,6 +104,40 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 			}
 			if (segments[1] == 'search') {
 				if (obj.key_name == 'carousel_search_enabled') {
+					result = obj.key_value;
+				}
+			}
+		});
+		return result;
+	};
+
+	$scope.checkSidebarEnabled = function() {
+		var url = $location.url();
+		var segments = url.split('/');
+		var result = false;
+		angular.forEach($scope.sidebarContext, function(obj, i) {
+			if (segments[1] == '') {
+				if (obj.key_name == 'sidebar_index_enabled') {
+					result = obj.key_value;
+				}
+			}
+			if (segments[1] == 'contact') {
+				if (obj.key_name == 'sidebar_contact_enabled') {
+					result = obj.key_value;
+				}
+			}
+			if (segments[1] == 'page') {
+				if (obj.key_name == 'sidebar_page_enabled') {
+					result = obj.key_value;
+				}
+			}
+			if (segments[1] == 'category') {
+				if (obj.key_name == 'sidebar_category_enabled') {
+					result = obj.key_value;
+				}
+			}
+			if (segments[1] == 'search') {
+				if (obj.key_name == 'sidebar_search_enabled') {
 					result = obj.key_value;
 				}
 			}

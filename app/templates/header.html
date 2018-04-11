@@ -50,6 +50,10 @@
     </nav>
 </header>
 
+<div ng-if="sidebarEnabled == 'true'">
+    <div ng-include="sidebarTemplate"></div>
+</div>
+
 <div ng-if="carouselEnabled == 'true'">
     <div ng-include="carouselTemplate"></div>
 </div>
