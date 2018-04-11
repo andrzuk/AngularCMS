@@ -2,6 +2,7 @@ angular.module('MainApp', [
     'appRoutes',
     'config',
     'mainDirective',
+    'uxDirectives',
     'mainFilter',
     'navController',
     'navService',
