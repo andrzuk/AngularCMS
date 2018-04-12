@@ -26,6 +26,8 @@
     <script src="assets/js/angular-sanitize.js"></script>
     <script src="assets/js/angular-ui-bootstrap.js"></script>
     <script src="assets/js/bootstrap-switch.min.js"></script>
+    <script src="assets/js/tinymce/tinymce.js"></script>
+    <script src="assets/js/angular-ui-tinymce.js"></script>
     <script src="assets/js/ngMeta.min.js"></script>
     <script src="assets/js/Chart.min.js"></script>
     <script src="assets/js/angular-chart.min.js"></script>
@@ -51,6 +53,7 @@
 
     <!-- directives -->
     <script src="app/shared/directives/mainDirective.js"></script>
+    <script src="app/shared/directives/uxDirectives.js"></script>
 
     <!-- filters -->
     <script src="app/shared/filters/mainFilter.js"></script>
@@ -91,17 +94,17 @@
     <script src="app/components/install/installService.js"></script>
     <script src="app/components/games/gamesController.js"></script>
     <script src="app/components/games/gamesService.js"></script>
-	
+
 </head>
 
-<body ng-controller="MainController">
+<body ng-controller="MainController" class="container-fluid">
 
     <div ng-include="layout.header"></div>
 
     <div ng-include="layout.content"></div>
 
     <div ng-include="layout.footer"></div>
-    
+
 </body>
 
 </html>

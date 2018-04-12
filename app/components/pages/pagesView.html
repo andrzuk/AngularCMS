@@ -83,8 +83,42 @@
 								<textarea class="form-control" id="description" rows="2" ng-model="pageNew.description" ng-disabled="processing" required></textarea>
 							</div>
 							<div class="form-group">
-								<label for="contents">Contents:</label>
-								<textarea class="form-control" id="contents" rows="12" ng-model="pageNew.contents" ng-disabled="processing" required my-text></textarea>
+								<label for="contents">Content:</label>
+
+								<!-- edit content tabs view -->
+								 <div>
+
+									 <!-- Nav tabs -->
+									 <ul class="nav nav-tabs" role="tablist">
+										 <li role="presentation">
+												 <a data-target="#text-editor-create" aria-controls="profile" role="tab" data-toggle="tab">Text Editor</a>
+										 </li>
+										 <li role="presentation">
+												 <a data-target="#html-editor-create" aria-controls="messages" role="tab" data-toggle="tab">HTML Editor</a>
+										 </li>
+									 </ul>
+
+									 <!-- Tab panes -->
+									 <div class="tab-content">
+										 <div role="tabpanel" class="tab-pane active" id="text-editor-create">
+												 <textarea
+														 ui-tinymce="tinymceOptions"
+														 class="form-control"
+														 type="text"
+														 ng-model="pageNew.contents"
+														 ng-if="tinymceOptions"
+														 ng-disabled="processing"
+														 required
+														 my-text>
+												 </textarea>
+										 </div>
+										 <div role="tabpanel" class="tab-pane" id="html-editor-create">
+												 <textarea class="form-control" id="contents" rows="12" ng-model="pageNew.contents" ng-disabled="processing" required my-text></textarea>
+										 </div>
+									 </div>
+
+								 </div><!-- ./ edit content tabs view -->
+
 							</div>
 							<div class="row form-group">
 								<div class="col-md-6">
@@ -131,8 +165,40 @@
 								<textarea class="form-control" id="description" rows="2" ng-model="pageEdit.description" ng-disabled="processing" required></textarea>
 							</div>
 							<div class="form-group">
-								<label for="contents">Contents:</label>
-								<textarea class="form-control" id="contents" rows="12" ng-model="pageEdit.contents" ng-disabled="processing" required my-text></textarea>
+								<label for="contents">Content:</label>
+								<!-- edit content tabs view -->
+								 <div>
+
+									 <!-- Nav tabs -->
+									 <ul class="nav nav-tabs" role="tablist">
+										 <li role="presentation">
+												 <a data-target="#text-editor-edit" aria-controls="profile" role="tab" data-toggle="tab">Text Editor</a>
+										 </li>
+										 <li role="presentation">
+												 <a data-target="#html-editor-edit" aria-controls="messages" role="tab" data-toggle="tab">HTML Editor</a>
+										 </li>
+									 </ul>
+
+									 <!-- Tab panes -->
+									 <div class="tab-content">
+										 <div role="tabpanel" class="tab-pane active" id="text-editor-edit">
+												 <textarea
+														 ui-tinymce="tinymceOptions"
+														 class="form-control"
+														 type="text"
+														 ng-model="pageEdit.contents"
+														 ng-if="tinymceOptions"
+														 ng-disabled="processing"
+														 required
+														 my-text>
+												 </textarea>
+										 </div>
+										 <div role="tabpanel" class="tab-pane" id="html-editor-edit">
+												 <textarea class="form-control" id="contents" rows="12" ng-model="pageEdit.contents" ng-disabled="processing" required my-text></textarea>
+										 </div>
+									 </div>
+
+								 </div><!-- ./ edit content tabs view -->
 							</div>
 							<div class="row form-group">
 								<div class="col-md-6">

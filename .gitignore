@@ -1,0 +1,22 @@
+### config ###
+config
+config/config.php
+install
+
+### Windows ###
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Thumbnails
+._*
+
+# Folder config file
+Desktop.ini
+
+# Windows shortcuts
+*.lnk
+
+### Code ###
+# Brackets file
+.brackets.json

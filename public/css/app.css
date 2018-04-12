@@ -3,7 +3,7 @@
 */
 
 body {
-	background-color: #efefef; 
+	background-color: #efefef;
 	color: #333;
 	font-family: Helvetica, 'Roboto', sans-serif;
 	padding-top: 64px;
@@ -94,12 +94,12 @@ form#main-search > div.form-group > span > button {
 	}
 }
 
-div.form-group > label { 
-	color: #666; 
+div.form-group > label {
+	color: #666;
 }
 
-div.form-group > p { 
-	color: #777; 
+div.form-group > p {
+	color: #777;
 }
 
 .carousel {
@@ -113,18 +113,18 @@ div.form-group > p {
 }
 
 @media screen and (max-width: 768px) {
-	body { 
-		padding-top: 64px; 
+	body {
+		padding-top: 64px;
 	}
 	.carousel-inner > .item > img {
 		height: auto;
 	}
 }
 
-div.content-title { 
-	margin: 0 0 20px 0; 
-	padding: 0 0 10px 0; 
-	border-bottom: 1px dotted #aaa; 
+div.content-title {
+	margin: 0 0 20px 0;
+	padding: 0 0 10px 0;
+	border-bottom: 1px dotted #aaa;
 }
 
 ul.nav-table {
@@ -135,25 +135,25 @@ ul.nav-pills > li > a {
 	margin: 2px 1px;
 }
 
-ul.nav-pills > li.module > a { 
-	background-color: #999; 
-	color: #fff; 
+/* ul.nav-pills > li.module > a {
+	background-color: #999;
+	color: #fff;
 }
 
-ul.nav-pills > li.active > a { 
-	background-color: #84bd46; 
-	color: #fff; 
+ul.nav-pills > li.active > a {
+	background-color: #84bd46;
+	color: #fff;
 }
 
-ul.nav-pills > li.module > a:hover, ul.nav-pills > li.module > a:focus { 
-	background-color: #aaa; 
-	color: #fff; 
+ul.nav-pills > li.module > a:hover, ul.nav-pills > li.module > a:focus {
+	background-color: #aaa;
+	color: #fff;
 }
 
-ul.nav-pills > li.active > a:hover, ul.nav-pills > li.active > a:focus { 
-	background-color: #94cd56; 
-	color: #fff; 
-}
+ul.nav-pills > li.active > a:hover, ul.nav-pills > li.active > a:focus {
+	background-color: #94cd56;
+	color: #fff;
+} */
 
 ul.pagination {
 	margin: 0;
@@ -176,7 +176,7 @@ ul.article-items {
 
 div.article-header {
 	padding: 0 0 10px 0;
-	border-bottom: 1px dotted #aaa; 
+	border-bottom: 1px dotted #aaa;
 	color: #777;
 	font-size: 0.9em;
 }
@@ -194,11 +194,11 @@ table {
 	width: 100%;
 }
 
-td, th { 
-	text-align: left; 
-	padding: 3px; 
-	margin: 3px; 
-	font-size: 12px; 
+td, th {
+	text-align: left;
+	padding: 3px;
+	margin: 3px;
+	font-size: 12px;
 }
 
 td.action {
@@ -458,30 +458,30 @@ div.tile a div.label {
 }
 
 div.image-frame {
-	margin-left: auto; 
-	margin-right: auto; 
+	margin-left: auto;
+	margin-right: auto;
 	border: 1px solid #ccc;
-	padding: 1px; 
-	width: 74px; 
+	padding: 1px;
+	width: 74px;
 	height: 74px;
 }
 
 div.image-frame > img {
-	width: 70px; 
+	width: 70px;
 	height: 70px;
 }
 
 div.gallery-frame {
 	display: inline-flex;
 	margin: 5px;
-	padding: 1px; 
+	padding: 1px;
 	border: 1px solid #ccc;
-	width: 144px; 
+	width: 144px;
 	height: 144px;
 }
 
 div.gallery-frame > img {
-	width: 140px; 
+	width: 140px;
 	height: 140px;
 }
 
@@ -493,17 +493,17 @@ table.found-list > tbody > tr > td > div.title {
 	font-size: 1.5em;
 }
 
-table.found-list > tbody > tr > td > div.description {	
+table.found-list > tbody > tr > td > div.description {
 }
 
-table.found-list > tbody > tr > td > div.category {	
+table.found-list > tbody > tr > td > div.category {
 	display: inline-table;
 	float: right;
 	color: #a00;
 	margin-left: 10px;
 }
 
-table.found-list > tbody > tr > td > div.author {	
+table.found-list > tbody > tr > td > div.author {
 	display: inline-table;
 	float: right;
 	color: #060;
@@ -533,4 +533,67 @@ div.show-more {
 
 p.justify {
 	text-align: justify;
+}
+
+/*
+ * color settings
+ */
+
+.primary-bg-color {
+	background-image: -webkit-linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
+	background-image: -o-linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#54b4eb), color-stop(60%, #2fa4e7), to(#1d9ce5));
+	background-image: linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
+	background-repeat: no-repeat;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff54b4eb', endColorstr='#ff1d9ce5', GradientType=0);
+	border-bottom: 1px solid #178acc;
+}
+
+/*
+ * sidebar styles
+ */
+
+ @media (min-width: 992px ) {
+	 .sidebar-active {
+		 width: 75%;
+		 float: left;
+		 padding-left: 10px;
+	 }
+ }
+
+ aside {
+	 position: relative;
+ 	 top: -13px;
+	 float: left;
+	 z-index: +1;
+ }
+
+ aside h1,
+ aside h2,
+ aside h3,
+ aside h4,
+ aside h5,
+ aside h6,
+ aside p {
+	 color: #fff!important;
+ }
+
+ .sidebar-menu:after {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #98daff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    content: "Sidebar Menu";
+}
+
+ul.nav-pills > li > a {
+	color: #fff;
+}
+
+ul.nav-pills > li > a:hover {
+	color: #2fa4e7;
 }

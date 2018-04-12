@@ -1,7 +1,7 @@
 angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesService', 'config', 'ngSanitize', 'paginService'])
 
 .controller('PagesController', ['$location', '$scope', '$sce', 'Pages', 'Categories', 'Images', 'Paginator', function($location, $scope, $sce, Pages, Categories, Images, Paginator) {
-	
+
 	$scope.images_data = [];
 
 	$scope.moduleName = 'pages';
@@ -74,6 +74,9 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		}
 	};
 
+	// prevent "TinyMCE Fullscreen button addon function" from insert multiple times
+	var triggerCounter = 0;
+
 	$scope.editPage = function(id) {
 		$scope.id = id;
 		$scope.action = 'edit';
@@ -86,6 +89,23 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 				$scope.processing = false;
 			});
 		});
+
+		// TinyMCE Fullscreen button addon function
+    // toggle class hidden in navbar on button click Fullscreen
+    setTimeout( function () {
+
+        if ( triggerCounter == 0 ) {
+
+            $('[aria-label="Fullscreen"]').click( function () {
+
+                $('nav.navbar').toggleClass('hidden');
+
+            });
+        }
+
+        triggerCounter ++;
+    }, 1000 );
+
 	};
 
 	$scope.savePage = function(id) {
@@ -241,6 +261,15 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		$scope.action = $scope.lastAction;
 		$scope.state = null;
 		var imgTemplate = '\n<img src="' + $scope.galleryDir + '/' + id + '" width="auto" height="auto" class="img-responsive bordered" alt="">\n';
+
+		// fixed issue: "can´t insert image to content in text editor view #1"
+		if ( $scope.pageEdit ) {
+			$scope.pageEdit.contents = $scope.pageEdit.contents + imgTemplate;
+		}
+
+		if ( $scope.pageNew ) {
+			$scope.pageNew.contents = $scope.pageNew.contents + imgTemplate;
+		}
 		$scope.$broadcast('add', imgTemplate);
 	};
 
@@ -278,5 +307,14 @@ angular.module('pagesController', ['pagesService', 'categoriesService', 'imagesS
 		}
 		$scope.state = null;
 	};
+
+	$scope.tinymceOptions = {
+         skin: 'lightgray',
+         theme: 'modern',
+         height: '400px',
+         plugins: 'lists paste media image fullscreen link',
+         menubar: 'edit insert format',
+         toolbar: 'undo redo | formatselect | bold italic underline strikethrough | bullist numlist | blockquote | alignleft aligncenter alignright | link unlink | fullscreen'
+    };
 
 }]);

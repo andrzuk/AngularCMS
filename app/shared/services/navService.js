@@ -32,6 +32,10 @@ angular.module('navService', [])
 		return $http.get(config.apiUrl + 'get_carousel.php');
 	};
 
+	navigateFactory.sidebar = function() {
+		return $http.get(config.apiUrl + 'get_sidebar.php');
+	};
+
 	navigateFactory.registerVisitor = function (referer, url) {
 		return $http({
 			method: 'POST',

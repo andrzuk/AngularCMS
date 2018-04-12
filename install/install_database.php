@@ -566,7 +566,12 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(31, 'email_report_subject', 'Raport serwisu', 'temat maila raportującego zdarzenie', NOW()),
 			(32, 'email_report_body', 'Raport o zdarzeniu w serwisie', 'treść maila rapotującego', NOW()),
 			(33, 'email_password_subject', 'Nowe hasło do konta', 'temat generowanego maila z nowym hasłem', NOW()),
-			(34, 'email_password_body', 'Na Twoją prośbę przesyłamy Ci nowe hasło logowania. Oto Twoje dane:', 'treść generowanego maila z nowym hasłem', NOW());
+			(34, 'email_password_body', 'Na Twoją prośbę przesyłamy Ci nowe hasło logowania. Oto Twoje dane:', 'treść generowanego maila z nowym hasłem', NOW()),
+            (35, 'sidebar_index_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie głównej', NOW()),
+			(36, 'sidebar_page_enabled', 'true', 'czy ma być włączona karuzela slajdów na podstronie', NOW()),
+			(37, 'sidebar_category_enabled', 'true', 'czy ma być włączona karuzela slajdów na kategorii', NOW()),
+			(38, 'sidebar_contact_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie kontaktowej', NOW()),
+			(39, 'sidebar_search_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie wyszukiwania', NOW());
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->bindParam(':brand', $brand, PDO::PARAM_STR);

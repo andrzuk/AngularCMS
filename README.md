@@ -1,12 +1,13 @@
-# AngularCMS
+# AngularCMS v 1.0.2
 
 ## Simple CMS based on AngularJS frontend framework
 
 ### Application features:
 * users authentication (login, register)
 * resources access levels (general roles and particular users access)
-* admin panel (settings, templates, styles, scripts, menu, articles, gallery)
+* admin panel (settings, templates, styles, scripts, menu, articles, gallery, carousel, sidebar)
 * activity reports (messages, searches, visits)
+* build in text editor ( TinyMCE )
 
 ### General:
 * Framework: AngularJS
@@ -38,3 +39,7 @@
 * starting page: https://www.youtube.com/watch?v=DFpksvgeX5w
 * contact map: https://www.youtube.com/watch?v=PfLfuvl-nuo
 * using ACL: https://www.youtube.com/watch?v=be8wSSadsXA
+
+### Credits:
+* https://www.tinymce.com/
+* https://github.com/angular-ui/ui-tinymce

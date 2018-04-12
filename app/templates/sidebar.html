@@ -1,0 +1,14 @@
+<aside class="col-lg-3 col-xs-12 primary-bg-color" dynamic-element-height-component>
+  <div class="sidebar-menu" ng-controller="MenuController">
+    <br>
+    <br>
+    <ul class="nav nav-pills nav-stacked" ng-if="menuList.length">
+      <li ng-repeat="menu in menuList"><a href="{{ menu.item_link }}" target="{{ menu.target == true ? '_blank' : null }}">{{ menu.caption }}</a></li>
+    </ul>
+    <br>
+    <br>
+    <ul class="nav nav-pills nav-stacked" ng-if="submenuList.length">
+      <li ng-repeat="menu in submenuList"><a href="/page/{{ menu.id }}">{{ menu.title }}</a></li>
+    </ul>
+  </div>
+</aside>

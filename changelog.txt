@@ -1,0 +1,22 @@
+AngularCMS v 1.0.2
+date: 11.04.2018
+by: JanQuery
+
+extended application feature:
+added sidebar optionally. Set in Admin settings (ustawienia) simular to carousel settings
+
+AngularCMS v 1.0.1
+date: 10.04.2018
+by: JanQuery
+
+extended application feature:
+added build in text editor ( TinyMCE ) while editing content
+
+
+AngularCMS v 1.0.0
+
+Application features:
+* users authentication (login, register)
+* resources access levels (general roles and particular users access)
+* admin panel (settings, templates, styles, scripts, menu, articles, gallery)
+* activity reports (messages, searches, visits)
