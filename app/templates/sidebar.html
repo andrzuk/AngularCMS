@@ -2,12 +2,12 @@
   <div class="sidebar-menu" ng-controller="MenuController">
     <br>
     <br>
-    <ul class="nav nav-pills nav-stacked" ng-if="menuList.length">
+    <ul class="nav nav-pills nav-stacked" ng-if="menuList.length && menuInSidebarEnabled == 'true'">
       <li ng-repeat="menu in menuList"><a href="{{ menu.item_link }}" target="{{ menu.target == true ? '_blank' : null }}">{{ menu.caption }}</a></li>
     </ul>
     <br>
     <br>
-    <ul class="nav nav-pills nav-stacked" ng-if="submenuList.length">
+    <ul class="nav nav-pills nav-stacked" ng-if="submenuList.length && submenuInSidebarEnabled == 'true'">
       <li ng-repeat="menu in submenuList"><a href="/page/{{ menu.id }}">{{ menu.title }}</a></li>
     </ul>
   </div>

@@ -1,3 +1,10 @@
+AngularCMS v 1.0.3
+date: 12.04.2018
+by: JanQuery
+
+extended application feature:
+activate and deactivated menu/ submenu in navbar and sidebar within Admin area in settings
+
 AngularCMS v 1.0.2
 date: 11.04.2018
 by: JanQuery

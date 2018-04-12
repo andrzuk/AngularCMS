@@ -1,7 +1,7 @@
 angular.module('navController', ['navService'])
 
 .controller('NavController', ['$scope', function($scope) {
-	
+
 	$scope.navPills = [
 		{
 			'icon': 'cog',
@@ -46,7 +46,7 @@ angular.module('navController', ['navService'])
 	];
 }])
 
-.controller('MenuController', ['$rootScope', '$scope', '$location', 'Menu', function($rootScope, $scope, $location, Menu) {
+.controller('MenuController', ['$rootScope', '$scope', '$location', 'Menu', 'Nav', function($rootScope, $scope, $location, Menu, Nav) {
 
 	$scope.menuList = {};
 	$scope.submenuList = {};
@@ -78,7 +78,7 @@ angular.module('navController', ['navService'])
 			$scope.menuList = response.data;
 		}
 	});
-	
+
 	$scope.updateMenu = function() {
 		Menu.getMenu().then(function(response) {
 			if (angular.isArray(response.data)) {
@@ -95,5 +95,31 @@ angular.module('navController', ['navService'])
 		});
 	}
 
-}]);
+	function checkIfMenusAreEnabled () {
+		angular.forEach($scope.menuSettingsContext, function(obj, i) {
+			if ( obj.key_name == 'menu_sidebar_enabled') {
+				$scope.menuInSidebarEnabled = obj.key_value;
+			}
+			if ( obj.key_name == 'submenu_sidebar_enabled') {
+				$scope.submenuInSidebarEnabled = obj.key_value;
+			}
+			if ( obj.key_name == 'menu_navbar_enabled') {
+				$scope.menuInNavbarEnabled = obj.key_value;
+			}
+			if ( obj.key_name == 'submenu_navbar_enabled') {
+				$scope.submenuInNavbarEnabled = obj.key_value;
+			}
+		});
+	}
+	
+	Nav.menuSettings().then(function(response) {
+		$scope.menuSettingsContext = [];
+		angular.forEach(response.data.context_list, function(item, i) {
+			$scope.menuSettingsContext.push(item);
+		});
+		checkIfMenusAreEnabled();
 
+		console.log( 'active' );
+	});
+
+}]);

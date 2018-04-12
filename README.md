@@ -1,4 +1,4 @@
-# AngularCMS v 1.0.2
+# AngularCMS v 1.0.3
 
 ## Simple CMS based on AngularJS frontend framework
 

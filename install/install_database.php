@@ -7,7 +7,7 @@ $form_data = $_POST;
 $message = NULL;
 $success = false;
 
-if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($form_data['keywords']) && !empty($form_data['domain']) && !empty($form_data['admin_name']) && !empty($form_data['admin_email']) && !empty($form_data['admin_password'])) 
+if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($form_data['keywords']) && !empty($form_data['domain']) && !empty($form_data['admin_name']) && !empty($form_data['admin_email']) && !empty($form_data['admin_password']))
 {
 	$brand = $form_data['brand'];
 	$description = $form_data['description'];
@@ -17,10 +17,10 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$admin_email = $form_data['admin_email'];
 	$admin_password = $form_data['admin_password'];
 	$password = sha1($admin_password);
-	
+
 	$db_connection = connect();
 
-	$query = ' 
+	$query = '
 		SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 		SET time_zone = "+00:00";
 	';
@@ -28,14 +28,14 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement->execute();
 
 	$query = "
-		SELECT COUNT(*) AS licznik FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS 
+		SELECT COUNT(*) AS licznik FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
 			WHERE CONSTRAINT_TYPE = 'FOREIGN KEY' AND TABLE_SCHEMA = '". DB_NAME ."'
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 	$check_item = $statement->fetch(PDO::FETCH_ASSOC);
 	$constraints_exist = $check_item['licznik'];
-	
+
 	if ($constraints_exist)
 	{
 		$query = "
@@ -50,7 +50,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		";
 		$statement = $db_connection->prepare($query);
 		$statement->execute();
-		
+
 		$query = "
 			DROP TABLE IF EXISTS `access_levels`;
 			DROP TABLE IF EXISTS `access_modules`;
@@ -567,11 +567,15 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(32, 'email_report_body', 'Raport o zdarzeniu w serwisie', 'treść maila rapotującego', NOW()),
 			(33, 'email_password_subject', 'Nowe hasło do konta', 'temat generowanego maila z nowym hasłem', NOW()),
 			(34, 'email_password_body', 'Na Twoją prośbę przesyłamy Ci nowe hasło logowania. Oto Twoje dane:', 'treść generowanego maila z nowym hasłem', NOW()),
-            (35, 'sidebar_index_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie głównej', NOW()),
-			(36, 'sidebar_page_enabled', 'true', 'czy ma być włączona karuzela slajdów na podstronie', NOW()),
-			(37, 'sidebar_category_enabled', 'true', 'czy ma być włączona karuzela slajdów na kategorii', NOW()),
-			(38, 'sidebar_contact_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie kontaktowej', NOW()),
-			(39, 'sidebar_search_enabled', 'true', 'czy ma być włączona karuzela slajdów na stronie wyszukiwania', NOW());
+            (35, 'sidebar_index_enabled', 'true', 'czy ma być włączona sidebar na stronie głównej', NOW()),
+			(36, 'sidebar_page_enabled', 'true', 'czy ma być włączona sidebar na podstronie', NOW()),
+			(37, 'sidebar_category_enabled', 'true', 'czy ma być włączona sidebar na kategorii', NOW()),
+			(38, 'sidebar_contact_enabled', 'true', 'czy ma być włączona sidebar na stronie kontaktowej', NOW()),
+			(39, 'sidebar_search_enabled', 'true', 'czy ma być włączona sidebar na stronie wyszukiwania', NOW()),
+            (40, 'menu_sidebar_enabled', 'true', 'czy ma być włączone menu głowe z kategoriami na sidebarze', NOW()),
+            (41, 'submenu_sidebar_enabled', 'true', 'czy ma być włączone podmenu (submenu) na sidebarze', NOW()),
+            (42, 'menu_navbar_enabled', 'true', 'czy ma być włączone menu na listwie nawigacyjnej', NOW()),
+            (42, 'submenu_navbar_enabled', 'true', 'czy ma być włączone podmenu (submenu) na listwie nawigacyjnej', NOW());
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->bindParam(':brand', $brand, PDO::PARAM_STR);
@@ -748,15 +752,15 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		ALTER TABLE `stat_ip`
 		  ADD PRIMARY KEY (`id`),
 		  ADD KEY `date` (`date`);
-		  
+
 		ALTER TABLE `stat_main`
 		  ADD PRIMARY KEY (`id`),
 		  ADD KEY `date` (`date`);
-		  
+
 		ALTER TABLE `_game_scores`
 		  ADD PRIMARY KEY (`id`),
 		  ADD UNIQUE KEY `player` (`player`,`ip`);
-		  
+
 		ALTER TABLE `_game_stats`
 		  ADD PRIMARY KEY (`id`);
 	";
@@ -769,7 +773,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 
 		ALTER TABLE `access_modules`
 		  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-		  
+
 		ALTER TABLE `access_rights`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=80;
 
@@ -820,7 +824,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 
 		ALTER TABLE `_game_scores`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
-		  
+
 		ALTER TABLE `_game_stats`
 		  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 	";
@@ -855,8 +859,8 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		'keywords' => $keywords,
 		'domain' => $domain,
 		'admin_name' => $admin_name,
-		'admin_email' => $admin_email,	
-		'admin_password' => $admin_password,	
+		'admin_email' => $admin_email,
+		'admin_password' => $admin_password,
 		);
 
 	$message = 'Serwis został pomyślnie zainstalowany.';

@@ -36,6 +36,10 @@ angular.module('navService', [])
 		return $http.get(config.apiUrl + 'get_sidebar.php');
 	};
 
+	navigateFactory.menuSettings = function() {
+		return $http.get(config.apiUrl + 'get_menu_settings.php');
+	};
+
 	navigateFactory.registerVisitor = function (referer, url) {
 		return $http({
 			method: 'POST',
