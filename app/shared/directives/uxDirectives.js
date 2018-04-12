@@ -23,7 +23,7 @@ angular.module('uxDirectives', ['config'])
 				// on init
         setTimeout( function () {
           ifBigScreenAdaptedSidebarHeightElseSetToAuto();
-        }, 200 );
+        }, 100 );
 
 				// if window become resized reset height of sidebar
         var lastWidth = $(window).width();

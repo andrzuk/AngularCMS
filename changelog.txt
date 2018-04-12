@@ -1,3 +1,12 @@
+AngularCMS v 1.0.4
+date: 12.04.2018
+by: JanQuery
+
+extended application feature:
+Embdedded ngAnimate.
+Added smoothness while navigating through views.
+
+
 AngularCMS v 1.0.3
 date: 12.04.2018
 by: JanQuery

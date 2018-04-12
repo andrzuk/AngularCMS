@@ -1,4 +1,4 @@
-# AngularCMS v 1.0.3
+# AngularCMS v 1.0.4
 
 ## Simple CMS based on AngularJS frontend framework
 
@@ -8,6 +8,7 @@
 * admin panel (settings, templates, styles, scripts, menu, articles, gallery, carousel, sidebar)
 * activity reports (messages, searches, visits)
 * build in text editor ( TinyMCE )
+* smooth navigation thanks to ngAnimate
 
 ### General:
 * Framework: AngularJS
