@@ -68,6 +68,7 @@ angular.module('mainController', ['ngRoute', 'authService', 'navService', 'confi
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
 		$scope.carouselEnabled = $scope.checkCarouselEnabled();
 		$scope.sidebarEnabled = $scope.checkSidebarEnabled();
+		setTimeout( function () {window.scrollTo( 0, 0);},100 );
 	});
 
 	$rootScope.$on('$routeChangeSuccess', function (event, next, current) {

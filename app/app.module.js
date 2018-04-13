@@ -49,6 +49,7 @@ angular.module('MainApp', [
     'gamesController',
     'gamesService',
     'ui.tinymce',
+    'ngAnimate',
     ])
 
 .config(function ($httpProvider) {

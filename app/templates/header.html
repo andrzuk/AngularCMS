@@ -8,15 +8,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <div id="main-submenu" class="btn-group" ng-if="submenuList.length">
+                <div id="main-submenu" class="btn-group" ng-if="submenuList.length && submenuInNavbarEnabled == 'true'">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> &nbsp; <span class="caret"></span>
+                        <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span> &nbsp; <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <li ng-repeat="menu in submenuList"><a href="/page/{{ menu.id }}">{{ menu.title }}</a></li>
                     </ul>
                 </div>
-                <div id="main-menu" class="btn-group" ng-if="menuList.length">
+                <div id="main-menu" class="btn-group" ng-if="menuList.length && menuInNavbarEnabled == 'true'">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> &nbsp; <span class="caret"></span>
                     </button>

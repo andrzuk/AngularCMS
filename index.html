@@ -24,6 +24,7 @@
     <script src="assets/js/angular.min.js"></script>
     <script src="assets/js/angular-route.js"></script>
     <script src="assets/js/angular-sanitize.js"></script>
+    <script src="assets/js/angular-animate.js"></script>
     <script src="assets/js/angular-ui-bootstrap.js"></script>
     <script src="assets/js/bootstrap-switch.min.js"></script>
     <script src="assets/js/tinymce/tinymce.js"></script>
@@ -99,11 +100,11 @@
 
 <body ng-controller="MainController" class="container-fluid">
 
-    <div ng-include="layout.header"></div>
+    <div ng-include="layout.header" class="fadeIn fadeOut"></div>
 
-    <div ng-include="layout.content"></div>
+    <div ng-include="layout.content" class="fadeIn fadeOut"></div>
 
-    <div ng-include="layout.footer"></div>
+    <div ng-include="layout.footer" class="fadeIn fadeOut"></div>
 
 </body>
 
