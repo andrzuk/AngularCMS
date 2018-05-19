@@ -159,19 +159,20 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 			(64, 'get_visitor', 'Informacja o odwiedzinach', 1, 1, 0, 0),
 			(65, 'get_statistics', 'Statystyki odwiedzin', 1, 1, 0, 0),
 			(66, 'get_visitors_filtered', 'Pobieranie listy znalezionych odwiedzin', 1, 1, 0, 0),
-			(67, 'get_logins_list', 'Lista logowań', 1, 0, 0, 0),
-			(68, 'get_login', 'Informacja o logowaniu', 1, 0, 0, 0),
-			(69, 'get_logins_filtered', 'Pobieranie listy znalezionych logowań', 1, 0, 0, 0),
-			(70, 'get_style', 'Pobranie zawartości pliku stylów', 1, 0, 0, 0),
-			(71, 'update_style', 'Zapis zawartości stylów do pliku', 1, 0, 0, 0),
-			(72, 'get_script', 'Pobranie zawartości pliku skryptów', 1, 0, 0, 0),
-			(73, 'update_script', 'Zapis zawartości skryptów do pliku', 1, 0, 0, 0),
-			(74, 'get_found_list', 'Pobieranie listy znalezionych stron dla usługi wyszukiwania', 0, 0, 0, 1),
-			(75, 'get_searches_list', 'Pobieranie listy wyszukiwanych przez użytkowników fraz', 1, 1, 0, 0),
-			(76, 'delete_search', 'Usuwanie wyszukiwanych przez użytkowników fraz', 1, 0, 0, 0),
-			(77, 'get_searches_filtered', 'Pobieranie listy znalezionych wyszukiwań fraz użytkowników', 1, 1, 0, 0),
-			(78, 'get_games_list', 'Pobieranie listy statystyk granych przez użytkowników gier', 1, 1, 1, 1),
-			(79, 'delete_game', 'Usuwanie statystyk granych przez użytkowników gier', 1, 1, 0, 0);
+			(67, 'exclude_visitor', 'Dodanie adresu ip do listy wykluczeń z raportu odwiedzin', 1, 1, 0, 0),
+			(68, 'get_logins_list', 'Lista logowań', 1, 0, 0, 0),
+			(69, 'get_login', 'Informacja o logowaniu', 1, 0, 0, 0),
+			(70, 'get_logins_filtered', 'Pobieranie listy znalezionych logowań', 1, 0, 0, 0),
+			(71, 'get_style', 'Pobranie zawartości pliku stylów', 1, 0, 0, 0),
+			(72, 'update_style', 'Zapis zawartości stylów do pliku', 1, 0, 0, 0),
+			(73, 'get_script', 'Pobranie zawartości pliku skryptów', 1, 0, 0, 0),
+			(74, 'update_script', 'Zapis zawartości skryptów do pliku', 1, 0, 0, 0),
+			(75, 'get_found_list', 'Pobieranie listy znalezionych stron dla usługi wyszukiwania', 0, 0, 0, 1),
+			(76, 'get_searches_list', 'Pobieranie listy wyszukiwanych przez użytkowników fraz', 1, 1, 0, 0),
+			(77, 'delete_search', 'Usuwanie wyszukiwanych przez użytkowników fraz', 1, 0, 0, 0),
+			(78, 'get_searches_filtered', 'Pobieranie listy znalezionych wyszukiwań fraz użytkowników', 1, 1, 0, 0),
+			(79, 'get_games_list', 'Pobieranie listy statystyk granych przez użytkowników gier', 1, 1, 1, 1),
+			(80, 'delete_game', 'Usuwanie statystyk granych przez użytkowników gier', 1, 1, 0, 0);
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
@@ -297,7 +298,8 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		(76, 1, 76, 1),
 		(77, 1, 77, 1),
 		(78, 1, 78, 1),
-		(79, 1, 79, 1);
+		(79, 1, 79, 1),
+		(80, 1, 80, 1);
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();

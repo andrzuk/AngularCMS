@@ -18,6 +18,10 @@ angular.module('visitorsService', [])
 		return $http.get(config.apiUrl + componentName + '/get_visitors_filtered.php?search=' + search);
 	};
 
+	visitorsFactory.exclude = function(ip) {
+		return $http.get(config.apiUrl + componentName + '/exclude_visitor.php?ip=' + ip);
+	};
+
 	visitorsFactory.statistics = function() {
 		return $http.get(config.apiUrl + componentName + '/get_statistics.php');
 	};

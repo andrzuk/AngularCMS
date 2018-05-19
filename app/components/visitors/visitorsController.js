@@ -38,6 +38,21 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		});
 	};
 
+	$scope.excludeVisitor = function(ip) {
+		$scope.processing = true;
+		Visitors.exclude(ip).then(function(response) {
+			if (response.data.success) {
+				$scope.state = 'info';
+			}
+			else {
+				$scope.state = 'error';
+			}
+			$scope.message = response.data.message;
+			$scope.processing = false;
+			$scope.getVisitors();
+		});
+	};
+
 	$scope.viewChart = function() {
 		$scope.action = 'chart';
 		$scope.state = null;

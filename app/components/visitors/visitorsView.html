@@ -51,6 +51,7 @@
 									<td>{{ visitor.request_uri }}</td>
 									<td>{{ visitor.visited }}</td>
 									<td class="action">
+										<a href="#" class="btn btn-danger btn-xs" ng-click="excludeVisitor(visitor.visitor_ip)">Wyklucz</a>
 										<a href="#" class="btn btn-info btn-xs" ng-click="viewVisitor(visitor.id)">Szczegóły</a>
 									</td>
 								</tr>
@@ -67,6 +68,10 @@
 					</div>
 				</div>
 				<div ng-include="layout.paginator"></div>
+			</div>
+
+			<div class="col-lg-12">
+				<div ng-include="layout.messager"></div>
 			</div>
 
 			<div class="col-lg-12" ng-show="action == 'view'">
