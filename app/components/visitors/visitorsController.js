@@ -59,20 +59,22 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		$scope.processing = true;
 		Visitors.statistics().then(function(response) {
 			$scope.labels = [];
-			$scope.series = ['Unique Visitors', 'Navigations Count'];
-			$scope.colors = ['#97BBCD', '#F2C099'];
-			$scope.data = [[], []];
+			$scope.series_v = ['Unique Visitors'];
+			$scope.series_n = ['Navigations Count'];
+			$scope.colors_v = ['#97BBCD'];
+			$scope.colors_n = ['#FDB45C'];
+			$scope.data_v = [[]];
+			$scope.data_n = [[]];
 			angular.forEach(response.data, function(value, key) {
 				$scope.labels.push(key % 4 ? '' : value.date);
-				$scope.data[0].push(value.count);
-				$scope.data[1].push(value.sum);
+				$scope.data_v[0].push(value.count);
+				$scope.data_n[0].push(value.sum);
 			});
-			$scope.datasetOverride = [{ yAxisID: 'y-axis-left' }, { yAxisID: 'y-axis-right' }];
+			$scope.datasetOverride = [{ yAxisID: 'y-axis' }];
 			$scope.options = {
 				scales: {
 					yAxes: [
-						{ id: 'y-axis-left', type: 'linear', display: true, position: 'left', ticks: { beginAtZero: true } },
-						{ id: 'y-axis-right', type: 'linear', display: true, position: 'right', ticks: { beginAtZero: true } }
+						{ id: 'y-axis', type: 'linear', display: true, position: 'left', ticks: { beginAtZero: true } }
 					]
 				},
 				legend: {

@@ -138,7 +138,10 @@
 								</div>
 							</div>
 							<div ng-if="!processing">
-								<canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors"></canvas>
+								<canvas id="line-visitors" class="chart chart-line" width="1000" height="260" chart-data="data_v" chart-labels="labels" chart-series="series_v" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors_v"></canvas>
+							</div>
+							<div ng-if="!processing">
+								<canvas id="line-navigations" class="chart chart-line" width="1000" height="260" chart-data="data_n" chart-labels="labels" chart-series="series_n" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors_n"></canvas>
 							</div>
 						</div>
 						<div class="panel-footer text-center">
