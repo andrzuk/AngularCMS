@@ -14,7 +14,6 @@ if (check_access($dbc)) // if user rights are sufficient, get database content
 	$page = intval($_GET['page']) - 1;
 	$start = $page * $rows;
 
-
 	if ($mode == 0) // wszystkie
 	{
 		$query = 'SELECT * FROM messages ORDER BY id LIMIT '. $start .', '. $rows;

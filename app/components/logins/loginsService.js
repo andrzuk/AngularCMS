@@ -6,8 +6,12 @@ angular.module('loginsService', [])
 
 	var componentName = 'logins';
 
-	loginsFactory.all = function(rows, page) {
-		return $http.get(config.apiUrl + componentName + '/get_logins_list.php?rows=' + rows + '&page=' + page);
+	loginsFactory.getCount = function(mode) {
+		return $http.get(config.apiUrl + componentName + '/get_logins_count.php?mode=' + mode);
+	};
+
+	loginsFactory.all = function(mode, rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_logins_list.php?mode=' + mode + '&rows=' + rows + '&page=' + page);
 	};
 
 	loginsFactory.one = function(id) {

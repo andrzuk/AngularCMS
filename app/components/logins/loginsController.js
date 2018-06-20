@@ -5,15 +5,16 @@ angular.module('loginsController', ['loginsService', 'config', 'paginService'])
 	$scope.moduleName = 'logins';
 	$scope.componentName = 'logins';
 
-	$scope.getLogins = function() {
+	$scope.getLogins = function(mode) {
+		$scope.mode = mode;
 		$scope.action = 'list';
 		$scope.processing = true;
 		$scope.currentPage = 1;
-		Paginator.getSize($scope.moduleName).then(function(response) {
+		Logins.getCount($scope.mode).then(function(response) {
 			Paginator.reset(response.data.counter);
 		});
 		var showRows = Paginator.getLines($scope.moduleName);
-		Logins.all(showRows, $scope.currentPage).then(function(response) {
+		Logins.all($scope.mode, showRows, $scope.currentPage).then(function(response) {
 			$scope.loginsList = response.data;
 			$scope.processing = false;
 		});
@@ -24,7 +25,7 @@ angular.module('loginsController', ['loginsService', 'config', 'paginService'])
 		if (newPage == $scope.currentPage) return;
 		$scope.currentPage = newPage;
 		var showRows = Paginator.getLines($scope.moduleName);
-		Logins.all(showRows, $scope.currentPage).then(function(response) {
+		Logins.all($scope.mode, showRows, $scope.currentPage).then(function(response) {
 			$scope.loginsList = response.data;
 		});
 	};
@@ -53,7 +54,7 @@ angular.module('loginsController', ['loginsService', 'config', 'paginService'])
 
 	$scope.closeFilter = function() {
 		$scope.searchValue = '';
-		$scope.getLogins();
+		$scope.getLogins($scope.mode);
 	};
 
 	$scope.cancelLogin = function() {
