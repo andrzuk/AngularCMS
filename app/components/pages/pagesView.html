@@ -31,19 +31,25 @@
 							<table class="table-bordered table-striped">
 								<tr class="table-header">
 									<th>Id</th>
-									<th width="13%">Category</th>
-									<th width="20%">Title</th>
-									<th width="30%">Description</th>
+									<th width="10%">Category</th>
+									<th width="2%">Type</th>
+									<th width="15%">Title</th>
+									<th width="35%">Description</th>
 									<th class="text-center" width="5%">Author</th>
 									<th class="text-center" width="10%">Modified</th>
 									<th class="text-center">Action</th>
 								</tr>
 								<tr ng-if="processing">
-									<td colspan="7" class="loading"><img src="public/img/loader.gif"></td>
+									<td colspan="8" class="loading"><img src="public/img/loader.gif"></td>
 								</tr>
 								<tr ng-if="!processing" ng-repeat="page in pagesList | filter:searchValue" class="{{ page.visible == 1 ? 'blue' : 'red' }}">
 									<td>{{ page.id }}</td>
-									<td>{{ page.category_id > 0 ? page.category_name : '(Nie powiązana)' }} <button type="button" class="btn btn-success btn-xs" ng-if="page.main_page == '1'"><span class="glyphicon glyphicon-home"></span></button> <button type="button" class="btn btn-warning btn-xs" ng-if="page.contact_page == '1'"><span class="glyphicon glyphicon-envelope"></span></button></td>
+									<td>{{ page.category_id > 0 ? page.category_name : '(Nie powiązana)' }}</td>
+									<td>
+										<button type="button" class="btn btn-success btn-xs" ng-if="page.main_page == '1'" title="Strona główna"><span class="glyphicon glyphicon-home"></span></button>
+										<button type="button" class="btn btn-warning btn-xs" ng-if="page.contact_page == '1'" title="Strona kontaktowa"><span class="glyphicon glyphicon-envelope"></span></button>
+										<button type="button" class="btn btn-primary btn-xs" ng-if="page.main_page == '0' && page.contact_page == '0'" title="Podstrona"><span class="glyphicon glyphicon-duplicate"></span></button>
+									</td>
 									<td>{{ page.title }}</td>
 									<td>{{ page.description | htmlToPlaintext | limitTo:150 }}<span ng-if="page.description.length > 150">...</span></td>
 									<td class="text-center">{{ page.author_name }}</td>
@@ -55,7 +61,7 @@
 									</td>
 								</tr>
 								<tr ng-if="!pagesList.length && !processing">
-									<td colspan="7">
+									<td colspan="8">
 										<div class="content-center">
 											<img src="public/img/not-found.png" class="img-responsive" alt="No results">
 											<div class="no-results">(Brak wyników)</div>

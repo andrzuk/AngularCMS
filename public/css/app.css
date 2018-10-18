@@ -535,6 +535,13 @@ p.justify {
 	text-align: justify;
 }
 
+textarea.form-control {
+	min-width: 100%;
+	max-width: 100%;
+	min-height: 4em;
+	max-height: 30em;
+}
+
 /*
  * color settings
  */
