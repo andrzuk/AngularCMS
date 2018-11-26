@@ -37,8 +37,8 @@
 									<th>Host</th>
 									<th>Referer</th>
 									<th>Request</th>
-									<th>Visited</th>
-									<th class="text-center">Action</th>
+									<th width="130">Visited</th>
+									<th class="text-center" width="170">Action</th>
 								</tr>
 								<tr ng-if="processing">
 									<td colspan="7" class="loading"><img src="public/img/loader.gif"></td>
@@ -126,7 +126,7 @@
 			<div class="col-lg-12" ng-show="action == 'chart'">
 				<form class="form" role="form">
 					<div class="panel panel-primary">
-						<div class="panel-heading">Wizyty użytkowników oraz ilość nawigacji</div>
+						<div class="panel-heading">Wizyty użytkowników, ilość nawigacji, łączny czas przeglądania</div>
 						<div class="panel-body">
 							<div ng-if="processing">
 								<div class="text-center">
@@ -134,10 +134,13 @@
 								</div>
 							</div>
 							<div ng-if="!processing">
-								<canvas id="line-visitors" class="chart chart-line" width="1000" height="260" chart-data="data_v" chart-labels="labels" chart-series="series_v" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors_v"></canvas>
+								<canvas id="line-visitors" class="chart chart-line" width="1000" height="200" chart-data="data_v" chart-labels="labels" chart-series="series_v" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors_v"></canvas>
 							</div>
 							<div ng-if="!processing">
-								<canvas id="line-navigations" class="chart chart-line" width="1000" height="260" chart-data="data_n" chart-labels="labels" chart-series="series_n" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors_n"></canvas>
+								<canvas id="line-navigations" class="chart chart-line" width="1000" height="200" chart-data="data_n" chart-labels="labels" chart-series="series_n" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors_n"></canvas>
+							</div>
+							<div ng-if="!processing">
+								<canvas id="line-times" class="chart chart-line" width="1000" height="200" chart-data="data_t" chart-labels="labels" chart-series="series_t" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors_t"></canvas>
 							</div>
 						</div>
 						<div class="panel-footer text-center">

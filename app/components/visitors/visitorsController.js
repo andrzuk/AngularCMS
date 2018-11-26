@@ -61,14 +61,18 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 			$scope.labels = [];
 			$scope.series_v = ['Unique Visitors'];
 			$scope.series_n = ['Navigations Count'];
-			$scope.colors_v = ['#97BBCD'];
-			$scope.colors_n = ['#FDB45C'];
+			$scope.series_t = ['Total Time [min]'];
+			$scope.colors_v = ['#FFB1C1'];
+			$scope.colors_n = ['#97BBCD'];
+			$scope.colors_t = ['#FDB45C'];
 			$scope.data_v = [[]];
 			$scope.data_n = [[]];
+			$scope.data_t = [[]];
 			angular.forEach(response.data, function(value, key) {
 				$scope.labels.push(key % 4 ? '' : value.date);
 				$scope.data_v[0].push(value.count);
 				$scope.data_n[0].push(value.sum);
+				$scope.data_t[0].push(value.time);
 			});
 			$scope.datasetOverride = [{ yAxisID: 'y-axis' }];
 			$scope.options = {

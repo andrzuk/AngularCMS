@@ -633,7 +633,8 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		  `id` int(11) UNSIGNED NOT NULL,
 		  `date` date NOT NULL,
 		  `ip` varchar(15) NOT NULL,
-		  `counter` int(11) UNSIGNED NOT NULL
+		  `counter` int(11) UNSIGNED NOT NULL,
+		  `seconds` int(11) UNSIGNED NOT NULL
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	";
 	$statement = $db_connection->prepare($query);

@@ -70,14 +70,56 @@ try
 		$statement = $db_connection->prepare($query);
 
 		$statement->execute();
-		
+
 		$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 		
 		foreach ($rows as $row)
 		{
-			$query = "INSERT INTO stat_ip (id, date, ip, counter) VALUES (NULL, '".$date_from."', '".$row['visitor_ip']."', 
-						(SELECT COUNT(*) FROM visitors WHERE visitor_ip='".$row['visitor_ip']."' AND visited BETWEEN '".$date_from."' AND '".$date_to."'))";
+			$query = "INSERT INTO stat_ip (id, date, ip, counter, seconds) VALUES (NULL, '".$date_from."', '".$row['visitor_ip']."', 
+						(SELECT COUNT(*) FROM visitors WHERE visitor_ip='".$row['visitor_ip']."' AND visited BETWEEN '".$date_from."' AND '".$date_to."'), 0)";
 
+			$statement = $db_connection->prepare($query);
+
+			$statement->execute();
+		}
+		
+		// tabela 'visitors' - zlicza czas dla poszczególnych IP:
+
+		$visitors = array();
+		$cumulative = array();
+		
+		$query = "SELECT visitor_ip, visited FROM visitors WHERE visited BETWEEN '".$date_from."' AND '".$date_to."' ORDER BY id";
+
+		$statement = $db_connection->prepare($query);
+
+		$statement->execute();
+
+		$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+		
+		foreach ($rows as $row)
+		{
+			array_push($visitors, array('ip' => $row['visitor_ip'], 'visited' => $row['visited']));
+		}
+		
+		foreach ($visitors as $iter => $visitor)
+		{
+			if ($iter)
+			{
+				if ($visitors[$iter]['ip'] == $visitors[$iter - 1]['ip'])
+				{
+					$delta = strtotime($visitors[$iter]['visited']) - strtotime($visitors[$iter - 1]['visited']);
+					if ($delta > 0 && $delta <= 10 * 60)
+					{
+						$cumulative[$visitor['ip']] += $delta;
+					}
+				}
+			}
+		}
+		
+		foreach ($cumulative as $ip => $seconds)
+		{
+			$query = "UPDATE stat_ip SET seconds = ".$seconds." WHERE date = '".$date_from."' AND ip = '".$ip."';"; 
+					 
 			$statement = $db_connection->prepare($query);
 
 			$statement->execute();
