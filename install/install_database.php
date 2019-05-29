@@ -1,6 +1,12 @@
 <?php
 
+// NOTE: Don't echo anything other than $result in this file, unless
+// running it directly (specifying post variables manually).
+// Otherwise, the JSON will be corrupt (Install will not be able to find
+// the success variable, and will stop.)
+
 include dirname(__FILE__) . '/../app/db/connection.php';
+header('Content-Type: application/json');
 
 $form_data = $_POST;
 
@@ -17,6 +23,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$admin_email = $form_data['admin_email'];
 	$admin_password = $form_data['admin_password'];
 	$password = sha1($admin_password);
+	$enableShowIssue3 = false;
 
 	$db_connection = connect();
 
@@ -36,8 +43,12 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$check_item = $statement->fetch(PDO::FETCH_ASSOC);
 	$constraints_exist = $check_item['licznik'];
 
+	//echo "Counting constraints...<br/>";
+	//var_dump($check_item);
+
 	if ($constraints_exist)
 	{
+		//echo "Removing existing constraints...<br/>";
 		$query = "
 			ALTER TABLE `access_rights` DROP FOREIGN KEY `fk_rights_resources`;
 			ALTER TABLE `access_rights` DROP FOREIGN KEY `fk_rights_users`;
@@ -50,7 +61,9 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		";
 		$statement = $db_connection->prepare($query);
 		$statement->execute();
-
+	}
+	//else echo "No constraints exist.";
+	//echo "Dropping tables...<br/>";
 		$query = "
 			DROP TABLE IF EXISTS `access_levels`;
 			DROP TABLE IF EXISTS `access_modules`;
@@ -75,7 +88,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 		";
 		$statement = $db_connection->prepare($query);
 		$statement->execute();
-	}
+	//echo "Creating access_levels...<br/>";
 
 	$query = "
 		CREATE TABLE `access_levels` (
@@ -91,6 +104,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting access_levels...<br/>";
 	$query = "
 		INSERT INTO `access_levels` (`id`, `resource`, `description`, `mask_a`, `mask_o`, `mask_u`, `mask_g`) VALUES
 			(1, 'get_menu', 'Wczytanie głównego menu strony', 1, 1, 1, 1),
@@ -177,6 +191,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating access_modules...<br/>";
 	$query = "
 		CREATE TABLE `access_modules` (
 		  `id` int(11) UNSIGNED NOT NULL,
@@ -187,6 +202,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting access_modules...<br/>";
 	$query = "
 		INSERT INTO `access_modules` (`id`, `module`, `description`) VALUES
 			(1, 'admin', 'Admin Panel'),
@@ -207,6 +223,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating access_rights...<br/>";
 	$query = "
 		CREATE TABLE `access_rights` (
 		  `id` int(11) UNSIGNED NOT NULL,
@@ -218,6 +235,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting access_rights...<br/>";
 	$query = "
 		INSERT INTO `access_rights` (`id`, `user_id`, `resource_id`, `access`) VALUES
 		(1, 1, 1, 1),
@@ -304,6 +322,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating access_users...<br/>";
 	$query = "
 		CREATE TABLE `access_users` (
 		  `id` int(11) UNSIGNED NOT NULL,
@@ -314,7 +333,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	";
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
-
+	//echo "Inserting access_users...<br/>";
 	$query = "
 		INSERT INTO `access_users` (`id`, `user_id`, `module_id`, `access`) VALUES
 			(1, 1, 1, 1),
@@ -335,6 +354,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating archives...<br/>";
 	$query = "
 		CREATE TABLE `archives` (
 			`id` int(11) UNSIGNED NOT NULL,
@@ -353,6 +373,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting archives...<br/>";
 	$query = "
 		INSERT INTO `archives` (`id`, `page_id`, `main_page`, `contact_page`, `category_id`, `title`, `description`, `contents`, `author_id`, `visible`, `modified`) VALUES
 			(1, 1, 1, 0, 0, 'Strona główna', 'Strona główna naszej aplikacji', '<div class=\"row\">\n<div class=\"col-lg-3\">\n<img src=\"public/img/AngularJS_logo_bordered.png\" class=\"img-responsive\" alt=\"angular js logo\">\n</div>\n<div class=\"col-lg-9\">\n<h2>Witaj w systemie Angular CMS!</h2>\n<h4>Wstęp</h4>\n<p>\nJest to projekt aplikacji typu Single Page Application, która działa w ten sposób, że zmiana treści odbywa się bez konieczności przeładowania całej strony. Wygląda to tak, że mamy szablon strony, na którym zmieniają się tylko fragmenty, pewne elementy, w zależności od kontekstu. Na przykład po wywołaniu strony głównej ładowana jest jedynie treść, nagłówek i stopka pozostają nie zmienione. Podobnie jest po otwarciu strony kontaktowej, gdzie jako treść pojawia się mapka, informacje kontaktowe i formularz kontaktowy. To samo ma miejsce po otwarciu dowolnej podstrony - ładowana jest tylko jej treść, reszta się nie zmienia. System jest oparty na frameworku AngularJS, który jest przeznaczony do tworzenia tego typu aplikacji. \n</p>\n<h4>Demo</h4>\n<p>Aby pokazać, jak wygląda zarządzanie stroną, przygotowane zostały następujące filmy demo:</p>\n<p>\n<a href=\"https://youtu.be/x92qVUeWr9k\" target=\"_blank\" class=\"btn btn-primary\">Tworzenie strony głównej</a>\n<a href=\"https://youtu.be/yl4FjIGSYYU\" target=\"_blank\" class=\"btn btn-primary\">Tworzenie strony kontaktowej</a>\n<a href=\"https://youtu.be/3wvaLt5X-V4\" target=\"_blank\" class=\"btn btn-primary\">Nawigacja, podstrony, obrazki i slidery</a>\n</p>\n</div>\n</div>', 1, 1, NOW()),
@@ -363,6 +384,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating categories...<br/>";
 	$query = "
 		CREATE TABLE `categories` (
 			`id` int(11) unsigned NOT NULL,
@@ -378,6 +400,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting categories...<br/>";
 	$query = "
 		INSERT INTO `categories` (`id`, `parent_id`, `item_order`, `caption`, `item_link`, `visible`, `target`, `modified`) VALUES
 			(1, 0, 1, 'DEMO', '/category/1', 1, 0, NOW());
@@ -385,6 +408,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating images...<br/>";
 	$query = "
 		CREATE TABLE `hosts` (
 			`id` int(11) UNSIGNED NOT NULL,
@@ -395,6 +419,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting images...<br/>";
 	$query = "
 		CREATE TABLE `images` (
 			`id` int(11) unsigned NOT NULL,
@@ -429,6 +454,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating logins...<br/>";
 	$query = "
 		CREATE TABLE `logins` (
 			`id` int(11) UNSIGNED NOT NULL,
@@ -444,6 +470,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting logins...<br/>";
 	$query = "
 		CREATE TABLE `messages` (
 			`id` int(11) unsigned NOT NULL,
@@ -459,6 +486,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating pages...<br/>";
 	$query = "
 		CREATE TABLE `pages` (
 			`id` int(11) unsigned NOT NULL,
@@ -476,6 +504,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting pages...<br/>";
 	$query = "
 		INSERT INTO `pages` (`id`, `main_page`, `contact_page`, `category_id`, `title`, `description`, `contents`, `author_id`, `visible`, `modified`) VALUES
 			(1, 1, 0, 0, 'Strona główna', 'Strona główna naszej aplikacji', '<div class=\"row\">\n<div class=\"col-lg-3\">\n<img src=\"public/img/AngularJS_logo_bordered.png\" class=\"img-responsive\" alt=\"angular js logo\">\n</div>\n<div class=\"col-lg-9\">\n<h2>Witaj w systemie Angular CMS!</h2>\n<h4>Wstęp</h4>\n<p>\nJest to projekt aplikacji typu Single Page Application, która działa w ten sposób, że zmiana treści odbywa się bez konieczności przeładowania całej strony. Wygląda to tak, że mamy szablon strony, na którym zmieniają się tylko fragmenty, pewne elementy, w zależności od kontekstu. Na przykład po wywołaniu strony głównej ładowana jest jedynie treść, nagłówek i stopka pozostają nie zmienione. Podobnie jest po otwarciu strony kontaktowej, gdzie jako treść pojawia się mapka, informacje kontaktowe i formularz kontaktowy. To samo ma miejsce po otwarciu dowolnej podstrony - ładowana jest tylko jej treść, reszta się nie zmienia. System jest oparty na frameworku AngularJS, który jest przeznaczony do tworzenia tego typu aplikacji. \n</p>\n<h4>Demo</h4>\n<p>Aby pokazać, jak wygląda zarządzanie stroną, przygotowane zostały następujące filmy demo:</p>\n<p>\n<a href=\"https://youtu.be/x92qVUeWr9k\" target=\"_blank\" class=\"btn btn-primary\">Tworzenie strony głównej</a>\n<a href=\"https://youtu.be/yl4FjIGSYYU\" target=\"_blank\" class=\"btn btn-primary\">Tworzenie strony kontaktowej</a>\n<a href=\"https://youtu.be/3wvaLt5X-V4\" target=\"_blank\" class=\"btn btn-primary\">Nawigacja, podstrony, obrazki i slidery</a>\n</p>\n</div>\n</div>', 1, 1, NOW()),
@@ -486,6 +515,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating roles...<br/>";
 	$query = "
 		CREATE TABLE `roles` (
 			`id` int(11) unsigned NOT NULL,
@@ -499,6 +529,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting roles...<br/>";
 	$query = "
 		INSERT INTO `roles` (`id`, `name`, `mask_a`, `mask_o`, `mask_u`, `mask_g`) VALUES
 			(1, 'admin', 1, 0, 0, 0),
@@ -521,6 +552,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating settings...<br/>";
 	$query = "
 		CREATE TABLE `settings` (
 			`id` int(11) unsigned NOT NULL,
@@ -533,6 +565,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting settings...<br/>";
 	$query = "
 		INSERT INTO `settings` (`id`, `key_name`, `key_value`, `meaning`, `modified`) VALUES
 			(1, 'app_title', :title, 'meta title dla strony', NOW()),
@@ -590,6 +623,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement->bindParam(':admin_email', $admin_email, PDO::PARAM_STR);
 	$statement->execute();
 
+	//echo "Creating users...<br/>";
 	$query = "
 		CREATE TABLE `users` (
 			`id` int(11) unsigned NOT NULL,
@@ -606,6 +640,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Inserting users...<br/>";
 	$query = "
 		INSERT INTO `users` (`id`, `login`, `password`, `email`, `role`, `active`, `registered`, `logged_in`, `token`) VALUES
 			(1, :admin_name, :admin_password, :admin_email, 1, 1, NOW(), NOW(), 'Installed');
@@ -616,6 +651,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement->bindParam(':admin_email', $admin_email, PDO::PARAM_STR);
 	$statement->execute();
 
+	//echo "Creating visitors...<br/>";
 	$query = "
 		CREATE TABLE `visitors` (
 			`id` int(11) unsigned NOT NULL,
@@ -628,6 +664,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating stat_ip...<br/>";
 	$query = "
 		CREATE TABLE `stat_ip` (
 		  `id` int(11) UNSIGNED NOT NULL,
@@ -640,6 +677,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating stat_main...<br/>";
 	$query = "
 		CREATE TABLE `stat_main` (
 		  `id` int(11) UNSIGNED NOT NULL,
@@ -654,6 +692,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating _game_scores...<br/>";
 	$query = "
 		CREATE TABLE `_game_scores` (
 		  `id` int(11) unsigned NOT NULL,
@@ -666,6 +705,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Creating _game_stats...<br/>";
 	$query = "
 		CREATE TABLE `_game_stats` (
 		  `id` int(11) UNSIGNED NOT NULL,
@@ -683,6 +723,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Adding keys...<br/>";
 	$query = "
 		ALTER TABLE `access_levels`
 		  ADD PRIMARY KEY (`id`),
@@ -770,6 +811,7 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Adding AUTO_INCREMENT to ids...<br/>";
 	$query = "
 		ALTER TABLE `access_levels`
 		  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=80;
@@ -834,45 +876,218 @@ if (!empty($form_data['brand']) && !empty($form_data['description']) && !empty($
 	$statement = $db_connection->prepare($query);
 	$statement->execute();
 
+	//echo "Checking for InnoDB support...<br/>";
+
+	$query = "SELECT SUPPORT FROM INFORMATION_SCHEMA.ENGINES WHERE ENGINE = 'InnoDB';";
+	$statement = $db_connection->prepare($query);
+	//$statement->bindValue(1, $innodb_support, PDO::PARAM_STR);
+	//$statement->bind_result($innodb_support);  // "bind_result() is a mysqli_statement method, not needed (or valid) for PDO" -  Berkowski, M. 2013. https://stackoverflow.com/questions/15514217/call-to-undefined-method-pdostatementbind-result
+	//$statement->fetch(); // mysqli not PDO (?)
+	$innodb_support = null;
+	$statement->execute();
+	$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+	if (count($rows) > 0) {
+		if (array_key_exists("SUPPORT", $rows[0])) {
+			$innodb_support = $rows[0]["SUPPORT"];
+			//echo "InnoDB SUPPORT: $innodb_support<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+		}
+		//else echo "InnoDB SUPPORT: (bad result) " . json_encode($rows) . "<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+	}
+	//else echo "InnoDB SUPPORT: (bad result) " . json_encode($rows) . "<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+	//echo "InnoDB SUPPORT, all rows:" . json_encode($rows) . "<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+
+	//echo "Adding foreign key constraints...<br/>";
+	//$query = "
+		//ALTER TABLE `access_rights`
+		  //DROP FOREIGN KEY `fk_rights_resources`;
+	//";
+	//$statement = $db_connection->prepare($query);
+	//$statement->execute();  // Fatal error: Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1091 Can't DROP 'fk_rights_resources'; check that column/key exists
+	//$query = "
+		//ALTER TABLE `access_rights`
+		  //DROP FOREIGN KEY `fk_rights_users`;
+	//";
+	//$statement = $db_connection->prepare($query);
+	//$statement->execute();  // Fatal error: Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1091 Can't DROP 'fk_rights_resources'; check that column/key exists
+
+	//$query = "
+		//ALTER TABLE `access_rights`
+		  //ADD CONSTRAINT `fk_rights_resources` FOREIGN KEY (`resource_id`) REFERENCES `access_levels` (`id`),
+		  //ADD CONSTRAINT `fk_rights_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+	//";
+	//$statement = $db_connection->prepare($query);
+	//$statement->execute();
+
+	$query = "SELECT user_id FROM access_rights;";
+	$statement = $db_connection->prepare($query);
+	$this_id = null;
+	$statement->execute();
+	$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+	$tried = array();
+	if (count($rows) > 0) {
+		for ($row_i=0; $row_i<count($rows); $row_i++) {
+			if (array_key_exists("user_id", $rows[$row_i])) {
+				$this_id = $rows[$row_i]["user_id"];
+				if (!array_key_exists($this_id, $tried)) {
+					$tried[$this_id] = true;
+					//echo "this_id: $this_id<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+					$this_query = "SELECT id FROM users WHERE id = $this_id;";
+					// echo "$query...<br/>";
+					$this_statement = $db_connection->prepare($this_query);
+					$id1 = null;
+					$this_statement->execute();
+					$this_rows = $this_statement->fetchAll(PDO::FETCH_ASSOC);
+					if (count($this_rows) > 0) {
+						if (array_key_exists("id", $this_rows[0])) {
+							$id1 = $this_rows[0]["id"];
+							//echo "- found in users: $id1<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+						}
+						//else echo "- not found in users: (bad result) " . json_encode($this_rows) . "<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+					}
+					//else echo "- not found in users: (bad result) " . json_encode($this_rows) . "<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+				}
+			}
+			//else echo "access_rights.user_id [$row_i]: (bad result) " . json_encode($rows[$row_i]) . "<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+		}
+	}
+	//else echo "access_rights.user_id list: (bad result) " . json_encode($rows) . "<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+
+
+	//$query = "SELECT id FROM users WHERE id = 1;";
+	//$statement = $db_connection->prepare($query);
+	//$id1 = null;
+	//$statement->execute();
+	//$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+	//if (count($rows) > 0) {
+		//if (array_key_exists("id", $rows[0])) {
+			//$id1 = $rows[0]["id"];
+			//echo "admin id: $id1<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+		//}
+		//else echo "admin id: (bad result) " . json_encode($rows) . "<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+	//}
+	//else echo "admin id: (bad result) " . json_encode($rows) . "<br/>";  // ok: "YES" or "DEFAULT"; bad: "NO"
+
+
+
+	//echo "Creating fk_rights_resources...";
 	$query = "
 		ALTER TABLE `access_rights`
-		  ADD CONSTRAINT `fk_rights_resources` FOREIGN KEY (`resource_id`) REFERENCES `access_levels` (`id`),
-		  ADD CONSTRAINT `fk_rights_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+		  ADD CONSTRAINT `fk_rights_resources` FOREIGN KEY (`resource_id`) REFERENCES `access_levels` (`id`);
+	";
+	$statement = $db_connection->prepare($query);
+	$statement->execute(); //if (!$statement->execute()) echo "FAIL<br/>";
+	//else echo "OK<br/>";
 
+	//echo "Creating fk_rights_users...";
+	$query = "
+		ALTER TABLE `access_rights`
+		  ADD CONSTRAINT `fk_rights_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+	";
+	$statement = $db_connection->prepare($query);
+	try {
+		$statement->execute(); //if (!$statement->execute()) echo "FAIL<br/>";
+		//else echo "OK<br/>";
+	}
+	catch( PDOException $Exception ) {
+		$enableShowIssue3 = true;
+		//echo "FAIL*: " . $Exception->getMessage() . $Exception->getCode() . "<br/>";
+	}
+	// Fatal error: Uncaught PDOException: SQLSTATE[HY000]: General error: 1215 Cannot add foreign key constraint
+	// https://www.rathishkumar.in/2016/01/solved-how-to-solve-mysql-error-code.html says reason could be:
+	// * [checked] Key does not exist in the parent table.
+	// * [checked] When the definition of the foreign key is different from the reference key...The size and sign of the integer must be the same. The character string columns, the character set and collation must be the same.
+	// * [checked] When you are using composite primary key or implementing one-to-one relationships you may using foreign key as a primary key in your child table. In that case, definition of foreign key should not define as ON DELETE SET NULL. Since primary key cannot be NULL
+	// * When you specify SET NULL action and you defined the columns in the child table as NOT NULL
+	// same error occurs on fk_rights_resources but only if done without the former--why not if first??
+
+
+	//echo "Creating fk_access_modules, fk_access_users...";
+	$query = "
 		ALTER TABLE `access_users`
 		  ADD CONSTRAINT `fk_access_modules` FOREIGN KEY (`module_id`) REFERENCES `access_modules` (`id`),
 		  ADD CONSTRAINT `fk_access_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+	";
+	$statement = $db_connection->prepare($query);
+	try {
+		$statement->execute(); //if (!$statement->execute()) echo "FAIL<br/>";
+		//else echo "OK<br/>";
+	}
+	catch( PDOException $Exception ) {
+		$enableShowIssue3 = true;
+		//echo "FAIL*: " . $Exception->getMessage() . $Exception->getCode() . "<br/>";
+	}
+
+	//echo "Creating fk_archives_pages, fk_archives_users...";
+	$query = "
 
 		ALTER TABLE `archives`
 		  ADD CONSTRAINT `fk_archives_pages` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`),
 		  ADD CONSTRAINT `fk_archives_users` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`);
+	";
+	$statement = $db_connection->prepare($query);
+	try {
+		$statement->execute();//if (!$statement->execute()) echo "FAIL<br/>";
+		//else echo "OK<br/>";
+	}
+	catch( PDOException $Exception ) {
+		$enableShowIssue3 = true;
+		//echo "FAIL*: " . $Exception->getMessage() . $Exception->getCode() . "<br/>";
+	}
+
+	//echo "Creating fk_images_users...";
+	$query = "
 
 		ALTER TABLE `images`
 		  ADD CONSTRAINT `fk_images_users` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`);
+	";
+	$statement = $db_connection->prepare($query);
+	try {
+		$statement->execute();//if (!$statement->execute()) echo "FAIL<br/>";
+		//else echo "OK<br/>";
+	}
+	catch( PDOException $Exception ) {
+		$enableShowIssue3 = true;
+		//echo "FAIL*: " . $Exception->getMessage() . $Exception->getCode() . "<br/>";
+	}
+
+	//echo "Creating fk_pages_users...";
+	$query = "
 
 		ALTER TABLE `pages`
 		  ADD CONSTRAINT `fk_pages_users` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`);
 	";
 	$statement = $db_connection->prepare($query);
-	$statement->execute();
+	try {
+		$statement->execute(); //if (!$statement->execute()) echo "FAIL<br/>";
+		//else echo "OK<br/>";
+	}
+	catch( PDOException $Exception ) {
+		$enableShowIssue3 = true;
+		//echo "FAIL*: " . $Exception->getMessage() . $Exception->getCode() . "<br/>";
+	}
+	$issue3Msg = '*Failure to create foreign keys is <a href="https://github.com/andrzuk/AngularCMS/issues/3">not important</a>.';
+	$issue3PlainMsg = '*Creating foreign keys failed (unimportant: github.com/andrzuk/AngularCMS/issues/3)';
+	if ($enableShowIssue3) {
+		//echo '<br/><br/>*Failure to create foreign keys is <a href="https://github.com/andrzuk/AngularCMS/issues/3">not important according to the author</a>.<br/>';
+	}
 
 	$settings = array(
 		'brand' => $brand,
 		'description' => $description,
 		'keywords' => $keywords,
 		'domain' => $domain,
-		'admin_name' => $admin_name,
-		'admin_email' => $admin_email,
-		'admin_password' => $admin_password,
+		//'admin_name' => $admin_name,
+		//'admin_email' => $admin_email,
+		//'admin_password' => $admin_password,
 		);
 
-	$message = 'Serwis został pomyślnie zainstalowany.';
+	$message = "Serwis został pomyślnie zainstalowany. The service has been successfully installed. $issue3PlainMsg";
 	$success = true;
 }
 else
 {
 	$settings = NULL;
-	$message = 'Nie wprowadzono wymaganych danych.';
+	$message = 'Nie wprowadzono wymaganych danych. The required data has not been entered.';
 	$success = false;
 }
 
