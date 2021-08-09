@@ -18,7 +18,7 @@
 					<div class="panel-body">
 						<div class="row my-toolbar">
 							<div class="col-sm-4 text-left search my-search">
-								<input type="search" class="form-control" ng-model="searchValue" placeholder="Szukaj">
+								<input type="search" class="form-control" id="search-value" ng-model="searchValue" placeholder="Szukaj">
 								<a href="#" class="btn btn-primary" ng-click="findAcl()">Szukaj</a>
 								<a href="#" class="btn btn-danger" ng-click="closeFilter()"><i class="fa fa-times" aria-hidden="true"></i></a>
 							</div>
@@ -102,7 +102,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="panel-footer text-center">
+						<div class="panel-footer">
 							<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="addAcl()">Zapisz</button>
 							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelAcl()" value="Anuluj">
 						</div>
@@ -143,7 +143,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="panel-footer text-center">
+						<div class="panel-footer">
 							<button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="saveAcl(id)">Zapisz</button>
 							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelAcl()" value="Anuluj">
 						</div>
@@ -163,8 +163,8 @@
 					<div class="panel panel-primary my-dialog">
 						<div class="panel-heading">Usuwanie rekordu</div>
 						<div class="panel-body">
-							<p><div class="icon"><i class="fa fa-3x fa-trash-o" aria-hidden="true"></i></div></p>
-							<p>Uwaga! Czy na pewno chcesz usunąć wskazaną pozycję?</p>
+							<span class="icon"><i class="fa fa-4x fa-question" aria-hidden="true"></i></span>
+							<span class="message">Uwaga! <br>Wskazana pozycja zostanie usunięta. <br>Czy na pewno chcesz usunąć wskazaną pozycję?</span>
 						</div>
 						<div class="panel-footer">
 							<a href="#" class="btn btn-danger" ng-disabled="processing" ng-click="deleteAcl(id, true)">Skasuj</a>

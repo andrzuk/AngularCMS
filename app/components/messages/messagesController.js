@@ -5,6 +5,9 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 	$scope.moduleName = 'messages';
 	$scope.componentName = 'messages';
 	
+	$scope.searchValue = '';
+	$scope.mode = 0;
+	
 	$scope.getMessages = function(mode) {
 		$scope.mode = mode;
 		$scope.action = 'list';
@@ -17,6 +20,7 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		Messages.all($scope.mode, showRows, $scope.currentPage).then(function(response) {
 			$scope.messagesList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -27,6 +31,7 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		var showRows = Paginator.getLines($scope.moduleName);
 		Messages.all($scope.mode, showRows, $scope.currentPage).then(function(response) {
 			$scope.messagesList = response.data;
+			focusInputField('search-value');
 		});
 	};
 
@@ -38,6 +43,7 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		Messages.one(id).then(function(response) {
 			$scope.messageEdit = response.data;
 			$scope.processing = false;
+			focusInputField('client_name');
 		});
 	};
 
@@ -94,6 +100,7 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		Messages.getFiltered($scope.searchValue).then(function(response) {
 			$scope.messagesList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -107,6 +114,7 @@ angular.module('messagesController', ['messagesService', 'config', 'paginService
 		$scope.messageEdit = null;
 		$scope.action = 'list';
 		$scope.state = null;
+		focusInputField('search-value');
 	};
 
 }]);

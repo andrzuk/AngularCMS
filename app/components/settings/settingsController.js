@@ -4,6 +4,8 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 	
 	$scope.moduleName = 'settings';
 	$scope.componentName = 'settings';
+	
+	$scope.searchValue = '';
 
 	$scope.getSettings = function() {
 		$scope.action = 'list';
@@ -16,6 +18,7 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 		Settings.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.settingsList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -26,6 +29,7 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 		var showRows = Paginator.getLines($scope.moduleName);
 		Settings.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.settingsList = response.data;
+			focusInputField('search-value');
 		});
 	};
 
@@ -33,6 +37,7 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 		$scope.action = 'add';
 		$scope.state = null;
 		$scope.settingNew = null;
+		focusInputField('key_name');
 	};
 
 	$scope.addSetting = function() {
@@ -63,6 +68,7 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 		Settings.one(id).then(function(response) {
 			$scope.settingEdit = response.data;
 			$scope.processing = false;
+			focusInputField('key_name');
 		});
 	};
 
@@ -89,6 +95,7 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 				}
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				focusInputField('search-value');
 			});
 		}
 	};
@@ -126,6 +133,7 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 		Settings.getFiltered($scope.searchValue).then(function(response) {
 			$scope.settingsList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -139,6 +147,7 @@ angular.module('settingsController', ['settingsService', 'config', 'paginService
 		$scope.settingEdit = null;
 		$scope.action = 'list';
 		$scope.state = null;
+		focusInputField('search-value');
 	};
 
 }]);

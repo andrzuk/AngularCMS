@@ -4,6 +4,8 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 	
 	$scope.moduleName = 'visitors';
 	$scope.componentName = 'visitors';
+	
+	$scope.searchValue = '';
 
 	$scope.getVisitors = function() {
 		$scope.action = 'list';
@@ -16,6 +18,7 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		Visitors.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.visitorsList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -26,6 +29,7 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		var showRows = Paginator.getLines($scope.moduleName);
 		Visitors.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.visitorsList = response.data;
+			focusInputField('search-value');
 		});
 	};
 
@@ -69,7 +73,7 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 			$scope.data_n = [[]];
 			$scope.data_t = [[]];
 			angular.forEach(response.data, function(value, key) {
-				$scope.labels.push(key % 4 ? '' : value.date);
+				$scope.labels.push(key % 2 ? value.date : '');
 				$scope.data_v[0].push(value.count);
 				$scope.data_n[0].push(value.sum);
 				$scope.data_t[0].push(value.time);
@@ -104,6 +108,7 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		Visitors.getFiltered($scope.searchValue).then(function(response) {
 			$scope.visitorsList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -116,6 +121,7 @@ angular.module('visitorsController', ['visitorsService', 'config', 'paginService
 		$scope.visitorView = null;
 		$scope.action = 'list';
 		$scope.state = null;
+		focusInputField('search-value');
 	};
 
 }]);

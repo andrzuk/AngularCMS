@@ -5,6 +5,8 @@ angular.module('searchesController', ['searchesService', 'config', 'paginService
 	$scope.moduleName = 'searches';
 	$scope.componentName = 'searches';
 	
+	$scope.searchValue = '';
+	
 	$scope.getSearches = function() {
 		$scope.action = 'list';
 		$scope.processing = true;

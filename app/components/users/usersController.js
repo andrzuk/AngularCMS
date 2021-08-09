@@ -7,6 +7,11 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 	$scope.moduleName = 'access_levels';
 	$scope.componentName = 'users';
 
+	$scope.searchValue = '';
+	$scope.rightsValue = '';
+	$scope.modulesValue = '';
+	$scope.mode = 0;
+
 	$scope.getUsers = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
@@ -19,6 +24,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		Users.all(showRows, $scope.currentPage, $scope.user.id).then(function(response) {
 			$scope.usersList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -30,15 +36,17 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 			var showRows = Paginator.getLines($scope.componentName);
 			Users.all(showRows, $scope.currentPage, $scope.user.id).then(function(response) {
 				$scope.usersList = response.data;
+				focusInputField('search-value');
 			});
 		}
 		if ($scope.action == 'rights') {
 			var showRows = Paginator.getLines($scope.moduleName);
-			Users.rights($scope.id, showRows, $scope.currentPage).then(function(response) {
+			Users.rights($scope.id, $scope.mode, showRows, $scope.currentPage).then(function(response) {
 				$scope.rightsList = response.data;
 				angular.forEach($scope.usersList, function(value, key) {
 					if (value.id == $scope.id) {
 						$scope.userEdit = $scope.usersList[key];
+						focusInputField('search-value');
 					}
 				});
 				$scope.userEdit.author = $scope.user.id;
@@ -50,6 +58,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		$scope.action = 'add';
 		$scope.state = null;
 		$scope.userNew = null;
+		focusInputField('login');
 	};
 
 	$scope.addUser = function() {
@@ -82,6 +91,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 			$scope.userEdit = response.data;
 			$scope.userEdit.author = $scope.user.id;
 			$scope.processing = false;
+			focusInputField('login');
 		});
 	};
 
@@ -109,6 +119,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 				}
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				focusInputField('search-value');
 			});
 		}
 	};
@@ -138,9 +149,10 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 
 	$scope.changePassword = function(id) {
 		$scope.id = id;
-		$scope.passwordEdit = {id: $scope.id, author: $scope.user.id};
+		$scope.passwordEdit = { id: $scope.id, author: $scope.user.id };
 		$scope.action = 'password';
 		$scope.state = null;
+		focusInputField('password_set');
 	};
 
 	$scope.savePassword = function(id) {
@@ -158,6 +170,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 				}
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				focusInputField('search-value');
 			});
 		}
 	};
@@ -188,7 +201,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 			Paginator.reset(response.data.counter);
 		});
 		var showRows = Paginator.getLines($scope.moduleName);
-		Users.rights($scope.id, showRows, $scope.currentPage).then(function(response) {
+		Users.rights($scope.id, $scope.mode, showRows, $scope.currentPage).then(function(response) {
 			$scope.rightsList = response.data;
 			angular.forEach($scope.usersList, function(value, key) {
 				if (value.id == $scope.id) {
@@ -197,6 +210,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 			});
 			$scope.userEdit.author = $scope.user.id;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -233,6 +247,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		Users.modules($scope.id).then(function(response) {
 			$scope.modulesList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -271,19 +286,22 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		Users.getFiltered($scope.searchValue, $scope.user.id).then(function(response) {
 			$scope.usersList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
-	$scope.findRights = function() {
+	$scope.findRights = function(mode) {
+		$scope.mode = mode;
 		$scope.action = 'rights';
 		$scope.processing = true;
 		$scope.state = null;
 		$scope.rightsList = [];
 		$scope.currentPage = 1;
 		Paginator.reset(0);
-		Users.getRights($scope.rightsValue, $scope.id).then(function(response) {
+		Users.getRights($scope.mode, $scope.rightsValue, $scope.id).then(function(response) {
 			$scope.rightsList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -295,10 +313,12 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		Users.getModules($scope.modulesValue, $scope.id).then(function(response) {
 			$scope.modulesList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
 	$scope.closeFilter = function() {
+		$scope.mode = 0;
 		if ($scope.action == 'list') {
 			$scope.searchValue = '';
 			$scope.getUsers();
@@ -319,6 +339,7 @@ angular.module('usersController', ['usersService', 'config', 'paginService'])
 		$scope.passwordEdit = null;
 		$scope.action = 'list';
 		$scope.state = null;
+		focusInputField('search-value');
 	};
 
 }]);

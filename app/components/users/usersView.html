@@ -18,7 +18,7 @@
                     <div class="panel-body">
                         <div class="row my-toolbar">
                             <div class="col-sm-4 text-left search my-search">
-                                <input type="search" class="form-control" ng-model="searchValue" placeholder="Szukaj">
+                                <input type="search" class="form-control" id="search-value" ng-model="searchValue" placeholder="Szukaj">
                                 <a href="#" class="btn btn-primary" ng-click="findUsers()">Szukaj</a>
                                 <a href="#" class="btn btn-danger" ng-click="closeFilter()"><i class="fa fa-times" aria-hidden="true"></i></a>
                             </div>
@@ -105,7 +105,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-footer text-center">
+                        <div class="panel-footer">
                             <button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="addUser()">Zapisz</button>
                             <input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelUser()" value="Anuluj">
                         </div>
@@ -142,7 +142,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-footer text-center">
+                        <div class="panel-footer">
                             <button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="saveUser(id)">Zapisz</button>
                             <input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelUser()" value="Anuluj">
                         </div>
@@ -168,7 +168,7 @@
                                 <input type="password" class="form-control" id="password_repeat" ng-model="passwordEdit.password_repeat" ng-disabled="processing" required>
                             </div>
                         </div>
-                        <div class="panel-footer text-center">
+                        <div class="panel-footer">
                             <button class="btn btn-primary" type="submit" ng-disabled="processing" ng-click="savePassword(id)">Zapisz</button>
                             <input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelUser()" value="Anuluj">
                         </div>
@@ -182,11 +182,13 @@
                     <div class="panel-body">
                         <div class="row my-toolbar">
                             <div class="col-sm-4 text-left search my-search">
-                                <input type="search" class="form-control" ng-model="rightsValue" placeholder="Szukaj">
-                                <a href="#" class="btn btn-primary" ng-click="findRights()">Szukaj</a>
+                                <input type="search" class="form-control" id="search-value" ng-model="rightsValue" placeholder="Szukaj">
+                                <a href="#" class="btn btn-primary" ng-click="findRights(0)">Szukaj</a>
                                 <a href="#" class="btn btn-danger" ng-click="closeFilter()"><i class="fa fa-times" aria-hidden="true"></i></a>
                             </div>
                             <div class="col-sm-8 text-right buttons">
+                                <input class="btn btn-primary" type="button" ng-click="findRights(1)" value="Aktywne">
+                                <input class="btn btn-warning" type="button" ng-click="findRights(2)" value="Nieaktywne">
                                 <input class="btn btn-success" type="button" ng-click="editModules(userEdit.id)" value="Dostęp do modułów">
                                 <input class="btn btn-danger" type="button" ng-click="getUsers()" value="Zamknij">
                             </div>
@@ -236,7 +238,7 @@
                     <div class="panel-body">
                         <div class="row my-toolbar">
                             <div class="col-sm-4 text-left search my-search">
-                                <input type="search" class="form-control" ng-model="modulesValue" placeholder="Szukaj">
+                                <input type="search" class="form-control" id="search-value" ng-model="modulesValue" placeholder="Szukaj">
                                 <a href="#" class="btn btn-primary" ng-click="findModules()">Szukaj</a>
                                 <a href="#" class="btn btn-danger" ng-click="closeFilter()"><i class="fa fa-times" aria-hidden="true"></i></a>
                             </div>
@@ -291,8 +293,8 @@
                     <div class="panel panel-primary my-dialog">
                         <div class="panel-heading">Usuwanie rekordu</div>
                         <div class="panel-body">
-                            <p><div class="icon"><i class="fa fa-3x fa-trash-o" aria-hidden="true"></i></div></p>
-                            <p>Uwaga! Czy na pewno chcesz usunąć wskazaną pozycję?</p>
+                            <span class="icon"><i class="fa fa-4x fa-question" aria-hidden="true"></i></span>
+                            <span class="message">Uwaga! <br>Wskazana pozycja zostanie usunięta. <br>Czy na pewno chcesz usunąć wskazaną pozycję?</span>
                         </div>
                         <div class="panel-footer">
                             <a href="#" class="btn btn-danger" ng-disabled="processing" ng-click="deleteUser(id, true)">Skasuj</a>

@@ -4,6 +4,8 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 	
 	$scope.moduleName = 'categories';
 	$scope.componentName = 'categories';
+	
+	$scope.searchValue = '';
 
 	$scope.getCategories = function() {
 		$scope.action = 'list';
@@ -16,6 +18,7 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 		Categories.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.categoriesList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -26,6 +29,7 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 		var showRows = Paginator.getLines($scope.moduleName);
 		Categories.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.categoriesList = response.data;
+			focusInputField('search-value');
 		});
 	};
 
@@ -33,6 +37,7 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 		$scope.action = 'add';
 		$scope.state = null;
 		$scope.categoryNew = null;
+		focusInputField('caption');
 	};
 
 	$scope.addCategory = function() {
@@ -63,6 +68,7 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 		Categories.one(id).then(function(response) {
 			$scope.categoryEdit = response.data;
 			$scope.processing = false;
+			focusInputField('caption');
 		});
 	};
 
@@ -89,6 +95,7 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 				}
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				focusInputField('search-value');
 			});
 		}
 	};
@@ -141,6 +148,7 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 		Categories.getFiltered($scope.searchValue).then(function(response) {
 			$scope.categoriesList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -154,6 +162,7 @@ angular.module('categoriesController', ['categoriesService', 'config', 'paginSer
 		$scope.categoryEdit = null;
 		$scope.action = 'list';
 		$scope.state = null;
+		focusInputField('search-value');
 	};
 
 }]);

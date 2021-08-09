@@ -18,12 +18,12 @@ angular.module('usersService', [])
 		return $http.get(config.apiUrl + componentName + '/get_users_filtered.php?search=' + search + '&author=' + author);
 	};
 
-	usersFactory.rights = function(id, rows, page) {
-		return $http.get(config.apiUrl + componentName + '/get_user_rights.php?id=' + id + '&rows=' + rows + '&page=' + page);
+	usersFactory.rights = function(id, mode, rows, page) {
+		return $http.get(config.apiUrl + componentName + '/get_user_rights.php?id=' + id + '&mode=' + mode + '&rows=' + rows + '&page=' + page);
 	};
 
-	usersFactory.getRights = function(search, id) {
-		return $http.get(config.apiUrl + componentName + '/get_rights_filtered.php?search=' + search + '&id=' + id);
+	usersFactory.getRights = function(mode, search, id) {
+		return $http.get(config.apiUrl + componentName + '/get_rights_filtered.php?mode=' + mode + '&search=' + search + '&id=' + id);
 	};
 
 	usersFactory.modules = function(id) {

@@ -6,6 +6,9 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 	
 	$scope.componentName = 'images';
 	$scope.moduleName = 'gallery';
+	
+	$scope.searchValue = '';
+	$scope.mode = 0;
 
 	$scope.getImages = function() {
 		$scope.action = 'list';
@@ -23,6 +26,7 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 				$scope.getImage(value.id, 'thumbnail');
 			});
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -38,6 +42,7 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 					$scope.getImage(value.id, 'thumbnail');
 				});
 			});
+			focusInputField('search-value');
 		}
 		if ($scope.action == 'gallery') {
 			var showRows = Paginator.getLines($scope.moduleName);
@@ -111,6 +116,7 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 				}
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				focusInputField('search-value');
 			});
 		}
 	};
@@ -192,6 +198,7 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 				$scope.getImage(value.id, 'thumbnail');
 			});
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -210,6 +217,7 @@ angular.module('imagesController', ['imagesService', 'config', 'paginService'])
 			$scope.action = 'gallery';
 		}
 		$scope.state = null;
+		focusInputField('search-value');
 	};
 
 }]);

@@ -7,6 +7,8 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 	$scope.moduleName = 'access_levels';
 	$scope.componentName = 'acl';
 	
+	$scope.searchValue = '';
+	
 	$scope.getAcl = function() {
 		$scope.action = 'list';
 		$scope.processing = true;
@@ -18,6 +20,7 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 		Acl.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.aclList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -28,6 +31,7 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 		var showRows = Paginator.getLines($scope.moduleName);
 		Acl.all(showRows, $scope.currentPage).then(function(response) {
 			$scope.aclList = response.data;
+			focusInputField('search-value');
 		});
 	};
 
@@ -35,6 +39,7 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 		$scope.action = 'add';
 		$scope.state = null;
 		$scope.aclNew = null;
+		focusInputField('resource');
 	};
 
 	$scope.addAcl = function() {
@@ -65,6 +70,7 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 		Acl.one(id).then(function(response) {
 			$scope.aclEdit = response.data;
 			$scope.processing = false;
+			focusInputField('resource');
 		});
 	};
 
@@ -88,6 +94,7 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 				}
 				$scope.message = response.data.message;
 				$scope.processing = false;
+				focusInputField('search-value');
 			});
 		}
 	};
@@ -125,6 +132,7 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 		Acl.getFiltered($scope.searchValue).then(function(response) {
 			$scope.aclList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -139,6 +147,7 @@ angular.module('aclController', ['aclService', 'config', 'paginService'])
 		$scope.passwordEdit = null;
 		$scope.action = 'list';
 		$scope.state = null;
+		focusInputField('search-value');
 	};
 
 }]);

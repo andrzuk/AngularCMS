@@ -200,3 +200,9 @@ angular.module('mainDirective', ['config'])
 		}
 	};
 });
+
+function focusInputField(inputId) {
+	setTimeout(function() {
+		$('input#' + inputId).focus();
+	}, 500);
+};

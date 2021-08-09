@@ -18,7 +18,7 @@
 					<div class="panel-body">
 						<div class="row my-toolbar">
 							<div class="col-sm-4 text-left search my-search">
-								<input type="search" class="form-control" ng-model="searchValue" placeholder="Szukaj">
+								<input type="search" class="form-control" id="search-value" ng-model="searchValue" placeholder="Szukaj">
 								<a href="#" class="btn btn-primary" ng-click="findLogins()">Szukaj</a>
 								<a href="#" class="btn btn-danger" ng-click="closeFilter()"><i class="fa fa-times" aria-hidden="true"></i></a>
 							</div>
@@ -135,7 +135,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="panel-footer text-center">
+						<div class="panel-footer">
 							<input class="btn btn-warning" type="button" ng-disabled="processing" ng-click="cancelLogin()" value="Anuluj">
 						</div>
 					</div>

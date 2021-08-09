@@ -4,6 +4,9 @@ angular.module('loginsController', ['loginsService', 'config', 'paginService'])
 	
 	$scope.moduleName = 'logins';
 	$scope.componentName = 'logins';
+	
+	$scope.searchValue = '';
+	$scope.mode = 0;
 
 	$scope.getLogins = function(mode) {
 		$scope.mode = mode;
@@ -17,6 +20,7 @@ angular.module('loginsController', ['loginsService', 'config', 'paginService'])
 		Logins.all($scope.mode, showRows, $scope.currentPage).then(function(response) {
 			$scope.loginsList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -27,6 +31,7 @@ angular.module('loginsController', ['loginsService', 'config', 'paginService'])
 		var showRows = Paginator.getLines($scope.moduleName);
 		Logins.all($scope.mode, showRows, $scope.currentPage).then(function(response) {
 			$scope.loginsList = response.data;
+			focusInputField('search-value');
 		});
 	};
 
@@ -49,6 +54,7 @@ angular.module('loginsController', ['loginsService', 'config', 'paginService'])
 		Logins.getFiltered($scope.searchValue).then(function(response) {
 			$scope.loginsList = response.data;
 			$scope.processing = false;
+			focusInputField('search-value');
 		});
 	};
 
@@ -61,6 +67,7 @@ angular.module('loginsController', ['loginsService', 'config', 'paginService'])
 		$scope.loginView = null;
 		$scope.action = 'list';
 		$scope.state = null;
+		focusInputField('search-value');
 	};
 
 }]);
